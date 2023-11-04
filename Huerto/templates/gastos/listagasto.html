@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        {%for gasto in gasto_total %}
+        Gasto en herramientas:{{gasto.herramientas}}<br>
+        Gasto en imprevistos:{{gasto.imprevistos}}<br>
+        Facturas:{{gasto.facturas}}<br>
+        Fecha:{{gasto.fecha}}<br>
+        Usuario:{{gasto.usuario.nombre}}<br>
+        Huerto: {{ gasto.usuario.usuario_huerto.all.0.id }}
+        {%endfor%}
+    </body>
+</html>

@@ -1,3 +1,5 @@
+from django.contrib import admin
+from django.urls import path,include
 """mysite URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -14,8 +16,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
+from django.urls import path,include
+from django.conf.urls import handler400
+from django.conf.urls import handler403
+from django.conf.urls import handler404
+from django.conf.urls import handler500
+handler400=handler="Huerto.views.mi_error_400"
+handlar403=handler="Huerto.views.mi_error_403"
+handler404 = handler="Huerto.views.mi_error_404"#esto en la diapositiva aparece como handler404="app.views.view"
+handler500=handler="Huerto.views.mi_error_500"
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',include('Huerto.urls')),
 ]

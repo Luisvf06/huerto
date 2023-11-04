@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <h1>Huerto</h1>
+        <h2>lista de urls</h2>
+        <ul>
+            <li><a href="{% url 'plantahuerto' 6%}">planta en 1 huerto determinado</a> </li>
+            <li><a href="{% url 'cambiocontrasenha' 6%}">fecha ultima modificacion</a></li>
+            <li><a href="{% url 'gasto_huerto' 6 2023%}">gastado en un huerto para un año</a></li>
+            <li><a href="{% url 'usuariosparcelas' 'a'%}">usuarios que tienen parcela y su apellido empieza por A</a></li>
+            <li><a href="{% url 'plagaplanta' 'nombreplata'%}">devuelve las plagas de una planta en concreto</a></li>
+            <li><a href="{% url 'consejoplaga' %}">devuelve consejos para una plaga segun la planta</a></li>
+            <li><a href="{% url 'usuarionoticia' %}">Devuelve el usuario que ha escrito una noticia sin etiqueta</a></li>
+            <li><a href="{% url 'plantaphluz' 1 7 0%}">Plantas que crecene en el rango de ph y con al menos las horas de luz establecitas. Funciona pero el rango de seed es muy raro</a></li>
+            <li><a href="{% url 'incidenciareciente'%}">Incidencia más reciente</a></li>
+            <li><a href="{% url 'sinincidencia' %}">Huerto sin incidencias</a></li>
+        </ul>
+    </body>
+</html>

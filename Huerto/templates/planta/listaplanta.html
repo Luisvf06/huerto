@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>url1</h1>
+        {%for planta in plantas_huerto %}
+        {{planta.nombre_comun}}<br>
+        {%endfor%}
+
+        <h1>url 8</h1>
+        {%for planta in requisitos%}
+        ID:{{planta.id}}<br>
+        Planta: {{planta.nombre_comun}}<br>
+        phMax: {{planta.phmax}}<br>
+        phMin: {{planta.phmin}}<br>
+        Luz diaria: {{planta.horas_luz}}<br>
+        {%empty%}
+        No hay plantas que crezcan en esas condiciones
+        {%endfor%}
+    </body>
+</html>

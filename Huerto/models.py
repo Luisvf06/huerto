@@ -21,14 +21,14 @@ class Gastos(models.Model):
     imprevistos=models.FloatField()
     Descripcion=models.TextField(max_length=2000)
     fecha=models.DateTimeField(default=timezone.now)
-    usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name='usuario_gasto')
 
 class Blog(models.Model):
     PUBLICACION=[('C','comentario'),('N','noticia'),('E','enlace'),('T','tutorial'),('R','reseña')]
     publicacion=models.CharField(max_length=1,choices=PUBLICACION)
     fecha=models.DateTimeField(default=timezone.now)
     etiqueta=models.CharField(max_length=15)
-    usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name='usuario_blog')
 
 class Huerto(models.Model):
     ubicacion=PlainLocationField()#atributo para almacenar coordenadas en forma de tupla de cadenas de 2 elementos(latitud,longitud)
@@ -39,12 +39,12 @@ class Huerto(models.Model):
     area=models.FloatField(blank=True,null=True)
     acidez=models.FloatField(blank=True,null=True)
     abonado=models.BooleanField()#esto no sé si incluirlo aqui o no ya que es algo que se hace cada X tiempo, por lo que en ciertas ocasiones puede ser True y en otras False
-    usuario=models.ManyToManyField(Usuario)
+    usuario=models.ManyToManyField(Usuario,related_name="usuario_huerto")#lo he vuelto a hacer para poder relacionarlo de forma inversa con usuaroi
 
 class Incidencia(models.Model):
     descripcion=models.TextField(max_length=2000)
     fecha_incidencia=models.DateTimeField(default=timezone.now,db_column='fecha')
-    huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE)#entiendo que es 1-n porque aunque una incidencia puede ocurrir varias veces, como por ejemplo una inundacion, cada una es un hecho individual de cada huerto
+    huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE,related_name='huerto_incidencia')#entiendo que es 1-n porque aunque una incidencia puede ocurrir varias veces, como por ejemplo una inundacion, cada una es un hecho individual de cada huerto
 
 class Planta(models.Model):
     TIPO=[('HE','herbacea'),('AL','árbol'),('AO','arbusto')]
@@ -98,9 +98,9 @@ class Plaga(models.Model):
     planta=models.ForeignKey(Planta,on_delete=models.CASCADE)
 
 class Historial(models.Model):
-    fecha=models.TimeField(default=timezone.now)
+    fecha=models.DateTimeField(default=timezone.now)
     descripcion=models.TextField(max_length=2000)
-    plaga=models.OneToOneField(Plaga,on_delete=models.CASCADE)
+    plaga=models.ForeignKey(Plaga,on_delete=models.CASCADE,related_name='plaga_plant',unique=False)
 
 class Tratamiento(models.Model):
     descripcion=models.TextField(max_length=150)
