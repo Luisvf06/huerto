@@ -28,4 +28,5 @@ handler500=handler="Huerto.views.mi_error_500"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Huerto.urls')),
+    path("__debug__/",include("debug_toolbar.urls")),
 ]
