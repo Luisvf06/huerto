@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <body>
+<h1>Ejercicio 2</h1>
+{%for voto in totalvotos%}
+Huerto: {{voto.huerto.id}}<br>
+Usuario: {{voto.usuario.nombre_usuario}}<br>
+Nombre: {{voto.usuario.nombre}}<br>
+Apellido: {{voto.usuario.apellidos}}<br>
+Puntuacióm: {{voto.puntuacion}}<br>
+Fecha: {{voto.fecha_voto}}<br>
+{%endfor%}
+
+</body>
+</html>

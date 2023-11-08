@@ -14,7 +14,11 @@ from .models import Riego
 from .models import Planta_regada
 from .models import Fruto
 from .models import Calendario
+from .models import Banco
+from .models import Votacion
 # Register your models here.
+admin.site.register(Banco)
+admin.site.register(Votacion)
 admin.site.register(Huerto)
 admin.site.register(Usuario)
 admin.site.register(Blog)

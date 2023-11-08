@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        {%for cuenta in cuentas_usu %}
+        Banco: {{cuenta.get_banco_display}}<br>
+        Usuario: {{cuenta.usuario.nombre}}<br>
+        Apellidos: {{cuenta.usuario.apellidos}}<br>
+        {%endfor%}
+    </body>
+</html>

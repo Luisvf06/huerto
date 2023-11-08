@@ -22,5 +22,24 @@ urlpatterns =[
 
     path('huerto/huerto/',views.incidencia_reciente,name='incidenciareciente'),
 
-    path('huerto/huerto/',views.sin_incidencia,name='sinincidencia')
+    path('huerto/huerto/',views.sin_incidencia,name='sinincidencia'),
+    
+    #url examen 7 noviembre
+    
+    #último voto que se realizó en un huerto en concreto, mostrar comentario, votacion, e informacion del usuario que lo hizo
+    path('votacion/votacion/<int:id_huerto>/',views.ultimo_voto_huerto,name='ultimovotohuerto'),
+    
+    #modelos con puntuacion >=3 de un usuario concreto
+    path('votacion/ejercicio2/<int:id_usuario>/',views.voto_mas_tres,name='votomastres'),
+    
+    #Todos los usuarios o clientes que no han votado nunca y mostrar información sobre estos usuarios y clientes al completo..
+    path('usuario/ejercicio3/',views.no_voto,name='novoto'),
+    
+    #btener las cuentas bancarias que sean de la Caixa o de Unicaja y que el propietario tenga un nombre que contenga un texto en concreto
+    
+    path('cuentas/cuentas/<str:nombreu>/',views.cuenta_usuario,name='cuentausuario'),
+    
+    #obtener modelos con media de votacion superior a 2,5
+    
+    path('votacion/votacion/',views.media_doscinco,name='mediadoscinco')
 ]

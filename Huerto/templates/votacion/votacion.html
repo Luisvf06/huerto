@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        {#último voto que se realizó en un modelo principal en concreto, y mostrar el comentario, la votación e información del usuario o cliente que lo realizó#}
+        <h1>Ejercicio 1</h1>
+        Usuario {{voto.usuario.nombre}}<br>
+        Huerto: {{voto.huerto.id}}<br>
+        Puntuaciópn: {{voto.puntuacion}}<br>
+        Fecha: {{voto.fecha_voto}}<br>
+        Comentario: {{voto.comentarios}}<br>
+
+        {#todos los modelos principales que tengan votos con una puntuación numérica igual a 3 y que realizó un usuario o cliente en concreto.#}
+
+        <h1>Ejercicio 2</h1>
+        {%for voto in totalvotos%}
+        Huerto: {{voto.huerto.id}}<br>
+        Usuario: {{voto.usuario}}<br>
+        Puntuacióm: {{voto.puntuacion}}<br>
+        Fecha: {{voto.fecha_voto}}<br>
+        {%endfor%}
+
+    </body>
+</html>

@@ -14,11 +14,13 @@ from .models import Planta_regada
 from .models import Calendario
 from .models import Riego
 from .models import Tratamiento
+from .models import Votacion
+from .models import Banco
 from django.views.defaults import page_not_found
 from django.views.defaults import bad_request
 from django.views.defaults import server_error
 from django.views.defaults import permission_denied
-from django.db.models import Q, Prefetch
+from django.db.models import Q, Prefetch, Avg
 # Create your views here.
 def index(request):
     return render(request,'index.html')
@@ -95,3 +97,35 @@ def mi_error_404(request,exception=None):
 
 def mi_error_500(request,exception=None):
     return render(request,'errores/500.html',None,None,500)#error del servidor
+
+#vistas del examen
+#Ejercicio 1
+def ultimo_voto_huerto(request,id_huerto):
+    voto=Votacion.objects.select_related('huerto','usuario')
+    voto=voto.filter(huerto=id_huerto).order_by('fecha_voto')[:1].get
+    return render(request,'votacion/votacion.html',{'voto':voto})
+#Ejercicio 2
+def voto_mas_tres(request, id_usuario):
+    votos=Votacion.objects.select_related('huerto','usuario')
+    votos=votos.filter(Q(usuario=id_usuario) &Q(puntuacion__gte=3))
+    return render(request,'votacion/ejercicio2.html',{'totalvotos':votos})
+#Ejercicio 3
+def no_voto(request):
+    usuarios=Usuario.objects.prefetch_related(Prefetch('usuario_voto'))
+    usuarios=usuarios.filter(usuario_voto=None)
+    return render (request, 'usuario/ejercicio3.html',{'sin_votos':usuarios})
+
+#Ejercicio 4
+def cuenta_usuario(request,nombreu):
+    cuentas=Banco.objects.select_related('usuario')
+    cuentas=cuentas.filter(Q(usuario__nombre__contains=nombreu) | Q(banco='C')| Q(banco='U'))
+    return render(request,'cuenta/cuenta.html',{'cuentas_usu':cuentas})
+
+#Ejercicio 5
+def media_doscinco(request):
+    Huerto.objects.aggregate(Avg('huerto_voto',default=0))
+    huertos=Huerto.objects.prefetch_related(Prefetch('huerto_voto'))
+
+    huertos=huertos.filter(huerto_voto__gte=2.5)
+    return render(request,'votacion/ejercicio5.html',{'nombre':huertos})
+    

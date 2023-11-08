@@ -23,6 +23,8 @@ class Gastos(models.Model):
     fecha=models.DateTimeField(default=timezone.now)
     usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name='usuario_gasto')
 
+
+
 class Blog(models.Model):
     PUBLICACION=[('C','comentario'),('N','noticia'),('E','enlace'),('T','tutorial'),('R','reseña')]
     publicacion=models.CharField(max_length=1,choices=PUBLICACION)
@@ -109,3 +111,14 @@ class Tratamiento(models.Model):
     plaga=models.ManyToManyField(Plaga)
 
 
+class Votacion(models.Model):#entiendo que es una tabla intermedia entre el usuario que vota a uno o mas huertos y un huerto votado por uno o mas usuarios
+    usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE, related_name='usuario_voto')
+    fecha_voto=models.DateTimeField(default=timezone.now)
+    huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE,related_name='huerto_voto')
+    puntuacion=models.IntegerField()
+    comentarios=models.TextField(max_length=2000)
+    
+class Banco(models.Model):#un cliente tiene una cuenta y una cuenta es de un solo cliente/usuario
+    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE, related_name='usuario_banco')
+    BANCO=[('C','Caixa'),('B','BBVA'),('U','Unicaja'),('I','ING')]
+    banco=models.CharField(choices=BANCO,max_length=1)
