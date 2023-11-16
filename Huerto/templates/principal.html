@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    {%load static %}
+    <head>
+        <link rel="styleshhet" href={%static "css/estilo.css"%}>
+        <script src="{% static 'javascript/tutorial.js'%}"></script>
+    </head>
+    <body>
+        {%include "nav.html"%}
+        {%block cabecera%}
+            <p>Esto es el bloco de la cabecera</P>
+        {%endblock%}
+
+        {%block contenido%}
+            <p>Este es el block del contenido </p>
+        {%endblock%}
+
+        <img src="{%static 'imagenes/Diagrama ER huerto.JPG'%}" alt="...">
+    </body>

@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <body>
+{%extends "principal.html"%}
         {%for contra in modificaciones %}
-        {{contra.ultima_modificacion}}<br>
-        {{contra.usuario.nombre_usuario}}
+            {%include 'contrasenha/contra.html'%}
         {%endfor%}
-    </body>
-</html>

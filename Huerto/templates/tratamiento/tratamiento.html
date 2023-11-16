@@ -1,0 +1,4 @@
+Consejos: {{tratamiento.consejos}}<br>
+{% for trat in tratamiento.plaga.all %}
+    Planta: {{trat.planta.nombre_comun}}<br>
+{%endfor%}

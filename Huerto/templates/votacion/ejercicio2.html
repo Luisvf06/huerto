@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <body>
+{%extends "principal.html"%}
 <h1>Ejercicio 2</h1>
 {%for voto in totalvotos%}
 Huerto: {{voto.huerto.id}}<br>
@@ -11,5 +9,3 @@ Puntuacióm: {{voto.puntuacion}}<br>
 Fecha: {{voto.fecha_voto}}<br>
 {%endfor%}
 
-</body>
-</html>

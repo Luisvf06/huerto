@@ -119,7 +119,7 @@ def no_voto(request):
 def cuenta_usuario(request,nombreu):
     cuentas=Banco.objects.select_related('usuario')
     cuentas=cuentas.filter(Q(usuario__nombre__contains=nombreu) | Q(banco='C')| Q(banco='U'))
-    return render(request,'cuenta/cuenta.html',{'cuentas_usu':cuentas})
+    return render(request,'cuenta/listacuenta.html',{'cuentas_usu':cuentas})
 
 #Ejercicio 5
 def media_doscinco(request):

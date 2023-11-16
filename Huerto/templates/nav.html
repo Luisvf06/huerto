@@ -1,0 +1,18 @@
+<header>
+    <div><a href="{% url 'plantahuerto' 6%}">planta en 1 huerto determinado</a> </div>
+    <div><a href="{% url 'cambiocontrasenha' 6%}">fecha ultima modificacion</a></div>
+    <div><a href="{% url 'gasto_huerto' 6 2023%}">gastado en un huerto para un año</a></div>
+    <div><a href="{% url 'usuariosparcelas' 'a'%}">usuarios que tienen parcela y su apellido empieza por A</a></div>
+    <div><a href="{% url 'plagaplanta' 'nombreplata'%}">devuelve las plagas de una planta en concreto</a></div>
+    <div><a href="{% url 'consejoplaga' %}">devuelve consejos para una plaga segun la planta</a></div>
+    <div><a href="{% url 'usuarionoticia' %}">Devuelve el usuario que ha escrito una noticia sin etiqueta</a></div>
+    <div><a href="{% url 'plantaphluz' 1 7 0%}">Plantas que crecene en el rango de ph y con al menos las horas de luz establecitas. Funciona pero el rango de seed es muy raro</a></div>
+    <div><a href="{% url 'incidenciareciente'%}">Incidencia más reciente</a></div>
+    <div><a href="{% url 'sinincidencia' %}">Huerto sin incidencias</a></div>
+    <div><a href="{% url 'ultimovotohuerto' 3%}">  Ejercicio 1    </a></div>
+    <div><a href="{% url 'votomastres' 3%}">   Ejercicio2   </a></div>
+    <div><a href="{% url 'novoto'%}">  Ejercicio3    </a></li>
+    <div><a href="{% url 'cuentausuario' 'heatlh'%}">  Ejercicio4    </a></div>
+    <div><a href="{% url 'mediadoscinco'%}">   Ejercicio5   </a></div>
+
+</header>

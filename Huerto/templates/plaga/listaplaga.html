@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <body>
+{%extends "principal.html"%}
         {%for plaga in histo_plaga %}
-        Planta afectada: {{plaga.planta.nombre_comun}}<br>
-        Origen: {{plaga.get_origen_display}}<br>
-        Descripción: {{plaga.descripcion}}<br>
-        {% for historia in plaga.plaga_plant.all %}
-        Fecha: {{historia.fecha}}<br>
+
         {%endfor%}
-        {%empty%}
-        No hay datos
-        {%endfor%}
-    </body>
-</html>

@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<body>
+{%extends "principal.html"%}
 {#Ejercicio 3 del examen#}
 {%for usuario in sin_votos%}<br>
     Usuario: {{usuario.nombre_usuario}}<br>
@@ -11,7 +9,3 @@
     ciudad: {{usuario.ciudad}}<br>
 {%endfor%}
 
-
-
-</body>
-</html>

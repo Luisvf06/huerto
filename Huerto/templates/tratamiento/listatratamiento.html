@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <body>
+{%extends "principal.html"%}
         {%for tratamiento in infeccionhongos %}
-            Consejos: {{tratamiento.consejos}}<br>
-            
-                {% for trat in tratamiento.plaga.all %}
-                    Planta: {{trat.planta.nombre_comun}}<br>
+
         {%endfor%}
-        {%endfor%}
-    </body>
-</html>
