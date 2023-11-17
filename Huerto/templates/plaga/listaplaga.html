@@ -1,4 +1,8 @@
 {%extends "principal.html"%}
+{%block contenido %}
         {%for plaga in histo_plaga %}
-
+        {%include 'plaga/plaga.html'%}
+        {%empty%}
+        <h1>No hay datos </h1>
         {%endfor%}
+{%endblock%}

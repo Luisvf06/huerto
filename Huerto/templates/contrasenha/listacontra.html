@@ -1,4 +1,8 @@
 {%extends "principal.html"%}
-        {%for contra in modificaciones %}
+    {%block contenido %}
+        {%for contra in modificaciones %}{#Haciendo la template he caido que al pedir sólo un dato, no era necesario el for, pero ya que lo tenía, lo mantengo y añado esto#}
             {%include 'contrasenha/contra.html'%}
+        {%empty%}
+        <p>No hay datos</p>
         {%endfor%}
+    {%endblock%}

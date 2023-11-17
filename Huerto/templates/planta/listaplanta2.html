@@ -1,0 +1,10 @@
+{%extends 'principal.html'%}
+
+<h1>url 8</h1>
+{%block contenido%}
+{%for planta in requisitos%}
+        {%include 'planta/planta.html'%}
+        {%empty%}
+        <h1>no hay datos de este ejercicio</h1>
+{%endfor%}
+{%endblock%}

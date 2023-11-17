@@ -1,4 +1,9 @@
+
 Consejos: {{tratamiento.consejos}}<br>
+{%block contenido %}
 {% for trat in tratamiento.plaga.all %}
-    Planta: {{trat.planta.nombre_comun}}<br>
+    {%include 'tratamiento/tratamientoanidado.html'%}
+    {%empty%}
+    <h1>no sé que poner aqui para distinguirlo del otro</h1>
 {%endfor%}
+{%endblock%}

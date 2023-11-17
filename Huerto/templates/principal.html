@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
-    {%load static %}
+    {% load static %}
     <head>
-        <link rel="styleshhet" href={%static "css/estilo.css"%}>
+        {% block link_css %}
+        {%endblock%}
+        <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
         <script src="{% static 'javascript/tutorial.js'%}"></script>
     </head>
     <body>
@@ -16,4 +18,5 @@
         {%endblock%}
 
         <img src="{%static 'imagenes/Diagrama ER huerto.JPG'%}" alt="...">
+        {%include "pie.html"%}
     </body>

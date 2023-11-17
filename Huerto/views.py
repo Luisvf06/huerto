@@ -72,13 +72,13 @@ def usuario_noticia(request):
 def planta_phluz(request,mi,ma,lu):
     plantas=Planta.objects.prefetch_related('huerto')
     plantas=plantas.filter(Q(phmax__lte=ma)& Q(phmin__gte=mi) &Q(horas_luz__gt=lu))
-    return render(request,'planta/listaplanta.html',{'requisitos':plantas})
+    return render(request,'planta/listaplanta2.html',{'requisitos':plantas})
 
 #devuelve la indicencia mas reciente
 def incidencia_reciente(request):
     incidencias=Incidencia.objects.prefetch_related('huerto')
     incidencias=incidencias.order_by("fecha_incidencia")[:1].get()
-    return render(request,'huerto/listahuerto.html',{'incidenciahuerto':incidencias})
+    return render(request,'huerto/mostrar_incidencia.html',{'incidenciahuerto':incidencias})
 
 #devuelve los huertos que no han tenido incidencias
 def sin_incidencia(request):

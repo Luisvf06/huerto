@@ -1,9 +1,8 @@
+<h1>Incidencia más reciente</h1>
 Huerto: {{incidenciahuerto.huerto.id}}<br>
-fecha:  {{incidenciahuerto.fecha_incidencia|date:"n"}} {{incidenciahuerto.fecha_incidencia|date:"Y"}}
+fecha:  {{incidenciahuerto.fecha_incidencia|date:"n"}} {{incidenciahuerto.fecha_incidencia|date:"Y"}}<br>
 
-<h1>Huertos sin incidencia</h1>
-{%for seguro in sinincidencia%}
+
+<h1>Huerto sin incidencias</h1>
 Huerto: {{seguro.id}}
 Usuario: {{seguro.usuario.nombre_usuario}}
-{%empty%}
-No hay huerto sin incidencias

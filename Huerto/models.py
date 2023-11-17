@@ -12,7 +12,7 @@ class Usuario(models.Model):
 
 class Contrasenha(models.Model):#creo que este modelo podria ser un atributo dentro de usuario, pero me faltaba una relacion 1-1
     contrasenha=models.CharField(max_length=30)
-    ultima_modificacion=models.DateTimeField(default=timezone.now)
+    ultima_modificacion=models.DateField(default=timezone.now)
     usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)
 
 class Gastos(models.Model):
@@ -20,7 +20,7 @@ class Gastos(models.Model):
     facturas=models.FloatField()
     imprevistos=models.FloatField()
     Descripcion=models.TextField(max_length=2000)
-    fecha=models.DateTimeField(default=timezone.now)
+    fecha=models.DateField(default=timezone.now)
     usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name='usuario_gasto')
 
 
@@ -28,7 +28,7 @@ class Gastos(models.Model):
 class Blog(models.Model):
     PUBLICACION=[('C','comentario'),('N','noticia'),('E','enlace'),('T','tutorial'),('R','reseña')]
     publicacion=models.CharField(max_length=1,choices=PUBLICACION)
-    fecha=models.DateTimeField(default=timezone.now)
+    fecha=models.DateField(default=timezone.now)
     etiqueta=models.CharField(max_length=15)
     usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name='usuario_blog')
 
@@ -45,7 +45,7 @@ class Huerto(models.Model):
 
 class Incidencia(models.Model):
     descripcion=models.TextField(max_length=2000)
-    fecha_incidencia=models.DateTimeField(default=timezone.now,db_column='fecha')
+    fecha_incidencia=models.DateField(default=timezone.now,db_column='fecha')
     huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE,related_name='huerto_incidencia')#entiendo que es 1-n porque aunque una incidencia puede ocurrir varias veces, como por ejemplo una inundacion, cada una es un hecho individual de cada huerto
 
 class Planta(models.Model):
@@ -72,7 +72,7 @@ class Riego(models.Model):#esta clase la planteé en un principio para que se re
     planta=models.ManyToManyField(Planta,through="Planta_regada")
 #también pensé que estas clases podrían ir mejor con Huerto, pero si tengo 4 plantas una al lado de otra en una misma parcela, puedo regar sólo una y no al resto
 class Planta_regada(models.Model):
-    fecha=models.DateTimeField(default=timezone.now)
+    fecha=models.DateField(default=timezone.now)
     planta=models.ForeignKey(Planta,on_delete=models.CASCADE)
     riego=models.ForeignKey(Riego,on_delete=models.CASCADE)
 
@@ -100,7 +100,7 @@ class Plaga(models.Model):
     planta=models.ForeignKey(Planta,on_delete=models.CASCADE)
 
 class Historial(models.Model):
-    fecha=models.DateTimeField(default=timezone.now)
+    fecha=models.DateField(default=timezone.now)
     descripcion=models.TextField(max_length=2000)
     plaga=models.ForeignKey(Plaga,on_delete=models.CASCADE,related_name='plaga_plant',unique=False)
 
@@ -117,6 +117,7 @@ class Votacion(models.Model):#entiendo que es una tabla intermedia entre el usua
     huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE,related_name='huerto_voto')
     puntuacion=models.IntegerField()
     comentarios=models.TextField(max_length=2000)
+    
     
 class Banco(models.Model):#un cliente tiene una cuenta y una cuenta es de un solo cliente/usuario
     usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE, related_name='usuario_banco')

@@ -1,4 +1,9 @@
 {%extends "principal.html"%}
-        <h1>Incidencia más reciente</h1>
 
-        {%endfor%}
+        {%block contenido%}
+                {%for seguro in sinincidencia%}
+                        {% include 'huerto/huerto.html' %}
+                {%empty%}
+                        <h1>No hay huerto sin incidencias</h1>
+                {%endfor%}
+        {%endblock%}

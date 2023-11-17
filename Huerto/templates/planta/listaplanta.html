@@ -1,10 +1,14 @@
 {%extends "principal.html"%}
         <h1>url1</h1>
+        {%block contenido%}
         {%for planta in plantas_huerto %}
-        {{planta.nombre_comun}}<br>
+        {%include 'planta/planta.html'%}
+        {%empty%}
+        <h1>No hay datos</h1>
         {%endfor%}
+        {%endblock%}
+        
+        
 
-        <h1>url 8</h1>
-        {%for planta in requisitos%}
 
-        {%endfor%}
+

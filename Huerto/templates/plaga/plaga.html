@@ -1,8 +1,13 @@
+
 Planta afectada: {{plaga.planta.nombre_comun}}<br>
 Origen: {{plaga.get_origen_display}}<br>
 Descripción: {{plaga.descripcion}}<br>
+
+{%block contenido%}
 {% for historia in plaga.plaga_plant.all %}
-Fecha: {{historia.fecha}}<br>
+{%include plaga2.html%}
+
 {%endfor%}
 {%empty%}
 No hay datos
+{%endblock%}

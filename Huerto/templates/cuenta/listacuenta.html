@@ -1,4 +1,8 @@
 {%extends "principal.html"%}
-        {%for cuenta in cuentas_usu %}
-
-        {%endfor%}
+        {%block contenido%}
+                {%for cuenta in cuentas_usu %}
+                        {%include 'cuenta/cuenta.html' %}
+                {%empty%}
+                        <p>No hay datos</p>
+                {%endfor%}
+        {%endblock%}

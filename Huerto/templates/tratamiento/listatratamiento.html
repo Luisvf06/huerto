@@ -1,4 +1,9 @@
 {%extends "principal.html"%}
+        {%block contenido%}
+        
         {%for tratamiento in infeccionhongos %}
-
+        {%include 'tratamiento/tratamiento.html'%}
+        {%empty%}
+                <h1>no hay tratamiento</h1>
         {%endfor%}
+        {%endblock%}
