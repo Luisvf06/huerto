@@ -2,7 +2,7 @@
         {%block contenido %}
                 {%for gasto in gasto_total %}
                 {%include 'gastos/gasto.html'%}
-        {%empy%}
+        {%empty%}
                 <p>No hay datos</p>
                 {%endfor%}
         {%endblock%}

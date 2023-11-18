@@ -1,0 +1,11 @@
+sitio: {{ huerto.sitio }}<br>
+id huerto: {{ huerto.id }}<br>
+
+gastos: {{gast.facturas}}<!--no se por qué no devuelve el valor-->
+{% if gast.facturas < 20 %}
+    <p>Ha gastado poco</p>
+{% elif 20 <= gast.facturas < 1000 %}
+    <p>Ha gastado algo normal</p>
+{% else %}
+    <p>Ha gastado mucho</p>
+{% endif %}

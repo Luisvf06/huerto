@@ -1,11 +1,11 @@
-{%extends "principal.html"%}
+
 <h1>Ejercicio 2</h1>
-{%for voto in totalvotos%}
+
 Huerto: {{voto.huerto.id}}<br>
 Usuario: {{voto.usuario.nombre_usuario}}<br>
 Nombre: {{voto.usuario.nombre}}<br>
 Apellido: {{voto.usuario.apellidos}}<br>
 Puntuacióm: {{voto.puntuacion}}<br>
-Fecha: {{voto.fecha_voto}}<br>
-{%endfor%}
+Fecha: {{voto.fecha_voto|date:"j"}}{{voto.fecha_voto|date:"n"}}{{voto.fecha_voto|date:"Y"}}<br>{#no funciona pero lo dejo formateado#}
+
 

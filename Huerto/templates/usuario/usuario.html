@@ -1,1 +1,19 @@
-{%extends "principal.html"%}
+usuario:{{ usu.nombre }}<br>
+    apellidos:{{ usu.apellidos }}<br>
+    id usuario:{{usu.id}}<br>
+    {%block contenido%}
+        {% for huerto in usu.usuario_huerto.all %}
+        {% if huerto.sitio == 'P' %}{#esto es del siguiente tema pero lo he tenido que poner porque si no devolvia todos los huertos de los usuarios con apellido=inicial y que tuvieran una P, no solo la P#}
+        {%include 'usuario/usuarioanidado.html'%}
+        {% endif %}
+        {% endfor %}
+
+
+        usuario: {{usuario.nombre_usuario}}
+        ciudad: {{usuario.ciudad}}
+
+        {%for gast in usuario.usuario_gasto%}
+            {%include 'usuario/usuarioanidado.html'%}
+            {%empty%}
+        {%endfor%}
+        {%endblock%}

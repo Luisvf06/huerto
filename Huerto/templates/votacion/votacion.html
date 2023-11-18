@@ -1,4 +1,5 @@
 {%extends "principal.html"%}
+        {%block contenido%}
         {#último voto que se realizó en un modelo principal en concreto, y mostrar el comentario, la votación e información del usuario o cliente que lo realizó#}
         <h1>Ejercicio 1</h1>
         Usuario {{voto.usuario.nombre}}<br>
@@ -11,8 +12,10 @@
 
         <h1>Ejercicio 2</h1>
         {%for voto in totalvotos%}
-        Huerto: {{voto.huerto.id}}<br>
-        Usuario: {{voto.usuario}}<br>
-        Puntuacióm: {{voto.puntuacion}}<br>
-        Fecha: {{voto.fecha_voto}}<br>
+{%include 'votacion/ejercicio2.html'%}
+        {%empty%}
+        <p>no hay datos</p>
         {%endfor%}
+
+
+        {%endblock%}

@@ -5,3 +5,10 @@ Planta: {{planta.nombre_comun}}<br>
 phMax: {{planta.phmax}}<br>
 phMin: {{planta.phmin}}<br>
 Luz diaria: {{planta.horas_luz}}<br>
+{% if planta.phmax > 10  %}
+    <p>La planta aguanta ph muy básico</p>
+{% elif planta.phmax > 5 %}
+    <p>La planta no aguanta ph basico</p>
+{% else %}
+    <p>La planta solo aguanta ph muy acido</p>
+{% endif %}

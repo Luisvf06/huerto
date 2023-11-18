@@ -1,30 +1,24 @@
 {%extends "principal.html"%}
-    {% for usu in usuarios_parcelas %}
-    usuario:{{ usu.nombre }}<br>
-    apellidos:{{ usu.apellidos }}<br>
-    id usuario:{{usu.id}}<br>
-    {% for huerto in usu.usuario_huerto.all %}
-        {% if huerto.sitio == 'P' %}{#esto es del siguiente tema pero lo he tenido que poner porque si no devolvia todos los huertos de los usuarios con apellido=inicial y que tuvieran una P, no solo la P#}
-            sitio: {{ huerto.sitio }}<br>
-            id huerto: {{ huerto.id }}<br>
-        {% endif %}
-    {% endfor %}
+    {%block contenido%}
+        {% for usu in usuarios_parcelas %}
+        {%include 'usuario/usuario.html'%}
+
+        {%empty%}
+        <h1> no hay resultados para esta busqueda</h1>
 {% endfor %}
+
 {#en este caso tengo un resultado duplicado, se trata de un usuario con 2 huertos tipo P, por lo que esa persona sale con sus 2 huertos 2 veces#}
 
 
 
     {%for usuario in usuario_noticias%}
-    usuario: {{usuario.nombre_usuario}}
-    ciudad: {{usuario.ciudad}}
-            {%empty%}
-        no hay coincidencias de usuarios
-        {%for gast in usuario.usuario_gasto%}
-            gastos: {{gast.facturas}}
-            {%empty%}
-        {%endfor%}
-    {%endfor%}
+    {%include 'usuario/usuario.html'%}
 
+            {%empty%}
+        <h1>no hay coincidencias de usuarios</h1>
+
+    {%endfor%}
+{%endblock%}
 
 
 

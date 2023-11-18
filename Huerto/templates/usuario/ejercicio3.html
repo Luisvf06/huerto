@@ -1,11 +1,8 @@
 {%extends "principal.html"%}
+{%block contenido%}
 {#Ejercicio 3 del examen#}
 {%for usuario in sin_votos%}<br>
-    Usuario: {{usuario.nombre_usuario}}<br>
-    Nombre: {{usuario.nombre}}<br>
-    Apellidos:{{usuario.apellidos}}<br>
-    email: {{usuario.email}}<br>
-    Teléfono: {{usuario.telefono}}<br>
-    ciudad: {{usuario.ciudad}}<br>
+{%include 'usuario/ejercicio3refact.html'%}
 {%endfor%}
+{%endblock%}
 
