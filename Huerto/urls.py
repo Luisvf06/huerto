@@ -41,5 +41,7 @@ urlpatterns =[
     
     #obtener modelos con media de votacion superior a 2,5
     
-    path('votacion/votacion/',views.media_doscinco,name='mediadoscinco')
+    path('votacion/votacion/',views.media_doscinco,name='mediadoscinco'),
+    
+    path('huerto/create/',views.huerto_create,name='huerto_create')
 ]

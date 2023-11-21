@@ -1,26 +1,13 @@
-from django.shortcuts import render
-from .models import Planta
-from .models import Blog
-from .models import Usuario
-from .models import Huerto
-from .models import Incidencia
-from .models import Contrasenha
-from .models import Gastos
-from .models import Fruto
-from .models import Historial
-from .models import Plaga
-from .models import Evento
-from .models import Planta_regada
-from .models import Calendario
-from .models import Riego
-from .models import Tratamiento
-from .models import Votacion
-from .models import Banco
+from django.shortcuts import render,redirect
+from .models import *
 from django.views.defaults import page_not_found
 from django.views.defaults import bad_request
 from django.views.defaults import server_error
 from django.views.defaults import permission_denied
 from django.db.models import Q, Prefetch, Avg
+from django.contrib import messages
+from .forms import *
+from django.forms import modelform_factory
 # Create your views here.
 def index(request):
     return render(request,'index.html')
@@ -129,3 +116,32 @@ def media_doscinco(request):
     huertos=huertos.filter(huerto_voto__gte=2.5)
     return render(request,'votacion/ejercicio5.html',{'nombre':huertos})
     
+
+#Formularios
+def huerto_create(request):
+    datosFormulario= None
+    if request.method =="POST":
+        datosFormulario = request.POST
+    formulario = HuertoForm(datosFormulario)
+    """formularioFactory = modelform_factory(Huerto,
+                            fields='__all__',
+                            )
+                            formulario= formularioFactory(datosFormulario)"""
+    
+    if (request.method == "POST"):
+        if (request.method =="POST"):
+            huerto_creado = crear_huerto_modelo(formulario)
+            if (huerto_creado):
+                messages.success(request, 'Se ha creado el huerto'+formulario.cleaned_data.get('nombre')+ " correctamente")
+                return redirect ("index")
+    return render(request, 'huerto/create.html',{"formulario":formulario})
+
+def crear_huerto_modelo(formulario):
+    huerto_creado=False
+    if formulario.is_valid():
+        try:
+            formulario.save()
+            huerto_creado=True
+        except:
+            pass
+    return huerto_creado

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'Huerto',
     'django_seed',
     'location_field',
+    'bootstrap5',
+    'django_bootstrap_icons'
     
 ]
 
