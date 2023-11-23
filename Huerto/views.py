@@ -124,15 +124,19 @@ def huerto_create(request):
         datosFormulario = request.POST
     formulario = HuertoModelForm(datosFormulario)
     """formularioFactory = modelform_factory(Huerto,
-                            fields='__all__',
+                            fields='"ubicacion","sitio",
+                            "sustrato",
+                            "area",
+                            "acidez",
+                            "abonado"',
                             )
                             formulario= formularioFactory(datosFormulario)"""
     
     if (request.method == "POST"):
         huerto_creado = crear_huerto_modelo(formulario)
         if (huerto_creado):
-            messages.success(request, 'Se ha creado el huerto'+formulario.cleaned_data.get('nombre')+ " correctamente")
-            return redirect ("huerto/create.html")
+            messages.success(request, 'Se ha creado el huerto'+formulario.cleaned_data.get('huerto')+ " correctamente")
+            return redirect ("huertos_lista")
     return render(request, 'huerto/create.html',{"formulario":formulario})
 
 def crear_huerto_modelo(formulario):
@@ -144,3 +148,8 @@ def crear_huerto_modelo(formulario):
         except:
             pass
     return huerto_creado
+
+def huertos_lista(request):
+    huertos = Huerto.objects.prefetch_related("usuario")
+    huertos = huertos.all()
+    return render(request, 'huerto/listahuerto.html',{"huertos_mostrar":huertos})

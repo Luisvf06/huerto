@@ -12,7 +12,6 @@ class HuertoModelForm(ModelForm):
                 "area":("Área"),
                 "acidez": ("Acidez"),
                 "abonado":("Abonado"),
-                "usuario":("Usuario"),
                 }
         help_text= {
             "area":("En metros cuadrados"),
@@ -20,6 +19,7 @@ class HuertoModelForm(ModelForm):
         widgets={
         }
         localized_fields=[]
+
         def clean(self):
             super().clean()         
             ubicacion=self.cleaned_data.get('ubicacion')
@@ -27,8 +27,6 @@ class HuertoModelForm(ModelForm):
             sustrato=self.cleaned_data.get('sustrato')
             area=self.cleaned_data.get('area')
             acidez=self.cleaned_data.get('acidez')
-            abonado=self.cleaned_data.get('abonado')
-            usuario=self.cleaned_data.get('usuario')
             
             #validacion ubicacion
             if not (-90 <= ubicacion[0] <= 90):
@@ -44,7 +42,7 @@ class HuertoModelForm(ModelForm):
                 self.add_error('sustrato','Elige una opción')
             #validacion area
             reg= r'\d+\.?\d*$'
-            if not (re.match(reg,area) and area>0):
+            if not (re.match(reg,area) and area<0):
                 self.add_error('area','debe ser un número mayor que 0')
             #validacion acidez
             reg= r'\d+\.?\d*$'
