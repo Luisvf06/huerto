@@ -135,7 +135,7 @@ def huerto_create(request):
     if (request.method == "POST"):
         huerto_creado = crear_huerto_modelo(formulario)
         if (huerto_creado):
-            messages.success(request, 'Se ha creado el huerto'+formulario.cleaned_data.get('huerto')+ " correctamente")
+            messages.success(request, 'Se ha creado el huerto')
             return redirect ("huertos_lista")
     return render(request, 'huerto/create.html',{"formulario":formulario})
 
