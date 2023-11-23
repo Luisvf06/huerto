@@ -122,18 +122,17 @@ def huerto_create(request):
     datosFormulario= None
     if request.method =="POST":
         datosFormulario = request.POST
-    formulario = HuertoForm(datosFormulario)
+    formulario = HuertoModelForm(datosFormulario)
     """formularioFactory = modelform_factory(Huerto,
                             fields='__all__',
                             )
                             formulario= formularioFactory(datosFormulario)"""
     
     if (request.method == "POST"):
-        if (request.method =="POST"):
-            huerto_creado = crear_huerto_modelo(formulario)
-            if (huerto_creado):
-                messages.success(request, 'Se ha creado el huerto'+formulario.cleaned_data.get('nombre')+ " correctamente")
-                return redirect ("index")
+        huerto_creado = crear_huerto_modelo(formulario)
+        if (huerto_creado):
+            messages.success(request, 'Se ha creado el huerto'+formulario.cleaned_data.get('nombre')+ " correctamente")
+            return redirect ("huerto/create.html")
     return render(request, 'huerto/create.html',{"formulario":formulario})
 
 def crear_huerto_modelo(formulario):

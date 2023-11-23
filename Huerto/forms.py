@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from .models import *
 import re
 #from leaflet.forms.widgets import LeafletWidget
-class HuertoForm(ModelForm):
+class HuertoModelForm(ModelForm):
     class Meta:
         model = Huerto
         fields=['ubicacion','sitio','sustrato','area','acidez','abonado','usuario']
