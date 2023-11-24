@@ -6,7 +6,7 @@ import re
 class HuertoModelForm(ModelForm):
     class Meta:
         model = Huerto
-        fields=['ubicacion','sitio','sustrato','area','acidez','abonado','usuario']
+        fields=['ubicacion','sitio','sustrato','area','acidez','abonado']
         labels={
             "ubicacion": ("Ubicación del huerto"),"sitio":("Sitio"),
                 "sustrato":("Sustrato"),

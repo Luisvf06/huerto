@@ -44,6 +44,8 @@ urlpatterns =[
     path('votacion/votacion/',views.media_doscinco,name='mediadoscinco'),
     
     path('huerto/create/',views.huerto_create,name='huerto_create'),
-    
+
+    path('huerto/huertos/',views.huertos_lista,name='listahuertos'),
+
     path('huerto/buscar/',views.huerto_buscar,name='huerto_buscar'),
 ]

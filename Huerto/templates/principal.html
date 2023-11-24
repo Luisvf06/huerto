@@ -4,10 +4,17 @@
     <head>
         {% block link_css %}
         {%endblock%}
+
         <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
         <script src="{% static 'javascript/javascript1.js'%}"></script>
     </head>
     <body>
+        {%include "huerto/buscar.html"%}
+        {% csrf_token %} 
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        {% load bootstrap_icons %}
         {%include "nav.html"%}
         {%block cabecera%}
             <p>Esto es el bloco de la cabecera</P>

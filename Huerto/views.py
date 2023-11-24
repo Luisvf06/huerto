@@ -123,15 +123,7 @@ def huerto_create(request):
     if request.method =="POST":
         datosFormulario = request.POST
     formulario = HuertoModelForm(datosFormulario)
-    """formularioFactory = modelform_factory(Huerto,
-                            fields='"ubicacion","sitio",
-                            "sustrato",
-                            "area",
-                            "acidez",
-                            "abonado"',
-                            )
-                            formulario= formularioFactory(datosFormulario)"""
-    
+
     if (request.method == "POST"):
         huerto_creado = crear_huerto_modelo(formulario)
         if (huerto_creado):
@@ -145,8 +137,8 @@ def crear_huerto_modelo(formulario):
         try:
             formulario.save()
             huerto_creado=True
-        except:
-            pass
+        except Exception as error:
+            print(error)
     return huerto_creado
 
 def huertos_lista(request):
@@ -156,4 +148,15 @@ def huertos_lista(request):
 
 def huerto_buscar(request):
     formulario=BusquedaHuerto(request.GET)
+
+    if formulario.is_valid():
+        texto= formulario.cleaned_data.get('textoBusqueda')
+        huertos = Huerto.objects.prefetch_related("usuario")
+        huertos = huertos.filter(sitio__startswith=texto)
+        mensaje_devuelto= "se busca por textos que empiezan la letra: " + texto
+        return render(request, 'huerto/lista_busqueda.html',{"huertos_mostrar":huertos,"texto_busqueda":texto})
+    if ("HTTP_REFERER"in request.META):
+        return redirect(request.META["HTTP_REFERER"])
+    else:
+        return redirect("index.html")
     

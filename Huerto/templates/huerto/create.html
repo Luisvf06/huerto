@@ -1,11 +1,11 @@
-
-
+{% extends "principal.html" %}
+{% load bootstrap5 %}
 {% block contenido %}
 
-{% load bootstrap5 %}
+
 <form action = "{% url 'huerto_create' %}" method = "post"> 
-    
-    {% csrf_token %} 
+    {% csrf_token %}
+
 
     <div class="mb-4">
         <label for="{{ formulario.ubicacion.id_for_label }}" class="form-label">{{ formulario.ubicacion.label }}: </label>

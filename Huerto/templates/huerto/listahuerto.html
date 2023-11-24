@@ -1,6 +1,10 @@
 {%extends "principal.html"%}
 
         {%block contenido%}
+                {%for huerto in huertos_mostrar%}
+                        {%include 'huerto/huerto2.html'%}
+                {%endfor%}
+
                 {%for seguro in sinincidencia%}
                         {% include 'huerto/huerto.html' %}
                 {%empty%}
