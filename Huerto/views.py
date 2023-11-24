@@ -153,3 +153,7 @@ def huertos_lista(request):
     huertos = Huerto.objects.prefetch_related("usuario")
     huertos = huertos.all()
     return render(request, 'huerto/listahuerto.html',{"huertos_mostrar":huertos})
+
+def huerto_buscar(request):
+    formulario=BusquedaHuerto(request.GET)
+    

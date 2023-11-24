@@ -43,5 +43,7 @@ urlpatterns =[
     
     path('votacion/votacion/',views.media_doscinco,name='mediadoscinco'),
     
-    path('huerto/create/',views.huerto_create,name='huerto_create')
+    path('huerto/create/',views.huerto_create,name='huerto_create'),
+    
+    path('huerto/buscar/',views.huerto_buscar,name='huerto_buscar'),
 ]
