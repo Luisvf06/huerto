@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 from .models import *
+from django.contrib.gis.forms import PointField
 import re
 #from leaflet.forms.widgets import LeafletWidget
 class HuertoModelForm(ModelForm):
@@ -62,4 +63,19 @@ class HuertoModelForm(ModelForm):
         
 class BusquedaHuerto(forms.Form):
     textoBusqueda = forms.CharField(required=True)
+
+class BusquedaAvanzadaHuerto(forms.Form):
+
+    sitio= forms.MultipleChoiceField(choices=Huerto.SITIO, required=False,widget=forms.CheckboxSelectMultiple())
     
+    sustrato=forms.MultipleChoiceField(choices=Huerto.SUSTRATO,required=False,widget=forms.CheckboxSelectMultiple())
+
+    area_minima=forms.FloatField(label="Área mínima",required=False,widgets=[forms.NumberInput(attrs={'type': 'number', 'step': '0.01'}),
+                forms.NumberInput(attrs={'type': 'number', 'step': '0.1'})])
+    
+    area_maxima=forms.FloatField(label="Área máxima",required=False,widgets=[forms.NumberInput(attrs={'type': 'number', 'step': '0.01'}),
+                forms.NumberInput(attrs={'type': 'number', 'step': '0.1'})])
+    
+    abonado=forms.BooleanField(required=False)
+
+    ubicacion = forms.CharField(label="Ubicación",required=False,  widget=forms.TextInput(attrs={'placeholder': 'Ingrese la ubicación'}))#de momento no consigo hacer funcionar los widgets que encuentro para plainlocationfield

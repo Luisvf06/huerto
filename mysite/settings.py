@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django_seed',
     'location_field',
     'bootstrap5',
-    'django_bootstrap_icons'
+    'django_bootstrap_icons',
+    #'django.contrib.gis'extension para trabajar con datos espaciales en postgre, no la instalo de momento ya no estoy con esa BD
     
 ]
 
