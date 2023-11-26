@@ -173,18 +173,19 @@ def huerto_buscar_avanzado(request):
             sustrato=formulario.cleaned_data.get("sustrato")
             area_maxima=formulario.cleaned_data.get("area_maxima")
             area_minima=formulario.cleaned_data.get("area_minima")
+            usuario=formulario.cleaned_data.get("usuario")
 
             if(textoBusqueda!=""):
-                QShuerto=QShuerto.filter(ubicacion__startswith=texto)
-                mensaje_busqueda+="contenido de la localizacion"
-            if (not sitio is None):
+                QShuerto=QShuerto.filter(Q(ubicacion__startswith=texto) | Q(usuario__nombre_usuario__contains=texto))
+                mensaje_busqueda+="contenido de la localizacion o nombre de usuario"
+            if not sitio is None:
                 mensaje_busqueda+='Sitio: '+sitio
-            if(not sustrato is None):
+            if not sustrato is None:
                 mensaje_busqueda+='Sustrato: '+sustrato
-            if (not area_minima is None):
+            if not area_minima is None:
                 mensaje_busqueda += "El área mínima será igual o mayor  a"+ area_minima+"\n"
                 QShuerto=QShuerto.filter(area__gte=float(area_minima))
-            if (not area_maxima is None):
+            if not area_maxima is None:
                 mensaje_busqueda +="El área máxima será igual o menor a "+ area_maxima+"\n"
                 QShuerto=QShuerto.filter(area__lte=float(area_maxima))
             

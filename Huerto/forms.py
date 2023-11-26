@@ -78,6 +78,8 @@ class BusquedaAvanzadaHuerto(forms.Form):
 
     ubicacion = forms.CharField(label="Ubicación",required=False,  widget=forms.TextInput(attrs={'placeholder': 'Ingrese la ubicación'}))#de momento no consigo hacer funcionar los widgets que encuentro para plainlocationfield
 
+    usuario=forms.CharField(label="Usuario", required=False)#entiendo que en buscar sí se puede poner para consultar un usuario, no como en crear que no tenía sentido
+
     def clean(self):
         super.clean()
         textoBusqueda= self.cleaned_data.get('textoBusqueda')
@@ -86,23 +88,32 @@ class BusquedaAvanzadaHuerto(forms.Form):
         area_minima=self.cleaned_data.get('area_minima')
         area_maxima=self.cleaned_data.get('area_maxima')
         abonado=self.cleaned_data.get('abonado')
+        usuario=self.cleaned_data.get('usuario')
 
         if (textoBusqueda ==""
             and len(sitio)==0
             and len (sustrato)==0
             and area_minima==""
-            and area_maxima==""):
+            and area_maxima==""
+            and usuario==""):
             self.add_error('textoBusqueda','Debe introducir al menos un valor')
             self.add_error('sitio','Debe escoger al menos una opción')
             self.add_error('sustrato','Debe escoger al menos una opción')
             self.add_error('area_minima','Debe indicar al menos un valor')
-            self.add_error('area_maxima','debe indicar al menos un valor')#esto no tiene mucho sentido por el booleanfield, pero lo dejo para probar si funciona o no
+            self.add_error('area_maxima','debe indicar al menos un valor')
+            self.add_error('usuario','debe indicar al menos un valor')
+            #esto no tiene mucho sentido por el booleanfield, pero lo dejo para probar si funciona o no
         else:
             ubicacion2=textoBusqueda.split(",")
-            if(len(textoBusqueda.split(""))!=2):
+            if len(textoBusqueda.split(""))!=2:
                 self.add_error('textoBusqueda','Debes introducir dos valores numéricos separados por coma')
-            if(textoBusqueda!="" and (float(ubicacion2[0])<-90 or float(ubicacion2[0])>90)and (float(ubicacion2[1])<-180 or float(ubicacion2[1])>180)):
-                self.add_error('textoBusqueda','El primer valor debe estar entre -90 y 90 y el segundo entre -180 y 180')
+            if textoBusqueda!="":
+                try:
+                    lat, lon = map(float(float,textoBusqueda.split(",")))
+                    if not(-90 <=lat<=90)or not (-10<=lon<=180):
+                        self.add_error('textoBusqueda','Introduce una latitud entre -90 y 90 y una longitud entre -180 y 180')
+                except ValueError:
+                    self.add_error('textoBusqueda','Introduce dos números separados por coma')
 
             if(not area_minima is None and not area_maxima is None and area_minima>area_maxima):
                 self.add_error('area_minima','El área mínima no puede ser mayor al área máxima')
