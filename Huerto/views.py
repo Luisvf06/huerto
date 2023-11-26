@@ -160,3 +160,38 @@ def huerto_buscar(request):
     else:
         return redirect("index.html")
     
+def huerto_buscar_avanzado(request):
+    if (len(request.GET)>0):
+        formulario=BusquedaAvanzadaHuerto(request.GET)
+        if formulario.is_valid():
+            mensaje_busqueda="Se ha buscado por:\n"
+            texto=formulario.cleaned_data.get('textoBusqueda')
+            QShuerto=Huerto.objects.prefetch_related("usuario")
+
+            textoBusqueda = formulario.cleaned_data.get("textoBusqueda")
+            sitio=formulario.cleaned_data.get("sitio")
+            sustrato=formulario.cleaned_data.get("sustrato")
+            area_maxima=formulario.cleaned_data.get("area_maxima")
+            area_minima=formulario.cleaned_data.get("area_minima")
+
+            if(textoBusqueda!=""):
+                QShuerto=QShuerto.filter(ubicacion__startswith=texto)
+                mensaje_busqueda+="contenido de la localizacion"
+            if (not sitio is None):
+                mensaje_busqueda+='Sitio: '+sitio
+            if(not sustrato is None):
+                mensaje_busqueda+='Sustrato: '+sustrato
+            if (not area_minima is None):
+                mensaje_busqueda += "El área mínima será igual o mayor  a"+ area_minima+"\n"
+                QShuerto=QShuerto.filter(area__gte=float(area_minima))
+            if (not area_maxima is None):
+                mensaje_busqueda +="El área máxima será igual o menor a "+ area_maxima+"\n"
+                QShuerto=QShuerto.filter(area__lte=float(area_maxima))
+            
+            huertos=QShuerto.all()
+
+            return render(request,'huerto/lista_busqueda.html',{"huerto_mostrar":huertos,
+                                                                "texto_busqueda":mensaje_busqueda})
+        else:
+            formulario=BusquedaAvanzadaHuerto(None)
+        return render(request,'huerto/busqueda_avanzada.html',{'formulario':formulario})

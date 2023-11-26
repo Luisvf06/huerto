@@ -48,4 +48,6 @@ urlpatterns =[
     path('huerto/huertos/',views.huertos_lista,name='listahuertos'),
 
     path('huerto/buscar/',views.huerto_buscar,name='huerto_buscar'),
+
+    path('huerto/buscar_avanzado/',views.huerto_buscar_avanzado,name='huerto_buscar_avanzado'),
 ]
