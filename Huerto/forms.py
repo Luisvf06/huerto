@@ -119,3 +119,16 @@ class BusquedaAvanzadaHuerto(forms.Form):
                 self.add_error('area_minima','El área mínima no puede ser mayor al área máxima')
                 self.add_error('area_maxima','El área máxima no puede ser menor al área mínima')
         return self.cleaned_data
+
+
+
+class UsuarioModelForm(ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['nombre_usuario','nombre','apellidos','email','telefono','ciudad']
+        labels={
+            'nombre_usuario':{'Nombre de usuario'}
+        #seguir por aqui
+        }
+        
+        

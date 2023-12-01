@@ -50,4 +50,8 @@ urlpatterns =[
     path('huerto/buscar/',views.huerto_buscar,name='huerto_buscar'),
 
     path('huerto/buscar_avanzado/',views.huerto_buscar_avanzado,name='huerto_buscar_avanzado'),
+    
+    path('huerto/editar/<int:huerto_id>',views.huerto_editar,name='huerto_editar'),
+    
+    path('huerto/eliminar/<int:huerto_id>',views.huerto_eliminar,name='huerto_eliminar'),
 ]

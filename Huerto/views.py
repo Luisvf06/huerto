@@ -128,7 +128,7 @@ def huerto_create(request):
         huerto_creado = crear_huerto_modelo(formulario)
         if (huerto_creado):
             messages.success(request, 'Se ha creado el huerto')
-            return redirect("huertos_lista")
+            return redirect("listahuertos")
     return render(request, 'huerto/create.html',{"formulario":formulario})
 
 def crear_huerto_modelo(formulario):
@@ -196,3 +196,30 @@ def huerto_buscar_avanzado(request):
         else:
             formulario=BusquedaAvanzadaHuerto(None)
         return render(request,'huerto/busqueda_avanzada.html',{'formulario':formulario})
+
+def huerto_editar(request,huerto_id):
+    huerto= Huerto.objects.get(id=huerto_id)
+    
+    datosFormulario=None
+    if request.method =="POST":
+        datosFormulario = request.POST
+        
+    formulario = HuertoModelForm(datosFormulario,instance=huerto)
+    
+    if (request.method=="POST"):
+        if formulario.is_valid():
+            formulario.save()
+            try:
+                formulario.save()
+                return redirect('listahuertos')
+            except Exception as e:
+                pass
+    return render(request,'huerto/actualizar.html',{'formulario':formulario,'huerto':huerto})
+
+def huerto_eliminar(request,huerto_id):
+    huerto=Huerto.objects.get(id=huerto_id)
+    try:
+        huerto.delete()
+    except:
+        pass
+    return redirect('listahuertos')

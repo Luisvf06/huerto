@@ -7,6 +7,10 @@
 
         <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
         <script src="{% static 'javascript/javascript1.js'%}"></script>
+        {% block cabecera_extra%}
+            {% load static %}
+                <script type="text/javascript" src="{% static 'javascript/javascript1.js'%}"></script>
+        {% endblock%}
     </head>
     <body>
         {%include "huerto/buscar.html"%}
