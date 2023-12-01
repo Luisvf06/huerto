@@ -220,6 +220,7 @@ def huerto_eliminar(request,huerto_id):
     huerto=Huerto.objects.get(id=huerto_id)
     try:
         huerto.delete()
-    except:
-        pass
+        messages.success(request,"se ha eliminado el huerto"+huerto.id)
+    except Exception as error:
+        print(error)
     return redirect('listahuertos')
