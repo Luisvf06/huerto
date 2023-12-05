@@ -81,7 +81,7 @@ class BusquedaAvanzadaHuerto(forms.Form):
     usuario=forms.CharField(label="Usuario", required=False)#entiendo que en buscar sí se puede poner para consultar un usuario, no como en crear que no tenía sentido
 
     def clean(self):
-        super.clean()
+        super().clean()
         textoBusqueda= self.cleaned_data.get('textoBusqueda')
         sitio=self.cleaned_data.get('sitio')
         sustrato=self.cleaned_data.get('sustrato')

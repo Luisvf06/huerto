@@ -191,11 +191,11 @@ def huerto_buscar_avanzado(request):
             
             huertos=QShuerto.all()
 
-            return render(request,'huerto/lista_busqueda.html',{"huerto_mostrar":huertos,
+            return render(request,'huerto/busqueda_avanzada.html',{"huerto_mostrar":huertos,
                                                                 "texto_busqueda":mensaje_busqueda})
-        else:
-            formulario=BusquedaAvanzadaHuerto(None)
-        return render(request,'huerto/busqueda_avanzada.html',{'formulario':formulario})
+    else:
+        formulario=BusquedaAvanzadaHuerto(None)
+    return render(request,'huerto/busqueda_avanzada.html',{'formulario':formulario})
 
 def huerto_editar(request,huerto_id):
     huerto= Huerto.objects.get(id=huerto_id)
