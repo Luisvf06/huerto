@@ -47,11 +47,14 @@ class HuertoModelForm(ModelForm):
         if not (re.match(r'\d+\.?\d*$',str(area)) and area>0):
             self.add_error('area','debe ser un número mayor que 0')
         #validacion acidez
-        
-        if not (re.match(r'\d+\.?\d*$',str(acidez))):
-            self.add_error('acidez','debe ser un número entre 0 y 14')
-        if not (0<acidez<=14):
-            self.add_error('acidez','debe ser un número entre 0 y 14')
+        # validacion acidez
+        if acidez is None:
+            self.add_error('acidez', 'Este campo no puede estar en blanco')
+        elif not (re.match(r'\d+\.?\d*$', str(acidez))):
+            self.add_error('acidez', 'debe ser un número entre 0 y 14')
+        elif not (0 < acidez < 14):
+            self.add_error('acidez', 'debe ser un número entre 0 y 14')
+
             
         #validacion abonado
             #En mi formulario esto es un checkbox, por lo tanto las opciones son marcarlo o no y ambas son válidas, no se me ocurre validación alguna

@@ -1,5 +1,5 @@
-{% extends "principal.html" %}
 {% load bootstrap5 %}
+{% bootstrap_css%}
 {% block contenido %}
 
 
@@ -7,7 +7,7 @@
     {% csrf_token %}
 
 
-    <div class="mb-4">
+    <div class="mb-4 bg-primary">
         <label for="{{ formulario.ubicacion.id_for_label }}" class="form-label">{{ formulario.ubicacion.label }}: </label>
         <input  name="{{ formulario.ubicacion.html_name }}" 
                 type="text" 
@@ -20,7 +20,7 @@
                 value="{% if formulario.is_bound %}{{ formulario.ubicacion.value }}{% endif %}"
         />
         {% if formulario.ubicacion.help_text %}
-        <div class="form-text">
+        <div class="form-text ">
             {{ formulario.ubicacion.help_text }}
         </div>
         {% endif %}
@@ -30,7 +30,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="mb-4">
+    <div class="mb-4 bg-primary">
         <label for="{{ formulario.sitio.id_for_label }}" class="form-label">{{ formulario.sitio.label }}: </label>
         <select name="{{ formulario.sitio.html_name }}" 
                 class="form-select {% if formulario.sitio.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
@@ -58,7 +58,7 @@
     </div>
     
 
-    <div class="mb-4">
+    <div class="mb-4 bg-primary">
         <label for="{{ formulario.sustrato.id_for_label }}" class="form-label">{{ formulario.sustrato.label }}: </label>
         <select name="{{ formulario.sustrato.html_name }}" 
                 class="form-select {% if formulario.sustrato.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
@@ -85,7 +85,7 @@
         </div>
     </div>
 
-    <div class="mb-4">
+    <div class="mb-4 bg-primary">
         <label for="{{ formulario.area.id_for_label }}" class="form-label">{{ formulario.area.label }}: </label>
         <input  name="{{ formulario.area.html_name }}" 
                 type="text" 
