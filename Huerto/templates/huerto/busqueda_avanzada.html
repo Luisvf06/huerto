@@ -1,16 +1,26 @@
-{% extends "principal.html" %}
-
 {% block contenido %}
 {% load bootstrap5 %}
+{% bootstrap_css %}
     <form action = "{% url 'huerto_buscar_avanzado' %}" method = "GET"> 
         
         {% csrf_token %}
 
         {%block busqueda%}
-        <form action = "{% url 'huerto_buscar' %}" class="d-flex mt-3" role="search" method="GET">
-            <input name="textoBusqueda" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-light btn-outline-dark" type="submit">Search </button>
-        </form>
+        <div class="mb-4">
+            {% bootstrap_field formulario.usuario show_label=True %}
+        </div>
+        <div class="mb-4">
+            {% bootstrap_field formulario.area_minima show_label=True %}
+        </div>
+        <div class="mb-4">
+            {% bootstrap_field formulario.area_maxima show_label=True %}
+        </div>
+        <div class="mb-4">
+            {% bootstrap_field formulario.ubicacion show_label=True %}
+        </div>
+        <div class="mb-4">
+            {% bootstrap_field formulario.sustrato show_label=True %}
+        </div>
         {%endblock%}
         {% buttons %}
             <button type="submit" class="btn btn-primary" >Enviar</button>

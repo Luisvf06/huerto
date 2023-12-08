@@ -54,4 +54,8 @@ urlpatterns =[
     path('huerto/editar/<int:huerto_id>',views.huerto_editar,name='huerto_editar'),
     
     path('huerto/eliminar/<int:huerto_id>',views.huerto_eliminar,name='huerto_eliminar'),
+
+    path('usuario/create/',views.usuario_create,name='usuario_create'),
+
+    path('usuario/usuarios/',views.usuario_lista,name='usuario_lista')
 ]

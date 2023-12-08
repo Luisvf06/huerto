@@ -1,0 +1,73 @@
+{%block contenido%}
+
+{% load bootstrap5 %}
+<form action="{% url 'usuario_create'%}"method = "post">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for ="{{formulario.nombre.id_for_label}}"class="form-label">{{formulario.nombre.label}}: </label>
+        <input name="{{formulario.nombre.html_name}}"type="text" class="form-control {% if formulario.nombre.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.nombre.id_for_label}}"maxlength="{{formulario.nombre.field.max_length}}"{% if formulario.nombre.field.required %}
+            required
+        {%endif%}
+        value="{%if formulario.is_bound %}{{formulario.nombre.value}}{%endif%}"
+        />
+    </div>
+
+    <div class="mb-4">
+        <label for ="{{formulario.nombre_usuario.id_for_label}}"class="form-label">{{formulario.nombre_usuario.label}}: </label>
+        <input name="{{formulario.nombre_usuario.html_name}}"type="text" class="form-control {% if formulario.nombre_usuario.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.nombre_usuario.id_for_label}}"maxlength="{{formulario.nombre_usuario.field.max_length}}"{% if formulario.nombre_usuario.field.required %}
+            required
+        {%endif%}
+        value="
+        {%if formulario.is_bound %}{{formulario.nombre_usuario.value}}{%endif%}"/>
+    </div>
+
+    <div class="mb-4">
+        <label for ="{{formulario.apellidos.id_for_label}}"class="form-label">{{formulario.apellidos.label}}: </label>
+        <input name="{{formulario.apellidos.html_name}}"type="text" class="form-control {% if formulario.apellidos.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.apellidos.id_for_label}}"maxlength="{{formulario.apellidos.field.max_length}}"{% if formulario.apellidos.field.required %}
+            required
+        {%endif%}
+        value="
+        {%if formulario.is_bound %}{{formulario.apellidos.value}}{%endif%}"/>
+    </div>
+    <div class="mb-4">
+        <label for ="{{formulario.email.id_for_label}}"class="form-label">{{formulario.email.label}}: </label>
+        <input name="{{formulario.email.html_name}}"type="text" class="form-control {% if formulario.email.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.nombre_usuario.id_for_label}}"maxlength="{{formulario.email.field.max_length}}"{% if formulario.email.field.required %}
+            required
+        {%endif%}
+        value="{% spaceless %}
+        {%if formulario.is_bound %}
+            {{formulario.email.value}}
+        {%elif usuario%}
+            {{formulario.email.value}}
+        {%endif%}
+        {% endspaceless %}"/>
+    </div>
+    <div class="mb-4">
+        <label for ="{{formulario.telefono.id_for_label}}"class="form-label">{{formulario.telefono.label}}: </label>
+        <input name="{{formulario.telefono.html_name}}"type="text" class="form-control {% if formulario.telefono.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.telefono.id_for_label}}"maxlength="{{formulario.telefono.field.max_length}}"{% if formulario.telefono.field.required %}
+            required
+        {%endif%}
+        value="{% spaceless %}
+        {%if formulario.is_bound %}
+            {{formulario.telefono.value}}
+        {%elif usuario%}
+            {{formulario.telefono.value}}
+        {%endif%}
+        {% endspaceless %}"/>
+    </div>
+    <div class="mb-4">
+        <label for ="{{formulario.ciudad.id_for_label}}"class="form-label">{{formulario.ciudad.label}}: </label>
+        <input name="{{formulario.ciudad.html_name}}"type="text" class="form-control {% if formulario.ciudad.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.ciudad.id_for_label}}"maxlength="{{formulario.ciudad.field.max_length}}"{% if formulario.ciudad.field.required %}
+            required
+        {%endif%}
+        value="{% spaceless %}
+        {%if formulario.is_bound %}
+            {{formulario.ciudad.value}}
+        {%elif usuario%}
+            {{formulario.ciudad.value}}
+        {%endif%}
+        {% endspaceless %}"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock%}

@@ -165,28 +165,28 @@ def huerto_buscar_avanzado(request):
         formulario=BusquedaAvanzadaHuerto(request.GET)
         if formulario.is_valid():
             mensaje_busqueda="Se ha buscado por:\n"
-            texto=formulario.cleaned_data.get('textoBusqueda')
             QShuerto=Huerto.objects.prefetch_related("usuario")
 
-            textoBusqueda = formulario.cleaned_data.get("textoBusqueda")
-            sitio=formulario.cleaned_data.get("sitio")
-            sustrato=formulario.cleaned_data.get("sustrato")
             area_maxima=formulario.cleaned_data.get("area_maxima")
             area_minima=formulario.cleaned_data.get("area_minima")
-            usuario=formulario.cleaned_data.get("usuario")
+            usuario_id = formulario.cleaned_data.get("usuario")
+            if usuario_id is not None:
+                formulario.fields['usuario'].initial = usuario_id
+            else:
+                formulario.fields['usuario'].initial = None
 
-            if(textoBusqueda!=""):
-                QShuerto=QShuerto.filter(Q(ubicacion__startswith=texto) | Q(usuario__nombre_usuario__contains=texto))
-                mensaje_busqueda+="contenido de la localizacion o nombre de usuario"
-            if not sitio is None:
-                mensaje_busqueda+='Sitio: '+sitio
-            if not sustrato is None:
-                mensaje_busqueda+='Sustrato: '+sustrato
+            #if(textoBusqueda!=""):
+            #    QShuerto=QShuerto.filter(Q(ubicacion__startswith=texto) | Q(usuario__nombre_usuario__contains=texto))
+            #    mensaje_busqueda+="contenido de la localizacion o nombre de usuario"
+            #if not sitio is None:
+            #    mensaje_busqueda+='Sitio: '+sitio
+            #if not sustrato is None:
+            #    mensaje_busqueda+='Sustrato: '+sustrato
             if not area_minima is None:
-                mensaje_busqueda += "El área mínima será igual o mayor  a"+ area_minima+"\n"
+                mensaje_busqueda += "El área mínima será igual o mayor  a"+ str(area_minima)+"\n"
                 QShuerto=QShuerto.filter(area__gte=float(area_minima))
             if not area_maxima is None:
-                mensaje_busqueda +="El área máxima será igual o menor a "+ area_maxima+"\n"
+                mensaje_busqueda +="El área máxima será igual o menor a "+ str(area_maxima)+"\n"
                 QShuerto=QShuerto.filter(area__lte=float(area_maxima))
             
             huertos=QShuerto.all()
@@ -224,3 +224,32 @@ def huerto_eliminar(request,huerto_id):
     except Exception as error:
         print(error)
     return redirect('listahuertos')
+
+
+def usuario_lista(request):
+    usuarios = Usuario.objects.prefetch_related(Prefetch('usuario_huerto'))
+    usuarios = usuarios.all()
+    return render(request, 'usuario/usuario_lista.html',{"usuarios_mostrar":usuarios})
+def crear_usuario_modelo(formulario):
+    usuario_creado=False
+    if formulario.is_valid():
+        try:
+            formulario.save()
+            usuario_creado = True
+        except:
+            pass
+    return usuario_creado
+
+def usuario_create(request):
+    datosFormulario= None
+    if request.method =="POST":
+        datosFormulario = request.POST
+    
+    formulario = UsuarioModelForm(datosFormulario)
+
+    if (request.method =="POST"):
+        usuario_creado= crear_usuario_modelo(formulario)
+        if (usuario_creado):
+            messages.success(request, 'se ha creado el usuario'+formulario.cleaned_data.get('nombre_usuario')+"correctamente")
+            return redirect("usuario_lista")
+    return render(request, 'usuario/crearusuario.html',{"formulario":formulario})

@@ -85,38 +85,22 @@ class BusquedaAvanzadaHuerto(forms.Form):
 
     def clean(self):
         super().clean()
-        textoBusqueda= self.cleaned_data.get('textoBusqueda')
-        sitio=self.cleaned_data.get('sitio')
         sustrato=self.cleaned_data.get('sustrato')
         area_minima=self.cleaned_data.get('area_minima')
         area_maxima=self.cleaned_data.get('area_maxima')
-        abonado=self.cleaned_data.get('abonado')
         usuario=self.cleaned_data.get('usuario')
 
-        if (textoBusqueda ==""
-            and len(sitio)==0
-            and len (sustrato)==0
-            and area_minima==""
-            and area_maxima==""
-            and usuario==""):
-            self.add_error('textoBusqueda','Debe introducir al menos un valor')
-            self.add_error('sitio','Debe escoger al menos una opción')
+        if ( len (sustrato)==0
+            and area_minima==None
+            and area_maxima==None
+            and usuario==None):
             self.add_error('sustrato','Debe escoger al menos una opción')
             self.add_error('area_minima','Debe indicar al menos un valor')
             self.add_error('area_maxima','debe indicar al menos un valor')
             self.add_error('usuario','debe indicar al menos un valor')
             #esto no tiene mucho sentido por el booleanfield, pero lo dejo para probar si funciona o no
         else:
-            ubicacion2=textoBusqueda.split(",")
-            if len(textoBusqueda.split(""))!=2:
-                self.add_error('textoBusqueda','Debes introducir dos valores numéricos separados por coma')
-            if textoBusqueda!="":
-                try:
-                    lat, lon = map(float(float,textoBusqueda.split(",")))
-                    if not(-90 <=lat<=90)or not (-10<=lon<=180):
-                        self.add_error('textoBusqueda','Introduce una latitud entre -90 y 90 y una longitud entre -180 y 180')
-                except ValueError:
-                    self.add_error('textoBusqueda','Introduce dos números separados por coma')
+
 
             if(not area_minima is None and not area_maxima is None and area_minima>area_maxima):
                 self.add_error('area_minima','El área mínima no puede ser mayor al área máxima')
@@ -130,8 +114,42 @@ class UsuarioModelForm(ModelForm):
         model = Usuario
         fields = ['nombre_usuario','nombre','apellidos','email','telefono','ciudad']
         labels={
-            'nombre_usuario':{'Nombre de usuario'}
-        #seguir por aqui
+            'nombre_usuario':('Nombre de usuario'),'nombre':('Nombre'),'apellidos':('Apellidos'),'email':('email'),'telefono':('Teléfono'),'ciudad':('Ciudad')
         }
+        widgets={
+        }
+        localized_fields=[]
+
+    def clean(self):
+        super().clean()
+
+        nombre=self.cleaned_data.get('nombre')
+        nombre_usuario=self.cleaned_data.get('nombre_usuario')
+        apellidos=self.cleaned_data.get('apellidos')
+        email=self.cleaned_data.get('email')
+        telefono=self.cleaned_data.get('telefono')
+        ciudad=self.cleaned_data.get('ciudad')
+
+        usuarioNombre= Usuario.objects.filter(nombre_usuario=nombre_usuario).first()
+        usuarioemail= Usuario.objects.filter(email=email).first()
+        if(not usuarioNombre is None):
+            if (not self.instance is None and usuarioNombre.id ==self.instance.id):
+                pass
+            else:
+                self.add_error('nombre_usuario','Ya existe un usuario con ese nombre')
+        if(not usuarioemail is None):
+            if (not self.instance is None and usuarioemail.id ==self.instance.id):
+                pass
+            else:
+                self.add_error('email','Ya existe un usuario con ese nombre')
+        if not(re.match(r'^[A-Z][a-z]+',nombre)):
+            self.add_error('nombre','El nombre solo puede tener caracteres alfabéticos')
         
+        if (not re.match(r'\w+@\w+\.\w',email)):
+            self.add_error('email','El email debe tener un formato válido')
+        if (not len(str(telefono))==9):
+            self.add_error('telefono','el telefono debe tener 9 digitos')
+        
+        return self.cleaned_data
+
         
