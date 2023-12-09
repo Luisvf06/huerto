@@ -132,16 +132,10 @@ class UsuarioModelForm(ModelForm):
 
         usuarioNombre= Usuario.objects.filter(nombre_usuario=nombre_usuario).first()
         usuarioemail= Usuario.objects.filter(email=email).first()
-        if(not usuarioNombre is None):
-            if (not self.instance is None and usuarioNombre.id ==self.instance.id):
-                pass
-            else:
-                self.add_error('nombre_usuario','Ya existe un usuario con ese nombre')
-        if(not usuarioemail is None):
-            if (not self.instance is None and usuarioemail.id ==self.instance.id):
-                pass
-            else:
-                self.add_error('email','Ya existe un usuario con ese nombre')
+        if(not (usuarioNombre is None or (not self.instance is None and usuarioNombre.id ==self.instance.id))):
+            self.add_error('nombre_usuario','Ya existe un usuario con ese nombre')
+        if(not (usuarioemail is None or (not self.instance is None and usuarioemail.id ==self.instance.id))):
+            self.add_error('email','Ya existe un usuario con ese correo electrónico')
         if not(re.match(r'^[A-Z][a-z]+',nombre)):
             self.add_error('nombre','El nombre solo puede tener caracteres alfabéticos')
         
@@ -152,4 +146,22 @@ class UsuarioModelForm(ModelForm):
         
         return self.cleaned_data
 
-        
+class BusquedaAvanzadaUsuario(forms.Form):
+    textoBusqueda= forms.CharField(required=False)
+    usuariotelefono=forms.IntegerField(required=False)
+
+
+    def clean(self):
+        super().clean()
+        textoBusqueda=self.cleaned_data.get('usuarionombre')
+        usuariotelefono=self.cleaned_data.get('usuariotelefono')
+
+
+        if(textoBusqueda==""
+        and str(usuariotelefono)==""):
+            self.add_error('textoBusqueda','Debes introducir algún valor')
+
+        else:
+            if(str(usuariotelefono)!=""and (len(str(usuariotelefono))!=9)):
+                self.add_error('usuariotelefono','el telefono debe tener 9 dígitos')
+        return self.cleaned_data

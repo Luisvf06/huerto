@@ -230,13 +230,14 @@ def usuario_lista(request):
     usuarios = Usuario.objects.prefetch_related(Prefetch('usuario_huerto'))
     usuarios = usuarios.all()
     return render(request, 'usuario/usuario_lista.html',{"usuarios_mostrar":usuarios})
+
 def crear_usuario_modelo(formulario):
     usuario_creado=False
     if formulario.is_valid():
         try:
             formulario.save()
             usuario_creado = True
-        except:
+        except Exception as error:
             pass
     return usuario_creado
 
@@ -253,3 +254,55 @@ def usuario_create(request):
             messages.success(request, 'se ha creado el usuario'+formulario.cleaned_data.get('nombre_usuario')+"correctamente")
             return redirect("usuario_lista")
     return render(request, 'usuario/crearusuario.html',{"formulario":formulario})
+
+def usuario_editar(request,id_usuario):
+    usuario=Usuario.objects.get(id=id_usuario)
+
+    datosFormulario=None
+
+    if request.method =="POST":
+        datosFormulario = request.POST
+    
+    formulario = UsuarioModelForm(datosFormulario,instance=usuario)
+
+    if (request.method =="POST"):
+        if formulario.is_valid():
+            formulario.save()
+            try:
+                formulario.save()
+                return redirect('usuario_lista')
+            except Exception as e:
+                pass
+    return render(request,'usuario/actualizar.html',{"formulario":formulario,"usuario":usuario})
+
+def usuario_eliminar(request,id_usuario):
+    usuario= Usuario.objects.get(id=id_usuario)
+    try:
+        usuario.delete()
+        messages.success(request,"se ha eliminado el usuario"+usuario+' '+usuario.nombre_usuario)
+    except Exception as error:
+        print(error)
+    return redirect('usuario_lista')
+
+def usuario_buscar(request):
+    if(len(request.GET)>0):
+        formulario= BusquedaAvanzadaUsuario(request.GET)
+        if formulario.is_valid():
+            mensaje="Se ha buscado por:\n"
+            QSusuarios=Usuario.objects.all()
+
+            textoBusqueda=formulario.cleaned_data.get('usuarionombre')
+            usuariotelefono=formulario.cleaned_data.get('usuariotelefono')
+
+            if(textoBusqueda!=""):
+                QSusuarios=QSusuarios.filter(Q(nombre_usuario__contains=textoBusqueda)|Q(ciudad__contains=textoBusqueda)|Q(email__contains=textoBusqueda)|Q(apellidos__contains=textoBusqueda))
+                mensaje+=" Contiene: "+ textoBusqueda+"\n"
+            if(str(usuariotelefono)!=""):
+                mensaje+= str(usuariotelefono)+"\n"
+            usuarios=QSusuarios.all()
+
+            return render(request,'usuario/lista_busqueda.html',{"usuarios_mostrar":usuarios})
+    else:
+        formulario = BusquedaAvanzadaUsuario(None)
+    return render(request,'usuario/busqueda.html',{"formulario":formulario})
+

@@ -1,7 +1,7 @@
 {%block contenido%}
 
 {% load bootstrap5 %}
-<form action="{% url 'usuario_create'%}"method = "post">
+<form action="{% url 'usuario_editar' usuario.id%}"method = "post">
     {% csrf_token %}
     <div class="mb-4">
         <label for ="{{formulario.nombre.id_for_label}}"class="form-label">{{formulario.nombre.label}}: </label>

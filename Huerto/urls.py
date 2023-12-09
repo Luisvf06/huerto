@@ -57,5 +57,11 @@ urlpatterns =[
 
     path('usuario/create/',views.usuario_create,name='usuario_create'),
 
-    path('usuario/usuarios/',views.usuario_lista,name='usuario_lista')
+    path('usuario/usuarios/',views.usuario_lista,name='usuario_lista'),
+
+    path('usuario/editar/<int:id_usuario>',views.usuario_editar,name='usuario_editar'),
+
+    path('usuario/eliminar/<int:usuario_id>',views.usuario_eliminar,name='usuario_eliminar'),
+
+    path('usuario/buscar',views.usuario_buscar,name='usuario_buscar'),
 ]
