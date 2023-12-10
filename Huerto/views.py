@@ -307,3 +307,23 @@ def usuario_buscar(request):
         formulario = BusquedaAvanzadaUsuario(None)
     return render(request,'usuario/busqueda.html',{"formulario":formulario})
 
+def gasto_lista(request):
+    gastos=Gastos.objects.select_related('usuario')
+    gastos=gastos.all()
+    return render(request,'gastos/gastolista.html',{'gastos':gastos})
+
+def gastos_create_simple(request):
+    datosFormulario = None
+    if request.method=="POST":
+        datosFormulario = request.POST
+    
+    formulario = GastoModelForm(datosFormulario)
+    if (request.method == "POST"):
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("gasto_lista")
+            except Exception as error:
+                print(error)
+
+    return render(request,'gastos/gastocreate.html',{'formulario':formulario})

@@ -165,3 +165,13 @@ class BusquedaAvanzadaUsuario(forms.Form):
             if(textoBusqueda=="" and str(usuariotelefono) is not None and (len(str(usuariotelefono))!=9)):
                 self.add_error('usuariotelefono','el telefono debe tener 9 dígitos')
         return self.cleaned_data
+
+class GastoModelForm(ModelForm):
+    class Meta:
+        model=Gastos
+        fields=['herramientas','facturas','imprevistos','Descripcion','fecha','usuario']
+        labels= {'herramientas':('Herramientas'),'facturas':('Facturas'),'imprevistos':('Imprevistos'),'Descripcion':('Descripción'),'fecha':('Fecha del gasto'),'usuario':('Usuario')}
+        widgets={'fecha':forms.SelectDateWidget()
+                }
+        localized_fields=["fecha"]
+        
