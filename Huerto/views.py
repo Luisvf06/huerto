@@ -291,13 +291,14 @@ def usuario_buscar(request):
             mensaje="Se ha buscado por:\n"
             QSusuarios=Usuario.objects.all()
 
-            textoBusqueda=formulario.cleaned_data.get('usuarionombre')
+            textoBusqueda=formulario.cleaned_data.get('textoBusqueda')
             usuariotelefono=formulario.cleaned_data.get('usuariotelefono')
 
-            if(textoBusqueda!=""):
-                QSusuarios=QSusuarios.filter(Q(nombre_usuario__contains=textoBusqueda)|Q(ciudad__contains=textoBusqueda)|Q(email__contains=textoBusqueda)|Q(apellidos__contains=textoBusqueda))
+            if textoBusqueda is not None:
+                QSusuarios = QSusuarios.filter(Q(nombre_usuario__contains=textoBusqueda) | Q(ciudad__contains=textoBusqueda) | Q(email__contains=textoBusqueda) | Q(apellidos__contains=textoBusqueda))
                 mensaje+=" Contiene: "+ textoBusqueda+"\n"
-            if(str(usuariotelefono)!=""):
+            if usuariotelefono is not None:
+                QSusuarios= QSusuarios.filter(telefono__startswith=usuariotelefono)
                 mensaje+= str(usuariotelefono)+"\n"
             usuarios=QSusuarios.all()
 

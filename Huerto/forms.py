@@ -153,15 +153,15 @@ class BusquedaAvanzadaUsuario(forms.Form):
 
     def clean(self):
         super().clean()
-        textoBusqueda=self.cleaned_data.get('usuarionombre')
+        textoBusqueda=self.cleaned_data.get('textoBusqueda')
         usuariotelefono=self.cleaned_data.get('usuariotelefono')
 
 
-        if(textoBusqueda==""
-        and str(usuariotelefono)==""):
+        if(textoBusqueda == "" and usuariotelefono is None):
             self.add_error('textoBusqueda','Debes introducir algún valor')
+            self.add_error('usuariotelefono','debes introducir algun valor')
 
         else:
-            if(str(usuariotelefono)!=""and (len(str(usuariotelefono))!=9)):
+            if(textoBusqueda=="" and str(usuariotelefono) is not None and (len(str(usuariotelefono))!=9)):
                 self.add_error('usuariotelefono','el telefono debe tener 9 dígitos')
         return self.cleaned_data
