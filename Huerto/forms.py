@@ -1,6 +1,9 @@
 from django.forms import ModelForm
 from django import forms
 from .models import *
+from bootstrap_datepicker_plus.widgets import DatePickerInput
+from datetime import date 
+from datetime import datetime
 #from django.contrib.gis.forms import PointField
 import re
 #from leaflet.forms.widgets import LeafletWidget
@@ -170,8 +173,46 @@ class GastoModelForm(ModelForm):
     class Meta:
         model=Gastos
         fields=['herramientas','facturas','imprevistos','Descripcion','fecha','usuario']
-        labels= {'herramientas':('Herramientas'),'facturas':('Facturas'),'imprevistos':('Imprevistos'),'Descripcion':('Descripción'),'fecha':('Fecha del gasto'),'usuario':('Usuario')}
+        labels= {'herramientas':('Herramientas'),'facturas':('Facturas'),'imprevistos':('Imprevistos'),'Descripcion':('Descripción'),'fecha':('Fecha del gasto'),'usuario':('usuario')}
         widgets={'fecha':forms.SelectDateWidget()
                 }
         localized_fields=["fecha"]
+    
+    def clean(self):
+        super().clean()
+        herramientas=self.cleaned_data.get('herramientas')
+        facturas=self.cleaned_data.get('facturas')
+        imprevistos=self.cleaned_data.get('imprevistos')
+        Descripcion=self.cleaned_data.get('Descripcion')
+        fecha=self.cleaned_data.get('fecha')
+        usuario=self.cleaned_data.get('usuario')
         
+        if not isinstance(herramientas,float):
+            self.add_error('herramientas','debe ser un numero')
+        if not isinstance(facturas,float):
+            self.add_error('facturas','debe ser un numero')
+        if not isinstance(imprevistos,float):
+            self.add_error('imprevistos','debe ser un numero')
+        hoy=date.today()
+        if hoy<fecha:
+            self.add_error('fecha','la fecha del gasto no puede ser posterior al día de hoy')
+        
+        return self.cleaned_data
+    
+class BusquedaAvanzadaGasto(forms.Form):
+
+    gasto_busqueda=forms.FloatField(label="Importe",required=False)
+    texto_busqueda=forms.CharField(label="Texto",required=False)
+
+    def clean(self):
+        super().clean()
+        gasto_busqueda=self.cleaned_data.get('gasto_busqueda')
+        texto_busqueda=self.cleaned_data.get('texto_busqueda')
+
+        if (gasto_busqueda=="" and texto_busqueda==""):
+            self.add_error('gasto_busqueda','debes introducir un valro')
+            self.add_error('texto_busqueda','debes introducir un valor')
+        if not isinstance(gasto_busqueda,float):
+            self.add_error('gasto_busqueda','Debes introducir un valor numérico')
+
+        return self.cleaned_data

@@ -66,4 +66,6 @@ urlpatterns =[
     path('usuario/buscar',views.usuario_buscar,name='usuario_buscar'),
 
     path('gastos/crear/',views.gastos_create_simple,name='gastos_create'),
+
+    path('gastos/gastos',views.gasto_lista,name='gastos_lista')
 ]

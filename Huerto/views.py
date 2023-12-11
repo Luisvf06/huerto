@@ -322,8 +322,8 @@ def gastos_create_simple(request):
         if formulario.is_valid():
             try:
                 formulario.save()
-                return redirect("gasto_lista")
+                return redirect("gastos_lista") #es la url de nav no el nombre de la view
             except Exception as error:
                 print(error)
 
-    return render(request,'gastos/gastocreate.html',{'formulario':formulario})
+    return render(request,'gastos/create.html',{'formulario':formulario})
