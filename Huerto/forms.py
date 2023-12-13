@@ -209,10 +209,12 @@ class BusquedaAvanzadaGasto(forms.Form):
         gasto_busqueda=self.cleaned_data.get('gasto_busqueda')
         texto_busqueda=self.cleaned_data.get('texto_busqueda')
 
-        if (gasto_busqueda=="" and texto_busqueda==""):
-            self.add_error('gasto_busqueda','debes introducir un valro')
-            self.add_error('texto_busqueda','debes introducir un valor')
-        if not isinstance(gasto_busqueda,float):
-            self.add_error('gasto_busqueda','Debes introducir un valor numérico')
+        if gasto_busqueda is None and not texto_busqueda:
+            self.add_error('gasto_busqueda', 'Debes introducir un valor')
+            self.add_error('texto_busqueda', 'Debes introducir un valor')
+
+        if not isinstance(gasto_busqueda, float) and gasto_busqueda is not None:
+            self.add_error('gasto_busqueda', 'Debes introducir un valor numérico')
 
         return self.cleaned_data
+    

@@ -67,5 +67,11 @@ urlpatterns =[
 
     path('gastos/crear/',views.gastos_create_simple,name='gastos_create'),
 
-    path('gastos/gastos',views.gasto_lista,name='gastos_lista')
+    path('gastos/gastos',views.gasto_lista,name='gastos_lista'),
+
+    path('gasto/buscar/',views.gasto_buscar,name='gasto_buscar'),
+
+    path('gastos/editar/<int:id_gasto>',views.gastos_editar,name='gastos_editar'),
+
+    path('gastos/eliminar/<int:id_gasto>',views.gasto_eliminar,name='gasto_eliminar')
 ]

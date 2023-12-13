@@ -267,12 +267,11 @@ def usuario_editar(request,id_usuario):
 
     if (request.method =="POST"):
         if formulario.is_valid():
-            formulario.save()
             try:
                 formulario.save()
                 return redirect('usuario_lista')
-            except Exception as e:
-                pass
+            except Exception as error:
+                print(error)
     return render(request,'usuario/actualizar.html',{"formulario":formulario,"usuario":usuario})
 
 def usuario_eliminar(request,id_usuario):
@@ -327,3 +326,56 @@ def gastos_create_simple(request):
                 print(error)
 
     return render(request,'gastos/create.html',{'formulario':formulario})
+
+def gasto_buscar(request):
+    if(len(request.GET)>0):
+        formulario= BusquedaAvanzadaGasto(request.GET)
+        if formulario.is_valid():
+            mensaje="Se ha buscado por:\n"
+            QSgastos=Gastos.objects.select_related('usuario')
+
+            gasto_busqueda=formulario.cleaned_data.get('gasto_busqueda')
+            texto_busqueda=formulario.cleaned_data.get('texto_busqueda')
+
+            if str(gasto_busqueda) !="":
+                QSgastos = QSgastos.filter(Q(herramientas=gasto_busqueda) | Q(facturas=gasto_busqueda) | Q(imprevistos=gasto_busqueda))
+                mensaje+=" Contiene: "+ str(gasto_busqueda)+"\n"
+            if texto_busqueda != "":
+                QSusuarios= QSusuarios.filter(descripcion=texto_busqueda)
+                mensaje+= texto_busqueda+"\n"
+            gastos=QSgastos.all()
+
+            return render(request,'gastos/lista_busqueda.html',{"gastos_mostrar":gastos})
+    else:
+        formulario = BusquedaAvanzadaGasto(None)
+    return render(request,'gastos/busqueda.html',{"formulario":formulario})
+
+def gastos_editar(request,id_gasto):
+    gasto=Gastos.objects.get(id=id_gasto)
+
+    datosFormulario=None
+
+    if request.method =="POST":
+        datosFormulario = request.POST
+    
+    formulario = GastoModelForm(datosFormulario,instance=gasto)
+
+    if (request.method =="POST"):
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect('gasto_lista')
+            except Exception as error:
+                print(error)
+    return render(request, 'gastos/actualizar.html', {"formulario": formulario, "gasto": gasto})
+
+
+def gasto_eliminar(request,id_gasto):
+    gasto= Gastos.objects.get(id=id_gasto)
+    try:
+        gasto.delete()
+        messages.success(request,"se ha eliminado el gasto: "+gasto+' '+gasto.id)
+    except Exception as error:
+        print(error)
+    return redirect('gastos_lista')
+
