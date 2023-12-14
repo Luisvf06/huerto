@@ -268,12 +268,12 @@ class BusquedaAvanzadaBlogForm(forms.Form):
     
     fecha_desde = forms.DateField(label="Fecha Desde",
                                 required=False,
-                                widget= forms.SelectDateWidget(years=range(1990,datetime.today()))
+                                widget= forms.SelectDateWidget(years=range(1990,2023))
                                 )
     
     fecha_hasta = forms.DateField(label="Fecha Desde",
                                 required=False,
-                                widget= forms.SelectDateWidget(years=range(1990,datetime.today()))
+                                widget= forms.SelectDateWidget(years=range(1990,2023))
                                 )
     
     usuario=forms.IntegerField(label='Usuario',
