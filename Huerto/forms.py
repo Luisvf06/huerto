@@ -218,6 +218,103 @@ class BusquedaAvanzadaGasto(forms.Form):
 
         return self.cleaned_data
 
+class BlogModelForm(ModelForm):   
+    class Meta:
+        model = Blog
+        fields = ['publicacion','fecha','etiqueta','usuario']
+        labels = {
+            "publicacion": ("Tipo de publicación"),'fecha':("fecha de publicación"),'etiqueta':('Etiqueta'),'usuario':('usuario')
+        }
+        widgets = {
+            "fecha":forms.SelectDateWidget()
+        }
+        localized_fields = ["fecha"]
+    
+    
+    def clean(self):
+
+        #Validamos con el modelo actual
+        super().clean()
+        
+        #Obtenemos los campos 
+        publicacion = self.cleaned_data.get('publicacion')
+        fecha = self.cleaned_data.get('fecha')
+        etiqueta = self.cleaned_data.get('etiqueta')
+        usuario = self.cleaned_data.get('usuario')      
+        if len(publicacion) < 1:
+            self.add_error('publicacion','Debes indicar el tipo de publicación')
+        
+        #Comprobamos que la fecha de publicación sea mayor que hoy
+        fechaHoy = date.today()
+        if fechaHoy == fecha:
+            self.add_error('fecha','La fecha de publicacion debe ser  igual a Hoy')
+        
+        if not(re.match(r'[A-Z]+',etiqueta)):
+            self.add_error('etiqueta','El nombre solo puede tener caracteres alfabéticos')
+
+        
+        #Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
+    
+
+class BusquedaAvanzadaBlogForm(forms.Form):
+    
+    tag = forms.CharField(required=False)
+    
+    publicacion = forms.MultipleChoiceField(choices=Blog.PUBLICACION,
+                                required=False,
+                                widget=forms.CheckboxSelectMultiple()
+                                )
+    
+    fecha_desde = forms.DateField(label="Fecha Desde",
+                                required=False,
+                                widget= forms.SelectDateWidget(years=range(1990,datetime.today()))
+                                )
+    
+    fecha_hasta = forms.DateField(label="Fecha Desde",
+                                required=False,
+                                widget= forms.SelectDateWidget(years=range(1990,datetime.today()))
+                                )
+    
+    usuario=forms.IntegerField(label='Usuario',
+                            required=False,
+                                )
+    
+    
+    def clean(self):
+
+        #Validamos con el modelo actual
+        super().clean()
+        
+        #Obtenemos los campos 
+        tag = self.cleaned_data.get('tag')
+        publicacion = self.cleaned_data.get('publicacion')
+        fecha_desde = self.cleaned_data.get('fecha_desde')
+        fecha_hasta = self.cleaned_data.get('fecha_hasta')
+        
+        #Controlamos los campos
+        #Ningún campo es obligatorio, pero al menos debe introducir un valor en alguno para buscar
+        if(tag == "" 
+        and len(publicacion) == 0
+        and fecha_desde is None
+        and fecha_hasta is None
+        ):
+            self.add_error('tag','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('publicacion','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('fecha_desde','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('fecha_hasta','Debe introducir al menos un valor en un campo del formulario')
+        else:
+            #La fecha hasta debe ser mayor o igual a fecha desde. Pero sólo se valida si han introducido ambas fechas
+            if(not fecha_desde is None  and not fecha_hasta is None and fecha_hasta < fecha_desde):
+                self.add_error('fecha_desde','La fecha hasta no puede ser menor que la fecha desde')
+                self.add_error('fecha_hasta','La fecha hasta no puede ser menor que la fecha desde')
+            
+        #Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
+
+
+
+
 
 #examen 14 diciembre
 class PromocionModelForm(ModelForm):

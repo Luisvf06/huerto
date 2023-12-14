@@ -380,6 +380,79 @@ def gasto_eliminar(request,id_gasto):
     return redirect('gastos_lista')
 
 
+def blog_lista(request):
+    blogs=Blog.objects.select_related('usuario')
+    blogs=blogs.all()
+    return render(request,'blog/bloglista.html',{'blogs':blogs})
+
+def blog_create_simple(request):
+    datosFormulario = None
+    if request.method=="POST":
+        datosFormulario = request.POST
+    
+    formulario = BlogModelForm(datosFormulario)
+    if (request.method == "POST"):
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("blog_lista") #es la url de nav no el nombre de la view
+            except Exception as error:
+                print(error)
+
+    return render(request,'blog/create.html',{'formulario':formulario})
+
+def blog_buscar(request):
+
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaBlogForm(request.GET)
+        if formulario.is_valid():
+            
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            
+            QSblog = Blog.objects.select_related("usuario")
+            
+            #obtenemos los filtros
+            tag = formulario.cleaned_data.get('tag')
+            publicacion = formulario.cleaned_data.get('publicacion')
+            fechaDesde = formulario.cleaned_data.get('fecha_desde')
+            fechaHasta = formulario.cleaned_data.get('fecha_hasta')
+            
+            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
+            if(tag != ""):
+                QSblog = QSblog.filter(etiqueta=tag)
+                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+tag+"\n"
+            
+            #Si hay idiomas, iteramos por ellos, creamos la queryOR y le aplicamos el filtro
+            if(len(publicacion) > 0):
+                mensaje_busqueda +=" La etiqueta sea "+publicacion[0]
+                filtroOR = Q(publicacion=publicacion[0])
+                for publi in publicacion[1:]:
+                    mensaje_busqueda += " o "+publicacion[1]
+                    filtroOR |= Q(publi=publi)
+                mensaje_busqueda += "\n"
+                QSblog =  QSblog.filter(filtroOR)
+
+            #Comprobamos fechas
+            #Obtenemos los libros con fecha publicacion mayor a la fecha desde
+            if(not fechaDesde is None):
+                mensaje_busqueda +=" La fecha sea mayor a "+datetime.strftime(fechaDesde,'%d-%m-%Y')+"\n"
+                QSblog = QSblog.filter(fecha__gte=fechaDesde)
+            
+            #Obtenemos los libros con fecha publicacion menor a la fecha desde
+            if(not fechaHasta is None):
+                mensaje_busqueda +=" La fecha sea menor a "+datetime.strftime(fechaHasta,'%d-%m-%Y')+"\n"
+                QSblog = QSlibros.filter(fecha__lte=fechaHasta)
+            
+            blogs = QSblog.all()
+    
+            return render(request, 'blog/lista_busqueda.html',
+                            {"blog_mostrar":blogs,
+                            "texto_busqueda":mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaBlogForm(None)
+    return render(request, 'blog/busqueda_avanzada.html',{"formulario":formulario})
+
+
 #Examen 14 diciembre
 
 def promocion_create(request):
