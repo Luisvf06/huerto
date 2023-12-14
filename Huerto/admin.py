@@ -16,6 +16,7 @@ from .models import Fruto
 from .models import Calendario
 from .models import Banco
 from .models import Votacion
+from .models import Promocion
 # Register your models here.
 admin.site.register(Banco)
 admin.site.register(Votacion)

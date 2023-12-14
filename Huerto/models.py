@@ -11,6 +11,7 @@ class Usuario(models.Model):
     telefono=models.IntegerField()
     ciudad=models.CharField(max_length=50)
 
+
 class Contrasenha(models.Model):#creo que este modelo podria ser un atributo dentro de usuario, pero me faltaba una relacion 1-1
     contrasenha=models.CharField(max_length=30)
     ultima_modificacion=models.DateField(default=timezone.now)
@@ -124,3 +125,14 @@ class Banco(models.Model):#un cliente tiene una cuenta y una cuenta es de un sol
     usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE, related_name='usuario_banco')
     BANCO=[('C','Caixa'),('B','BBVA'),('U','Unicaja'),('I','ING')]
     banco=models.CharField(choices=BANCO,max_length=1)
+    
+    
+    
+#Examen 14 diciembre
+
+class Promocion(models.Model):
+    nombre_promocion=models.CharField(max_length=50)
+    descripcion=models.CharField(max_length=1000)
+    descuento=models.IntegerField()
+    fecha_promocion=models.DateField(default=timezone.now)
+    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE)

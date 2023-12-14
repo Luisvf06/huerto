@@ -1,7 +1,9 @@
 function eliminar(){
     var x = confirm("¿Eliminar el huerto?");
-    if (x)
+    if (x){
         return true;
-    else
+    }
+    else{
         return false;
+    }
 }

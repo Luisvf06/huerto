@@ -1,0 +1,160 @@
+{% load bootstrap5 %}
+{% bootstrap_css%}
+{% block contenido %}
+
+
+<form action = "{% url 'promocion_create' %}" method = "post"> 
+    {% csrf_token %}
+
+
+    <div class="mb-4 bg-primary">
+        <label for="{{ formulario.nombre_promocion.id_for_label }}" class="form-label">{{ formulario.nombre_promocion.label }}: </label>
+        <input  name="{{ formulario.nombre_promocion.html_name }}" 
+                type="text" 
+                class="form-control {% if formulario.nombre_promocion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.nombre_promocion.id_for_label }}"
+                maxlength="{{ formulario.nombre_promocion.field.max_length }}"
+                {% if formulario.nombre_promocion.field.required %}
+                    required
+                {% endif %}
+                value="{% if formulario.is_bound %}{{ formulario.nombre_promocion.value }}{% endif %}"
+        />
+        {% if formulario.nombre_promocion.help_text %}
+        <div class="form-text ">
+            {{ formulario.nombre_promocion.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.nombre_promocion.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="mb-4 bg-primary">
+        <label for="{{ formulario.descripcion.id_for_label }}" class="form-label">{{ formulario.descripcion.label }}: </label>
+        <input  name="{{ formulario.descripcion.html_name }}" 
+                type="text" 
+                class="form-control {% if formulario.descripcion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.descripcion.id_for_label }}"
+                maxlength="{{ formulario.descripcion.field.max_length }}"
+                {% if formulario.descripcion.field.required %}
+                    required
+                {% endif %}
+                value="{% if formulario.is_bound %}{{ formulario.descripcion.value }}{% endif %}"
+        />
+        {% if formulario.descripcion.help_text %}
+            <div class="form-text">
+                {{ formulario.descripcion.help_text }}
+            </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.descripcion.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+    
+
+    <div class="mb-4 bg-primary">
+        <label for="{{ formulario.descuento.id_for_label }}" class="form-label">{{ formulario.descuento.label }}: </label>
+        <input  name="{{ formulario.descuento.html_name }}" 
+        type="text" 
+        class="form-control {% if formulario.descuento.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+        id="{{ formulario.descuento.id_for_label }}"
+        maxlength="{{ formulario.descuento.field.max_length }}"
+        {% if formulario.descuento.field.required %}
+            required
+        {% endif %}
+        value="{% if formulario.is_bound %}{{ formulario.descuento.value }}{% endif %}"
+/>
+        {% if formulario.descuento.help_text %}
+            <div class="form-text">
+                {{ formulario.descuento.help_text }}
+            </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.descuento.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4 bg-primary">
+        <label for="{{ formulario.fecha_promocion.id_for_label }}" class="form-label">{{ formulario.fecha_promocion.label }}: </label>
+        <input  name="{{ formulario.fecha_promocion.html_name }}" 
+                type="text" 
+                class="form-control {% if formulario.fecha_promocion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.fecha_promocion.id_for_label }}"
+                maxlength="{{ formulario.fecha_promocion.field.max_length }}"
+                {% if formulario.fecha_promocion.field.required %}
+                    required
+                {% endif %}
+                value="{% if formulario.is_bound %}{{ formulario.fecha_promocion.value }}{% endif %}"
+        />
+        {% if formulario.fecha_promocion.help_text %}
+        <div class="form-text">
+            {{ formulario.fecha_promocion.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.fecha_promocion.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.usuario.id_for_label }}" class="form-label">{{ formulario.usuario.label }}: </label>
+        <input  name="{{ formulario.usuario.html_name }}" 
+                type="text" 
+                class="form-control {% if formulario.usuario.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.usuario.id_for_label }}"
+                maxlength="{{ formulario.usuario.field.max_length }}"
+                {% if formulario.usuario.field.required %}
+                    required
+                {% endif %}
+                value="{% if formulario.is_bound %}{{ formulario.usuario.value }}{% endif %}"
+        />
+        {% if formulario.usuario.help_text %}
+        <div class="form-text">
+            {{ formulario.usuario.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.usuario.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    
+<!-- Entiendo que un usuario puede registrar un huerto, pero no el usuario del huerto porque sería él mismo
+    <div class="mb-4">
+        <label for="{{ formulario.usuario.id_for_label }}" class="form-label">{{ formulario.usuario.label }}: </label>
+        <input  name="{{ formulario.usuario.html_name }}" 
+                type="text" 
+                class="form-control {% if formulario.usuario.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.usuario.id_for_label }}"
+                maxlength="{{ formulario.usuario.field.max_length }}"
+                {% if formulario.usuario.field.required %}
+                    required
+                {% endif %}
+                value="{% if formulario.is_bound %}{{ formulario.usuario.value }}{% endif %}"
+        />
+        {% if formulario.usuario.help_text %}
+        <div class="form-text">
+            {{ formulario.usuario.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.usuario.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>-->
+    <button type="submit" class="btn btn-primary">Enviar</button>
+
+</form> 
+
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{%load static %}
+    {%for promo in promocion %}
+    Nombre de la promocion:{{promo.nombre_promocion}}<br>
+    Descripcion:{{promo.descripcion}}<br>
+    Fecha:{{promo.fecha_promocion}}<br>
+    Descuento:{{promo.descuento}}<br>
+    Usuario:{{promo.usuario.nombre}}<br>
+<p>
+    <div class="mb-2">
+        <form action = "{% url 'promocion_eliminar' promo.id %}" method = "post"> 
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                <span>Eliminar</span>
+                </button> 
+        </form>
+    </div>
+    <div>
+    <form action = "{% url 'promocion_editar' promo.id %}" method = "post"> 
+        {% csrf_token %}
+        <button class="btn btn-danger"  type="submit">
+        <span>Editar</span>
+        </button> 
+</form>
+</div>
+
+{%endfor%}

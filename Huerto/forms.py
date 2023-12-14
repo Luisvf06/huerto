@@ -174,7 +174,7 @@ class GastoModelForm(ModelForm):
         model=Gastos
         fields=['herramientas','facturas','imprevistos','Descripcion','fecha','usuario']
         labels= {'herramientas':('Herramientas'),'facturas':('Facturas'),'imprevistos':('Imprevistos'),'Descripcion':('Descripción'),'fecha':('Fecha del gasto'),'usuario':('usuario')}
-        widgets={'fecha':forms.SelectDateWidget()
+        widgets={'fecha':forms.SelectDateWidget(),
                 }
         localized_fields=["fecha"]
     
@@ -194,7 +194,7 @@ class GastoModelForm(ModelForm):
         if not isinstance(imprevistos,float):
             self.add_error('imprevistos','debe ser un numero')
         hoy=date.today()
-        if hoy<fecha:
+        if fecha and hoy<fecha:
             self.add_error('fecha','la fecha del gasto no puede ser posterior al día de hoy')
         
         return self.cleaned_data
@@ -217,4 +217,71 @@ class BusquedaAvanzadaGasto(forms.Form):
             self.add_error('gasto_busqueda', 'Debes introducir un valor numérico')
 
         return self.cleaned_data
+
+
+#examen 14 diciembre
+class PromocionModelForm(ModelForm):
+    class Meta:
+        model=Promocion
+        fields=['nombre_promocion','descripcion','descuento','fecha_promocion','usuario']
+        labels= {'nombre_promocion':('Promocion'),'descripcion':('Descripcion'),'descuento':('Descuento'),'fecha_promocion':('fecha de la promocion'),'usuario':('usuario')}
+        widgets={'fecha_promocion':forms.SelectDateWidget(),
+                }
+        localized_fields=["fecha_promocion"]
     
+    def clean(self):
+        super().clean()
+        nombre_promocion=self.cleaned_data.get('nombre_promocion')
+        descripcion=self.cleaned_data.get('descripcion')
+        descuento=self.cleaned_data.get('descuento')
+        fecha_promocion=self.cleaned_data.get('fecha_promocion')
+        usuario = self.cleaned_data.get('usuario')
+
+        
+        nombre_promocion= Promocion.objects.select_related(usuario).filter(nombre_promocion=nombre_promocion).first()
+        if(not (nombre_promocion is None or (not self.instance is None and nombre_promocion.id ==self.instance.id))):
+            self.add_error('nombre_promocion','Ya existe una promocion con ese nombre')
+        if(len(descripcion)<100):
+            self.add_error('descripcion','La descripción debe tener al menos 100 caracteres')
+        if(not descuento<=100 and 0<=descuento):
+            self.add_error('descuento','el descuento debe estar entre 0 y 100')
+        hoy=date.today()
+        if (fecha_promocion<hoy):
+            self.add_error('fecha_promocion','La fecha no puede ser anterior al dia de hoy')
+        
+        
+        return self.cleaned_data
+
+class BusquedaAvanzadaPromocion(forms.Form):
+
+    texto=forms.CharField(label="texto",required=False)
+    descuentoMayor=forms.IntegerField(label="Descuento",required=False)
+    fechaIn= forms.DateField(label="Fecha Desde",
+                            required=False,
+                            widget= forms.SelectDateWidget(years=range(2023,2030))
+                            )
+
+    fechaFi = forms.DateField(label="Fecha hasta",
+                            required=False,
+                            widget= forms.SelectDateWidget(years=range(2023,2030))
+                            )
+
+    def clean(self):
+        super().clean()
+        texto=self.cleaned_data.get('texto')
+        descuentoMayor=self.cleaned_data.get('descuentoMayor')
+        fechaIn=self.cleaned_data.get('fechaIn')
+        fechaFi=self.cleaned_data.get('fechaFi')
+        
+        if  descuentoMayor is None and not texto and fechaIn is None and fechaFi is None:
+            self.add_error('texto', 'Debes introducir un valor')
+            self.add_error('descuentoMayor', 'Debes introducir un valor')
+            self.add_error('fechaFi','Debes introducir un valor')
+            self.add_error('fechaIn','Debes introducir un valor')
+
+        
+        if (fechaFi<fechaIn):
+            self.add_error('fechaFi','la fecha de finalizacion no puede ser anterior a la de comienzo')
+            self.add_error('fechaIn','la fecha de finalizacion no puede ser anterior a la de comienzo')
+        
+        return self.cleaned_data

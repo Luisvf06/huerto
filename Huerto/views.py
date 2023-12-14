@@ -379,3 +379,91 @@ def gasto_eliminar(request,id_gasto):
         print(error)
     return redirect('gastos_lista')
 
+
+#Examen 14 diciembre
+
+def promocion_create(request):
+    datosFormulario = None
+    if request.method=="POST":
+        datosFormulario = request.POST
+    
+    formulario = PromocionModelForm(datosFormulario)
+    if (request.method == "POST"):
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect("promocion_lista") #es la url de nav no el nombre de la view
+            except Exception as error:
+                print(error)
+
+    return render(request,'promocion/create.html',{'formulario':formulario})
+
+
+def promocion_buscar(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaPromocion(request.GET)
+        if formulario.is_valid():
+            mensaje = "Se ha buscado por:\n"
+            QStexto = Promocion.objects.select_related('usuario')
+
+            texto = formulario.cleaned_data.get('texto')
+            descuentoMayor = formulario.cleaned_data.get('descuentoMayor')
+            fechaIn = formulario.cleaned_data.get('fechaIn')
+            fechaFi = formulario.cleaned_data.get('fechaFi')
+
+            if texto != "":
+                QStexto = QStexto.filter(Q(descripcion=texto) | Q(nombre_promocion=texto))
+                mensaje += texto + "\n"
+            if str(descuentoMayor) != "":
+                QStexto = QStexto.filter(descuento__gte=descuentoMayor)
+                mensaje += str(descuentoMayor)
+
+            if not fechaIn is None:
+                mensaje += " La fecha sea mayor a " + datetime.strftime(fechaIn, '%d-%m-%Y') + "\n"
+                QStexto = QStexto.filter(fecha_promocion__gte=fechaIn)
+
+            # Obtenemos los libros con fecha publicación menor a la fecha desde
+            if not fechaFi is None:
+                mensaje += " La fecha sea menor a " + datetime.strftime(fechaFi, '%d-%m-%Y') + "\n"
+                QStexto = QStexto.filter(fecha_promocion__lte=fechaFi)
+
+            promocion = QStexto.all()
+            return render(request, 'promocion/promocionlista.html', {"promocion_mostrar": promocion, "mensaje": mensaje})
+    else:
+        formulario = BusquedaAvanzadaPromocion(None)
+    return render(request, 'promocion/busqueda.html', {"formulario": formulario})
+
+
+def promocion_editar(request,id_promocion):
+    promocion=Promocion.objects.get(id=id_promocion)
+
+    datosFormulario=None
+
+    if request.method =="POST":
+        datosFormulario = request.POST
+    
+    formulario = PromocionModelForm(datosFormulario,instance=promocion)
+
+    if (request.method =="POST"):
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect('promocion_lista')
+            except Exception as error:
+                print(error)
+    return render(request, 'promocion/editar.html', {"formulario": formulario, "promocion": promocion})
+
+
+def promocion_eliminar(request,id_promocion):
+    promocion= Promocion.objects.get(id=id_promocion)
+    try:
+        promocion.delete()
+        messages.success(request,"se ha eliminado el gasto: "+promocion+' '+promocion.id)
+    except Exception as error:
+        print(error)
+    return redirect('promocion_lista')
+
+def promocion_lista(request):
+    promocion=Promocion.objects.select_related('usuario')
+    promocion=promocion.all()
+    return render(request,'promocion/promocionlista.html',{'promocion':promocion})
