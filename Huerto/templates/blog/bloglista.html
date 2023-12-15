@@ -1,8 +1,8 @@
 {%load static %}
     {%block contenido %}
-    {%for gasto in gastos %}
+    {%for blog in blogs %}
 
-    {%include 'gastos/gasto.html'%}
+    {%include 'blog/blog.html'%}
     {%empty%}
     <p>No hay datos</p>
 

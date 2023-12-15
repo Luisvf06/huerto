@@ -223,7 +223,7 @@ class BlogModelForm(ModelForm):
         model = Blog
         fields = ['publicacion','fecha','etiqueta','usuario']
         labels = {
-            "publicacion": ("Tipo de publicación"),'fecha':("fecha de publicación"),'etiqueta':('Etiqueta'),'usuario':('usuario')
+            "publicacion": ("Tipo de publicación"),'fecha':("Fecha de publicación"),'etiqueta':('Etiqueta'),'usuario':('usuario')
         }
         widgets = {
             "fecha":forms.SelectDateWidget()
@@ -246,11 +246,14 @@ class BlogModelForm(ModelForm):
         
         #Comprobamos que la fecha de publicación sea mayor que hoy
         fechaHoy = date.today()
-        if fechaHoy == fecha:
+        if not fechaHoy == fecha:
             self.add_error('fecha','La fecha de publicacion debe ser  igual a Hoy')
         
-        if not(re.match(r'[A-Z]+',etiqueta)):
-            self.add_error('etiqueta','El nombre solo puede tener caracteres alfabéticos')
+        if not(re.match(r'^[A-Z]+$',etiqueta)):
+            self.add_error('etiqueta','El nombre solo puede tener caracteres alfabéticos y en mayúsculas')
+
+        if not(len(etiqueta)>=2):
+            self.add_error('etiqueta','La etiqueda debe tener entre 2 y 15 caracteres')
 
         
         #Siempre devolvemos el conjunto de datos.
@@ -259,7 +262,8 @@ class BlogModelForm(ModelForm):
 
 class BusquedaAvanzadaBlogForm(forms.Form):
     
-    tag = forms.CharField(required=False)
+    etiqueta = forms.CharField(required=False,
+                        label='Etiqueta')
     
     publicacion = forms.MultipleChoiceField(choices=Blog.PUBLICACION,
                                 required=False,
@@ -268,12 +272,12 @@ class BusquedaAvanzadaBlogForm(forms.Form):
     
     fecha_desde = forms.DateField(label="Fecha Desde",
                                 required=False,
-                                widget= forms.SelectDateWidget(years=range(1990,2023))
+                                widget= forms.SelectDateWidget(years=range(1990,2026))
                                 )
     
-    fecha_hasta = forms.DateField(label="Fecha Desde",
+    fecha_hasta = forms.DateField(label="Fecha Hasta",
                                 required=False,
-                                widget= forms.SelectDateWidget(years=range(1990,2023))
+                                widget= forms.SelectDateWidget(years=range(1990,2026))
                                 )
     
     usuario=forms.IntegerField(label='Usuario',
@@ -287,19 +291,18 @@ class BusquedaAvanzadaBlogForm(forms.Form):
         super().clean()
         
         #Obtenemos los campos 
-        tag = self.cleaned_data.get('tag')
+        etiqueta = self.cleaned_data.get('etiqueta')
         publicacion = self.cleaned_data.get('publicacion')
         fecha_desde = self.cleaned_data.get('fecha_desde')
         fecha_hasta = self.cleaned_data.get('fecha_hasta')
         
         #Controlamos los campos
-        #Ningún campo es obligatorio, pero al menos debe introducir un valor en alguno para buscar
-        if(tag == "" 
+        if(etiqueta == "" 
         and len(publicacion) == 0
         and fecha_desde is None
         and fecha_hasta is None
         ):
-            self.add_error('tag','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('etiqueta','Debe introducir al menos un valor en un campo del formulario')
             self.add_error('publicacion','Debe introducir al menos un valor en un campo del formulario')
             self.add_error('fecha_desde','Debe introducir al menos un valor en un campo del formulario')
             self.add_error('fecha_hasta','Debe introducir al menos un valor en un campo del formulario')

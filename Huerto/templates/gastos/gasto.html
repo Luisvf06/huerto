@@ -1,6 +1,25 @@
 Gasto en herramientas:{{gasto.herramientas}}<br>
 Gasto en imprevistos:{{gasto.imprevistos}}<br>
 Facturas:{{gasto.facturas}}<br>
+Descripcion: {{gasto.Descripcion}}<br>
 Fecha:{{gasto.fecha}}<br>
 Usuario:{{gasto.usuario.nombre}}<br>
 Huerto: {{ gasto.usuario.usuario_huerto.all.0.id }}
+<p>
+    <div class="mb-2">
+        <form action = "{% url 'gasto_eliminar' gasto.id %}" method = "post"> 
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                <span>Eliminar</span>
+                </button> 
+        </form>
+    </div>
+    <div>
+        <form action = "{% url 'gastos_editar' gasto.id %}" method = "post"> 
+            {% csrf_token %}
+            <button class="btn btn-danger"  type="submit">
+            <span>Editar</span>
+            </button> 
+        </form>
+    </div>
+    

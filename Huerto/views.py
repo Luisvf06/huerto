@@ -28,7 +28,7 @@ def ultima_modificacion(request,id_usuario):
 def gasto_huerto(request,id_huerto,anho_gasto):
     gastos=Gastos.objects.select_related('usuario')
     gastos=gastos.filter(Q(usuario__usuario_huerto=id_huerto) & Q(fecha__year=anho_gasto))
-    return render(request,'gastos/listagasto.html',{'gasto_total':gastos})
+    return render(request,'gastos/listagasto.html',{'gastos':gastos})
 
 #devuelve los usuarios que tengan un huerto de tipo parcela y cuyo apellido empiece por una letra concreto
 def usuarios_parcelas(request,inicial):
@@ -333,7 +333,7 @@ def gasto_buscar(request):
         if formulario.is_valid():
             mensaje="Se ha buscado por:\n"
             QSgastos=Gastos.objects.select_related('usuario')
-
+#cuando busco por gasto_busqueda si recibo resultados, pero con texto no
             gasto_busqueda=formulario.cleaned_data.get('gasto_busqueda')
             texto_busqueda=formulario.cleaned_data.get('texto_busqueda')
 
@@ -341,7 +341,7 @@ def gasto_buscar(request):
                 QSgastos = QSgastos.filter(Q(herramientas=gasto_busqueda) | Q(facturas=gasto_busqueda) | Q(imprevistos=gasto_busqueda))
                 mensaje+=" Contiene: "+ str(gasto_busqueda)+"\n"
             if texto_busqueda != "":
-                QSusuarios= QSusuarios.filter(descripcion=texto_busqueda)
+                QSgastos = QSgastos.filter(Descripcion__contains=texto_busqueda)
                 mensaje+= texto_busqueda+"\n"
             gastos=QSgastos.all()
 
@@ -364,7 +364,7 @@ def gastos_editar(request,id_gasto):
         if formulario.is_valid():
             try:
                 formulario.save()
-                return redirect('gasto_lista')
+                return redirect('gastos_lista')
             except Exception as error:
                 print(error)
     return render(request, 'gastos/actualizar.html', {"formulario": formulario, "gasto": gasto})
@@ -383,7 +383,7 @@ def gasto_eliminar(request,id_gasto):
 def blog_lista(request):
     blogs=Blog.objects.select_related('usuario')
     blogs=blogs.all()
-    return render(request,'blog/bloglista.html',{'blogs':blogs})
+    return render(request,'blog/listablog.html',{'blogs':blogs})
 
 def blog_create_simple(request):
     datosFormulario = None
@@ -412,17 +412,16 @@ def blog_buscar(request):
             QSblog = Blog.objects.select_related("usuario")
             
             #obtenemos los filtros
-            tag = formulario.cleaned_data.get('tag')
+            etiqueta = formulario.cleaned_data.get('etiqueta')
             publicacion = formulario.cleaned_data.get('publicacion')
-            fechaDesde = formulario.cleaned_data.get('fecha_desde')
-            fechaHasta = formulario.cleaned_data.get('fecha_hasta')
+            fecha_desde = formulario.cleaned_data.get('fecha_desde')
+            fecha_hasta = formulario.cleaned_data.get('fecha_hasta')
             
             #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
-            if(tag != ""):
-                QSblog = QSblog.filter(etiqueta=tag)
-                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+tag+"\n"
+            if(etiqueta != ""):
+                QSblog = QSblog.filter(etiqueta=etiqueta)
+                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+etiqueta+"\n"
             
-            #Si hay idiomas, iteramos por ellos, creamos la queryOR y le aplicamos el filtro
             if(len(publicacion) > 0):
                 mensaje_busqueda +=" La etiqueta sea "+publicacion[0]
                 filtroOR = Q(publicacion=publicacion[0])
@@ -433,24 +432,52 @@ def blog_buscar(request):
                 QSblog =  QSblog.filter(filtroOR)
 
             #Comprobamos fechas
-            #Obtenemos los libros con fecha publicacion mayor a la fecha desde
-            if(not fechaDesde is None):
-                mensaje_busqueda +=" La fecha sea mayor a "+datetime.strftime(fechaDesde,'%d-%m-%Y')+"\n"
-                QSblog = QSblog.filter(fecha__gte=fechaDesde)
-            
-            #Obtenemos los libros con fecha publicacion menor a la fecha desde
-            if(not fechaHasta is None):
-                mensaje_busqueda +=" La fecha sea menor a "+datetime.strftime(fechaHasta,'%d-%m-%Y')+"\n"
-                QSblog = QSlibros.filter(fecha__lte=fechaHasta)
+            if(not fecha_desde is None):
+                mensaje_busqueda +=" La fecha sea mayor a "+datetime.strftime(fecha_desde,'%d-%m-%Y')+"\n"
+                QSblog = QSblog.filter(fecha__gte=fecha_desde)
+
+            if(not fecha_hasta is None):
+                mensaje_busqueda +=" La fecha sea menor a "+datetime.strftime(fecha_hasta,'%d-%m-%Y')+"\n"
+                QSblog = QSblog.filter(fecha__lte=fecha_hasta)
             
             blogs = QSblog.all()
     
-            return render(request, 'blog/lista_busqueda.html',
-                            {"blog_mostrar":blogs,
-                            "texto_busqueda":mensaje_busqueda})
+            return render(request, 'blog/lista_busqueda.html',{"blog_mostrar":blogs,"texto_busqueda":mensaje_busqueda})
     else:
         formulario = BusquedaAvanzadaBlogForm(None)
     return render(request, 'blog/busqueda_avanzada.html',{"formulario":formulario})
+
+def blog_editar(request,id_blog):
+    blog=Blog.objects.get(id=id_blog)
+
+    datosFormulario=None
+
+    if request.method =="POST":
+        datosFormulario = request.POST
+    
+    formulario = GastoModelForm(datosFormulario,instance=blog)
+
+    if (request.method =="POST"):
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect('blog_lista')
+            except Exception as error:
+                print(error)
+    return render(request, 'blog/actualizar.html', {"formulario": formulario, "blog": blog})
+
+
+def blog_eliminar(request,id_blog):
+    blog= Blog.objects.get(id=id_blog)
+    try:
+        blog.delete()
+        messages.success(request,"se ha eliminado el gasto: "+blog+' '+blog.id)
+    except Exception as error:
+        print(error)
+    return redirect('blog_lista')
+
+
+
 
 
 #Examen 14 diciembre
