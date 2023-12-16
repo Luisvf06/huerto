@@ -1,0 +1,44 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load bootstrap5 %}
+<form action = "{% url 'fruto_create' %}" method = "post"> 
+    
+    {% csrf_token %} 
+
+    <div class="mb-4">
+        <label for="{{ formulario.nombre.id_for_label }}" class="form-label">{{ formulario.nombre.label }}: </label>
+        <textarea name="{{ formulario.nombre.html_name }}" 
+                class="form-control {% if formulario.nombre.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.nombre.id_for_label }}"
+                >{% if formulario.is_bound %}{{ formulario.nombre.value }}{% endif %}</textarea>
+        <div class="invalid-feedback">
+            {% for error in formulario.nombre.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="mb-4">
+        <label for="{{ formulario.tipo.id_for_label }}" class="form-label">{{ formulario.tipo.label }}: </label>
+        <textarea name="{{ formulario.tipo.html_name }}" 
+                class="form-control {% if formulario.tipo.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.tipo.id_for_label }}"
+                >{% if formulario.is_bound %}{{ formulario.tipo.value }}{% endif %}</textarea>
+        <div class="invalid-feedback">
+            {% for error in formulario.tipo.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.planta show_label=True %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+
+</form> 
+
+
+{% endblock %}

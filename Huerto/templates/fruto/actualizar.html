@@ -1,0 +1,80 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load bootstrap5 %}
+<form action = "{% url 'fruto_editar' fruto.id %}" method = "post"> 
+    
+    {% csrf_token %} 
+
+
+    <div class="mb-4">
+        <label for="{{ formulario.nombre.id_for_label }}" class="form-label">{{ formulario.nombre.label }}: </label>
+        <input  name="{{ formulario.nombre.html_name }}" 
+                type="text" 
+                class="form-control {% if formulario.nombre.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.nombre.id_for_label }}"
+                maxlength="{{ formulario.nombre.field.max_length }}"
+                {% if formulario.nombre.field.required %}
+                    required
+                {% endif %}
+                value="{% spaceless %}
+                        {% if formulario.is_bound%}
+                            {{ formulario.nombre.value }}
+                        {% elif libro %}
+                            {{ formulario.nombre.value }}
+                        {% endif %} 
+                        {% endspaceless %}"
+        />
+        {% if formulario.nombre.help_text %}
+        <div class="form-text">
+            {{ formulario.nombre.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.nombre.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.tipo.id_for_label }}" class="form-label">{{ formulario.tipo.label }}: </label>
+        <input  name="{{ formulario.tipo.html_name }}" 
+                type="text" 
+                class="form-control {% if formulario.tipo.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                id="{{ formulario.tipo.id_for_label }}"
+                maxlength="{{ formulario.tipo.field.max_length }}"
+                {% if formulario.tipo.field.required %}
+                    required
+                {% endif %}
+                value="{% spaceless %}
+                        {% if formulario.is_bound%}
+                            {{ formulario.tipo.value }}
+                        {% elif libro %}
+                            {{ formulario.tipo.value }}
+                        {% endif %} 
+                        {% endspaceless %}"
+        />
+        {% if formulario.tipo.help_text %}
+        <div class="form-text">
+            {{ formulario.tipo.help_text }}
+        </div>
+        {% endif %}
+        <div class="invalid-feedback">
+            {% for error in formulario.tipo.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.planta show_label=True %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+
+</form> 
+
+
+{% endblock %}

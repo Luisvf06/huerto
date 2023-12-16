@@ -1,0 +1,23 @@
+Descripcion: {{fruto.nombre}}<br>
+Fecha : {{fruto.tipo}}<br>
+Huerto: {{fruto.planta}}<br>
+
+<p></p>
+
+    <div class="mb-2">
+        <form action = "{% url 'fruto_eliminar' fruto.id %}" method = "post"> 
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                <span>Eliminar</span>
+                </button> 
+        </form>
+    </div>
+    <div>
+        <form action = "{% url 'fruto_editar' fruto.id %}" method = "post"> 
+            {% csrf_token %}
+            <button class="btn btn-danger"  type="submit">
+            <span>Editar</span>
+            </button> 
+        </form>
+    </div>
+    

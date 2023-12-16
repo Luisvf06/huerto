@@ -543,17 +543,12 @@ def incidencia_buscar_avanzado(request):
 
 def incidencia_editar(request,incidencia_id):
     incidencia = Incidencia.objects.get(id=incidencia_id)
-    
     datosFormulario = None
     
     if request.method == "POST":
         datosFormulario = request.POST
-    
-    
     formulario = IncidenciaModelForm(datosFormulario,instance = incidencia)
-    
     if (request.method == "POST"):
-    
         if formulario.is_valid():
             try:  
                 formulario.save()
@@ -573,6 +568,94 @@ def incidencia_eliminar(request,incidencia_id):
         print(error)
     return redirect('incidencia_lista')
 
+
+def fruto_lista(request):
+    frutos=Fruto.objects.select_related('planta')
+    frutos=frutos.all()
+    return render(request,'fruto/lista.html',{'fruto_mostrar':frutos})
+def fruto_create(request):
+    
+    datosFormulario = None
+    if request.method == "POST":
+        datosFormulario = request.POST
+        
+    formulario = FrutoModelForm(datosFormulario)
+    if (request.method == "POST"):
+        if formulario.is_valid():
+            try:
+                # Guarda el libro en la base de datos
+                formulario.save()
+                return redirect("fruto_lista")
+            except Exception as error:
+                print(error)
+    
+    return render(request, 'fruto/create.html',{"formulario":formulario})
+
+def fruto_buscar(request):
+
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaFrutoForm(request.GET)
+        if formulario.is_valid():
+            
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            
+            QSfruto = Fruto.objects.select_related("fruto")
+            
+            #obtenemos los filtros
+            textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
+            plant = formulario.cleaned_data.get('plant')
+            
+            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
+            if(textoBusqueda != ""):
+                QSfruto = QSfruto.filter(Q(nombre__contains=textoBusqueda) | Q(tipo=textoBusqueda))
+                mensaje_busqueda +=" Nombre o tipo que contengan la palabra "+textoBusqueda+"\n"
+            if (plant != None):
+                QSfruto=QSfruto.filter(planta=plant)
+                mensaje_busqueda += "Id de la planta"
+
+            
+            frutos = QSfruto.all()
+    
+            return render(request, 'fruto/fruto_busqueda.html',
+                            {"frutos_mostrar":frutos,
+                            "texto_busqueda":mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaFrutoForm(None)
+    return render(request, 'fruto/busqueda_avanzada.html',{"formulario":formulario})
+
+def fruto_editar(request,fruto_id):
+    fruto = Fruto.objects.get(id=fruto_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = FrutoModelForm(datosFormulario,instance = fruto)
+    
+    if (request.method == "POST"):
+    
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado el registro')
+                return redirect('fruto_lista')  
+            except Exception as error:
+                print(error)
+        else:
+            print(formulario.errors)
+    return render(request, 'fruto/actualizar.html',{"formulario":formulario,"fruto":fruto})
+    
+
+def fruto_eliminar(request,fruto_id):
+    fruto = Fruto.objects.get(id=fruto_id)
+    try:
+        fruto.delete()
+        messages.success(request, "Se ha elimnado el registro correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('fruto_lista')
 #Examen 14 diciembre
 
 def promocion_create(request):

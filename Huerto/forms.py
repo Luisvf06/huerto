@@ -401,6 +401,94 @@ class BusquedaAvanzadaIncidenciaForm(forms.Form):
         #Siempre devolvemos el conjunto de datos.
         return self.cleaned_data
 
+class FrutoModelForm(ModelForm):   
+    class Meta:
+        model = Fruto
+        fields = ['nombre','tipo','planta']
+        labels = {
+            "nombre": ("Nombre del fruto"),
+            "tipo": ("Tipo de fruto"),
+            "planta":("Planta")
+        }
+        help_texts = {
+        }
+        widgets = {
+        }
+    
+    
+    def clean(self):
+
+        #Validamos con el modelo actual
+        super().clean()
+        
+        #Obtenemos los campos 
+        nombre = self.cleaned_data.get('nombre')
+        tipo = self.cleaned_data.get('tipo')
+        planta=self.cleaned_data.get('planta')
+
+        #Comprobamos que no exista un fruto con ese nombre
+        texto = Fruto.objects.filter(nombre=nombre).first()
+
+        if(not texto is None
+        ):
+            if(not self.instance is None and texto.id == self.instance.id):
+                pass
+            else:
+                self.add_error('nombre','Ya existe un fruto con ese nombre')
+
+        #Comprobamos que el campo descripción no tenga menos de 10 caracteres        
+        if texto=="":
+            self.add_error('nombre','El campo no puede estar vacío')
+        if nombre is not None and not re.match(r'^[A-Z][a-z]+$', nombre):
+            self.add_error('nombre', 'El campo debe empezar por mayúscula y sólo puede contener letras')
+
+        if tipo is not None and not re.match(r'^[A-Z][a-z]+$', tipo):
+            self.add_error('tipo', 'El campo debe empezar por mayúscula y sólo puede contener letras')
+
+
+        if planta is None:
+            self.add_error('planta', 'El campo no puede quedar vacío')
+
+            ''' he tenido que quitar esta validacion porque me daba error al ser un choice
+        if planta == None:
+            self.add_error('planta','El campo no puede quedar vacío')
+        if not(re.match(r'^[1-9]*[0-9]+$',planta)):
+            self.add_error('planta','El campo  contener caracteres numéricos')
+            '''
+        #Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
+
+class BusquedaAvanzadaFrutoForm(forms.Form):
+    
+    textoBusqueda = forms.CharField(required=False)
+    plant=forms.IntegerField(required=False)
+    
+    
+    def clean(self):
+
+        #Validamos con el modelo actual
+        super().clean()
+        
+        #Obtenemos los campos 
+        textoBusqueda = self.cleaned_data.get('textoBusqueda')
+        plant = self.cleaned_data.get('plant')
+        
+        #Controlamos los campos
+        #Ningún campo es obligatorio, pero al menos debe introducir un valor en alguno para buscar
+        if(textoBusqueda == "" 
+            and plant == None
+            ):
+            self.add_error('textoBusqueda','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('plant','Debe introducir al menos un valor en un campo del formulario')
+        else:
+            #Si introduce un texto al menos que tenga  3 caracteres o más
+            if not (isinstance(plant,int)):
+                self.add_error('plant','el valor de búsqueda debe ser un nº entero')
+            
+        #Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
+
+
 #examen 14 diciembre
 class PromocionModelForm(ModelForm):
     class Meta:

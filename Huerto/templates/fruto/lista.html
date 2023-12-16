@@ -1,0 +1,10 @@
+{%load static %}
+    {%block contenido %}
+    {%for fruto in fruto_mostrar %}
+
+    {%include 'fruto/fruto.html'%}
+    {%empty%}
+    <p>No hay datos</p>
+
+    {%endfor%}
+{%endblock%}
