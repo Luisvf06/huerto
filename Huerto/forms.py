@@ -316,8 +316,90 @@ class BusquedaAvanzadaBlogForm(forms.Form):
         return self.cleaned_data
 
 
+class IncidenciaModelForm(ModelForm):   
+    class Meta:
+        model = Incidencia
+        fields = ['descripcion','fecha_incidencia','huerto']
+        labels = {
+            "descripcion": ("Descripción"),
+            "fecha_incidencia":("Fecha de la incidencia")
+        }
+        help_texts = {
+            "descripcion": ("2000 caracteres como máximo"),
+        }
+        widgets = {
+            "fecha_incidencia":forms.SelectDateWidget(),
+        }
+        localized_fields = ["fecha_incidencia"]
 
+    def clean(self):
+        # Validamos con el modelo actual
+        super().clean()
 
+        # Obtenemos los campos
+        descripcion = self.cleaned_data.get('descripcion')
+        fecha_incidencia = self.cleaned_data.get('fecha_incidencia')
+
+        # Comprobamos que el campo descripción no sea None y tenga menos de 10 caracteres o más de 2000
+        if descripcion is not None and not (10 <= len(descripcion) <= 2000):
+            self.add_error('descripcion', 'La descripción debe tener entre 10 y 2000 caracteres')
+
+        # Comprobamos que la fecha de publicación sea hoy o una fecha anterior
+        fechaHoy = date.today()
+        if fecha_incidencia is not None and fechaHoy < fecha_incidencia:
+            self.add_error('fecha_incidencia', 'La fecha de incidencia debe ser igual o anterior a la fecha de hoy')
+
+        # Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
+
+    
+
+class BusquedaAvanzadaIncidenciaForm(forms.Form):
+    
+    textoBusqueda = forms.CharField(required=False)
+    
+    
+    fecha_desde = forms.DateField(label="Fecha Desde",
+                                required=False,
+                                widget= forms.SelectDateWidget(years=range(1990,2024))
+                                )
+    
+    fecha_hasta = forms.DateField(label="Fecha Desde",
+                                required=False,
+                                widget= forms.SelectDateWidget(years=range(1990,2024))
+                                )
+
+    def clean(self):
+
+        #Validamos con el modelo actual
+        super().clean()
+        
+        #Obtenemos los campos 
+        textoBusqueda = self.cleaned_data.get('textoBusqueda')
+        fecha_desde = self.cleaned_data.get('fecha_desde')
+        fecha_hasta = self.cleaned_data.get('fecha_hasta')
+        
+        #Controlamos los campos
+        #Ningún campo es obligatorio, pero al menos debe introducir un valor en alguno para buscar
+        if(textoBusqueda == "" 
+            and fecha_desde is None
+            and fecha_hasta is None
+            ):
+            self.add_error('textoBusqueda','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('fecha_desde','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('fecha_hasta','Debe introducir al menos un valor en un campo del formulario')
+        else:
+            #Si introduce un texto al menos que tenga  10 caracteres o más
+            if(textoBusqueda != "" and len(textoBusqueda) < 10):
+                self.add_error('textoBusqueda','Debe introducir al menos 10 caracteres')
+            
+            #La fecha hasta debe ser mayor o igual a fecha desde. Pero sólo se valida si han introducido ambas fechas
+            if(not fecha_desde is None  and not fecha_hasta is None and fecha_hasta < fecha_desde):
+                self.add_error('fecha_desde','La fecha hasta no puede ser menor que la fecha desde')
+                self.add_error('fecha_hasta','La fecha hasta no puede ser menor que la fecha desde')
+            
+        #Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
 
 #examen 14 diciembre
 class PromocionModelForm(ModelForm):

@@ -5,20 +5,20 @@
         {%empty%}
                 <p>No hay datos</p>
                 <div class="mb-2">
-                    <form action = "{% url 'blog_eliminar' blog.id %}" method = "post"> 
-                            {% csrf_token %}
-                            <button class="btn btn-danger" onclick="return eliminar();" type="submit">
-                            <span>Eliminar</span>
-                            </button> 
-                    </form>
+                <form action = "{% url 'blog_eliminar' blog.id %}" method = "post"> 
+                        {% csrf_token %}
+                        <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                        <span>Eliminar</span>
+                        </button> 
+                </form>
                 </div>
                 <div>
-                    <form action = "{% url 'blog_editar' blog.id %}" method = "post"> 
+                <form action = "{% url 'blog_editar' blog.id %}" method = "post"> 
                         {% csrf_token %}
                         <button class="btn btn-danger"  type="submit">
                         <span>Editar</span>
                         </button> 
-                    </form>
+                </form>
                 </div>
                 {%endfor%}
         {%endblock%}

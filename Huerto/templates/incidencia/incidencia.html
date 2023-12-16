@@ -1,0 +1,23 @@
+Descripcion: {{incidencia.descripcion}}<br>
+Fecha : {{indicencia.fecha_incidencia}}<br>
+Huerto: {{incidencia.huerto}}<br>
+
+<p></p>
+
+    <div class="mb-2">
+        <form action = "{% url 'incidencia_eliminar' incidencia.id %}" method = "post"> 
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                <span>Eliminar</span>
+                </button> 
+        </form>
+    </div>
+    <div>
+        <form action = "{% url 'incidencia_editar' incidencia.id %}" method = "post"> 
+            {% csrf_token %}
+            <button class="btn btn-danger"  type="submit">
+            <span>Editar</span>
+            </button> 
+        </form>
+    </div>
+    

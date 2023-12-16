@@ -1,0 +1,10 @@
+{%load static %}
+    {%block contenido %}
+    {%for incidencia in incidencias_mostrar %}
+
+    {%include 'incidencia/incidencia.html'%}
+    {%empty%}
+    <p>No hay datos</p>
+
+    {%endfor%}
+{%endblock%}

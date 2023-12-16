@@ -477,8 +477,101 @@ def blog_eliminar(request,id_blog):
     return redirect('blog_lista')
 
 
+def incidencia_lista(request):
+    incidencias=Incidencia.objects.select_related('huerto')
+    incidencias=incidencias.all()
+    return render(request,'incidencia/lista.html',{'incidencias_mostrar':incidencias})
+def incidencia_mostrar(request,id_incidencia):
+    incidencia=Incidencia.objects.select_related('huerto')
+    incidencia=incidencia.get(id=id_incidencia)
+    return render(request,'incidencia/incidencia_mostrar.html',{'incidencia':incidencia})
+def incidencia_create_sencillo(request):
+    datosFormulario = None
+    if request.method == "POST":
+        datosFormulario = request.POST
+        
+    formulario = IncidenciaModelForm(datosFormulario)
+    if (request.method == "POST"):
+        if formulario.is_valid():
+            try:
+                # Guarda el libro en la base de datos
+                formulario.save()
+                return redirect("incidencia_lista")
+            except Exception as error:
+                print(error)
+    
+    return render(request, 'incidencia/create.html',{"formulario":formulario})
 
+def incidencia_buscar_avanzado(request):
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaIncidenciaForm(request.GET)
+        if formulario.is_valid():
+            
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            
+            QSinc = Incidencia.objects.select_related("huerto")
+            
+            #obtenemos los filtros
+            textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
+            fechaDesde = formulario.cleaned_data.get('fecha_desde')
+            fechaHasta = formulario.cleaned_data.get('fecha_hasta')
+            
+            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
+            if(textoBusqueda != ""):
+                QSinc = QSinc.filter(descripcion__contains=textoBusqueda)
+                mensaje_busqueda +=" Contenido que contengan la palabra "+textoBusqueda+"\n"
+            
+            #Comprobamos fechas
 
+            if(not fechaDesde is None):
+                mensaje_busqueda +=" La fecha sea mayor a "+datetime.strftime(fechaDesde,'%d-%m-%Y')+"\n"
+                QSinc = QSinc.filter(fecha_incidencia__gte=fechaDesde)
+            
+
+            if(not fechaHasta is None):
+                mensaje_busqueda +=" La fecha sea menor a "+datetime.strftime(fechaHasta,'%d-%m-%Y')+"\n"
+                QSinc = QSinc.filter(fecha_incidencia__lte=fechaHasta)
+            
+            incidencias = QSinc.all()
+    
+            return render(request, 'incidencia/lista_busqueda.html',
+                            {"incidencia_mostrar":incidencias,
+                            "texto_busqueda":mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaIncidenciaForm(None)
+    return render(request, 'incidencia/busqueda_avanzada.html',{"formulario":formulario})
+
+def incidencia_editar(request,incidencia_id):
+    incidencia = Incidencia.objects.get(id=incidencia_id)
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    
+    formulario = IncidenciaModelForm(datosFormulario,instance = incidencia)
+    
+    if (request.method == "POST"):
+    
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado la incidencia correctamente')
+                return redirect('incidencia_lista')  
+            except Exception as error:
+                print(error)
+    return render(request, 'incidencia/actualizar.html',{"formulario":formulario,"incidencia":incidencia})
+    
+
+def incidencia_eliminar(request,incidencia_id):
+    incidencia = Incidencia.objects.get(id=incidencia_id)
+    try:
+        incidencia.delete()
+        messages.success(request, "Se ha elimnado el libro "+incidencia.id+" correctamente")
+    except Exception as error:
+        print(error)
+    return redirect('incidencia_lista')
 
 #Examen 14 diciembre
 
