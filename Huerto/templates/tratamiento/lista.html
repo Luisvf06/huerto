@@ -1,0 +1,8 @@
+{%load static %}
+{%block contenido %}
+{% for tratamiento in tratamiento_mostrar %}
+{%include 'tratamiento/tratamientoanidado.html'%}
+{%empty%}
+<p>No hay resultados</p>
+{%endfor%}
+{%endblock%}

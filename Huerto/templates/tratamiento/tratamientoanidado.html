@@ -1,1 +1,23 @@
-Planta: {{trat.planta.nombre_comun}}<br>
+Descripcion: {{tratamiento.descripcion}}<br>
+Consejo: {{tratamiento.consejos}}<br>
+Aplicacion: {{tratamiento.aplicacion}}<br>
+Plaga: {{tratamiento.plaga}}<br>
+<p></p>
+
+    <div class="mb-2">
+        <form action = "{% url 'tratamiento_eliminar' tratamiento.id %}" method = "post"> 
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                <span>Eliminar</span>
+                </button> 
+        </form>
+    </div>
+    <div>
+        <form action = "{% url 'tratamiento_actualizar' tratamiento.id %}" method = "post"> 
+            {% csrf_token %}
+            <button class="btn btn-danger"  type="submit">
+            <span>Editar</span>
+            </button> 
+        </form>
+    </div>
+    

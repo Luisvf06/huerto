@@ -489,6 +489,83 @@ class BusquedaAvanzadaFrutoForm(forms.Form):
         return self.cleaned_data
 
 
+class TratamientoModelForm(ModelForm):   
+    class Meta:
+        model = Tratamiento
+        fields = ['consejos','descripcion','aplicacion','plaga']
+        labels = {
+            "consejos": ("Consejos"),
+            "descripcion":("Descripcion"),
+            "aplicacion":("Aplicación del tratamiento"),
+            "plaga":("Plaga")
+        }
+        help_texts = {
+        }
+        widgets = {
+        }
+        localized_fields = []
+    
+    def clean(self):
+
+        #Validamos con el modelo actual
+        super().clean()
+        
+        #Obtenemos los campos 
+        consejos = self.cleaned_data.get('consejos')
+        descripcion = self.cleaned_data.get('descripcion')
+        aplicacion = self.cleaned_data.get('aplicacion')
+        plaga = self.cleaned_data.get('plaga')
+
+    # Comprobamos que el campo descripción no tenga menos de 50 caracteres
+        if descripcion is None or len(descripcion) < 50:
+            self.add_error('descripcion', 'Al menos debes indicar 50 caracteres')
+
+        # Comprobamos que el campo consejos no tenga menos de 10 caracteres
+        if consejos is None or len(consejos) < 10:
+            self.add_error('consejos', 'Al menos debes indicar 10 caracteres')
+
+        # Comprobamos que el campo aplicacion no tenga menos de 15 caracteres
+        if aplicacion is None or len(aplicacion) < 15:
+            self.add_error('aplicacion', 'Al menos debes indicar 15 caracteres')
+
+
+        #Que al menos seleccione dos autores
+
+        
+        #Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
+
+class BusquedaAvanzadaTratamientoForm(forms.Form):
+    
+    textoBusqueda = forms.CharField(required=False)
+    trata=forms.IntegerField(required=False)
+    
+    def clean(self):
+
+        #Validamos con el modelo actual
+        super().clean()
+        
+        #Obtenemos los campos 
+        textoBusqueda = self.cleaned_data.get('textoBusqueda')
+        trata = self.cleaned_data.get('trata')
+        
+        #Controlamos los campos
+        #Ningún campo es obligatorio, pero al menos debe introducir un valor en alguno para buscar
+        if(textoBusqueda == "" 
+        and trata is None
+        ):
+            self.add_error('textoBusqueda','Debe introducir al menos un valor en un campo del formulario')
+            self.add_error('trata','Debe introducir al menos un valor en un campo del formulario')
+        else:
+            #Si introduce un texto al menos que tenga  5 caracteres o más
+            if(textoBusqueda != "" and len(textoBusqueda) < 5):
+                self.add_error('textoBusqueda','Debe introducir al menos 3 caracteres')
+            if not isinstance(trata,int):
+                self.add_error('trata','El valor a introducir debe ser un número enteor')
+            
+        #Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
+
 #examen 14 diciembre
 class PromocionModelForm(ModelForm):
     class Meta:

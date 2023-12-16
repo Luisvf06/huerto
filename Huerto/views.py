@@ -656,6 +656,83 @@ def fruto_eliminar(request,fruto_id):
     except Exception as error:
         print(error)
     return redirect('fruto_lista')
+
+def tratamiento_lista(request):
+    tratamientos=Tratamiento.objects.prefetch_related('plaga')
+    tratamientos=tratamientos.all()
+    return render(request,'tratamiento/lista.html',{'tratamiento_mostrar':tratamientos})
+
+def tratamiento_mostrar(request,tratamiento_id):
+    tratamientos = Tratamiento.objects.prefetch_related("plaga")
+    tratamientos = tratamientos.get(id=tratamiento_id)
+    return render(request, 'tratamiento/tratamiento_mostrar.html',{"tratamientos":tratamientos})
+def tratamiento_create(request):
+    datosFormulario = None
+    if request.method == "POST":
+        datosFormulario = request.POST
+        
+    formulario = TratamientoModelForm(datosFormulario)
+    
+    if request.method == "POST":
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                return redirect('tratamiento_lista')
+            except Exception as error:
+                print(error)
+    
+    return render(request, 'tratamiento/create.html', {"formulario": formulario})
+
+def tratamiento_buscar(request):
+
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaTratamientoForm(request.GET)
+        if formulario.is_valid():
+            
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            
+            QStrat = Tratamiento.objects.prefetch_related("plaga")
+            
+            #obtenemos los filtros
+            textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
+            plant = formulario.cleaned_data.get('plant')            
+            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
+            if(textoBusqueda != ""):
+                QStrat = QStrat.filter(Q(descripcion__contains=textoBusqueda) | Q(consejos__contains=textoBusqueda)| Q(aplicacion__contains=textoBusqueda))
+                mensaje_busqueda +=" Consejo, forma de aplicación o descripción que contengan la palabra "+textoBusqueda+"\n"
+            tratamientos = QStrat.all()
+            return render(request, 'tratamiento/lista_busqueda.html',
+                            {"tratamiento_mostrar":tratamientos,
+                            "texto_busqueda":mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaTratamientoForm(None)
+    return render(request, 'tratamiento/busqueda_avanzada.html',{"formulario":formulario})
+
+def tratamiento_actualizar(request,tratamiento_id):
+    tratamiento = Tratamiento.objects.get(id=tratamiento_id)
+    datosFormulario = None
+    if request.method == "POST":
+        datosFormulario = request.POST
+    formulario = TratamientoModelForm(datosFormulario,instance = tratamiento)
+    if (request.method == "POST"):
+        if formulario.is_valid():
+            try:  
+                formulario.save()
+                messages.success(request, 'Se ha editado el objeto')
+                return redirect('tratamiento_lista')  
+            except Exception as error:
+                print(error)
+    return render(request, 'tratamiento/actualizar.html',{"formulario":formulario,"tratamiento":tratamiento})
+
+def tratamiento_eliminar(request,tratamiento_id):
+    tratamiento = Tratamiento.objects.get(id=tratamiento_id)
+    try:
+        tratamiento.delete()
+        messages.success(request, "Se ha elimnado el objeto")
+    except Exception as error:
+        print(error)
+    return redirect('tratamiento_lista')
+
 #Examen 14 diciembre
 
 def promocion_create(request):

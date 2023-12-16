@@ -1,0 +1,57 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load bootstrap5 %}
+<form action = "{% url 'tratamiento_create' %}" method = "post"> 
+    
+    {% csrf_token %} 
+
+    <div class="mb-4">
+        <label for="{{ formulario.consejos.id_for_label }}" class="form-label">{{ formulario.consejos.label }}: </label>
+        <textarea name="{{ formulario.consejos.html_name }}" 
+                    class="form-control {% if formulario.consejos.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                    id="{{ formulario.consejos.id_for_label }}"
+                    >{% if formulario.is_bound %}{{ formulario.consejos.value }}{% endif %}</textarea>
+        <div class="invalid-feedback">
+            {% for error in formulario.consejos.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.descripcion.id_for_label }}" class="form-label">{{ formulario.descripcion.label }}: </label>
+        <textarea name="{{ formulario.descripcion.html_name }}" 
+                    class="form-control {% if formulario.descripcion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                    id="{{ formulario.descripcion.id_for_label }}"
+                    >{% if formulario.is_bound %}{{ formulario.descripcion.value }}{% endif %}</textarea>
+        <div class="invalid-feedback">
+            {% for error in formulario.descripcion.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ formulario.aplicacion.id_for_label }}" class="form-label">{{ formulario.aplicacion.label }}: </label>
+        <textarea name="{{ formulario.aplicacion.html_name }}" 
+                    class="form-control {% if formulario.aplicacion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
+                    id="{{ formulario.aplicacion.id_for_label }}"
+                    >{% if formulario.is_bound %}{{ formulario.aplicacion.value }}{% endif %}</textarea>
+        <div class="invalid-feedback">
+            {% for error in formulario.aplicacion.errors %} 
+                {{ error }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="mb-4">
+        {% bootstrap_field formulario.plaga show_label=True %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+
+</form> 
+
+
+{% endblock %}

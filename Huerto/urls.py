@@ -80,6 +80,11 @@ urlpatterns =[
     path('fruto/editar/<int:fruto_id>',views.fruto_editar,name='fruto_editar'),
     path('fruto/eliminar/<int:fruto_id>',views.fruto_eliminar,name='fruto_eliminar'),
     
+    path('tratamiento/listar',views.tratamiento_lista,name='tratamiento_lista'),
+    path('tratamiento/create/',views.tratamiento_create,name='tratamiento_create'),
+    path('tratamiento/buscar/',views.tratamiento_buscar,name='tratamiento_buscar'),
+    path('tratamiento/editar/<int:tratamiento_id>',views.tratamiento_actualizar,name='tratamiento_actualizar'),
+    path('tratamiento/eliminar/<int:tratamiento_id>',views.tratamiento_eliminar,name='tratamiento_eliminar'),
     #examen 14 diciembre
     
     path('promocion/crear/',views.promocion_create,name='promocion_create'),
