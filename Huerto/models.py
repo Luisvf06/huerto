@@ -31,9 +31,7 @@ class Gastos(models.Model):
     imprevistos=models.FloatField()
     Descripcion=models.TextField(max_length=2000)
     fecha=models.DateField(default=timezone.now)
-    usuario=models.ForeignKey(Usu,on_delete=models.CASCADE,related_name='usuario_gasto')
-    usuarioP=models.ForeignKey(Usu_premium,on_delete=models.CASCADE,related_name='usuarioP_gasto')
-
+    usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name='usuario_gasto')
 
 
 class Blog(models.Model):
@@ -41,8 +39,8 @@ class Blog(models.Model):
     publicacion=models.CharField(max_length=1,choices=PUBLICACION)
     fecha=models.DateField(default=timezone.now)
     etiqueta=models.CharField(max_length=15)
-    usuario=models.ForeignKey(Usu,on_delete=models.CASCADE,related_name='usuario_blog')
-    usuarioP=models.ForeignKey(Usu_premium,on_delete=models.CASCADE,related_name='usuarioP_blog')
+    usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE,related_name='usuario_blog')
+
 
 class Huerto(models.Model):
     ubicacion=PlainLocationField()#atributo para almacenar coordenadas en forma de tupla de cadenas de 2 elementos(latitud,longitud)
@@ -53,8 +51,7 @@ class Huerto(models.Model):
     area=models.FloatField(blank=True,null=True)
     acidez=models.FloatField(blank=True,null=True)
     abonado=models.BooleanField()#esto no sé si incluirlo aqui o no ya que es algo que se hace cada X tiempo, por lo que en ciertas ocasiones puede ser True y en otras False
-    usuario=models.ManyToManyField(Usu,related_name="usuario_huerto")#lo he vuelto a hacer para poder relacionarlo de forma inversa con usuaroi
-    usuarioP=models.ManyToManyField(Usu_premium,related_name="usuarioP_huerto")
+    usuario=models.ManyToManyField(Usuario,related_name="usuario_huerto")
 
 class Incidencia(models.Model):
     descripcion=models.TextField(max_length=2000)
@@ -125,8 +122,7 @@ class Tratamiento(models.Model):
 
 
 class Votacion(models.Model):#entiendo que es una tabla intermedia entre el usuario que vota a uno o mas huertos y un huerto votado por uno o mas usuarios
-    usuario=models.ForeignKey(Usu,on_delete=models.CASCADE, related_name='usuario_voto')
-    usuarioP=models.ForeignKey(Usu_premium,on_delete=models.CASCADE, related_name='usuarioP_voto')
+    usuario=models.ForeignKey(Usuario,on_delete=models.CASCADE, related_name='usuario_voto')
     fecha_voto=models.DateTimeField(default=timezone.now)
     huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE,related_name='huerto_voto')
     puntuacion=models.IntegerField()
@@ -134,8 +130,7 @@ class Votacion(models.Model):#entiendo que es una tabla intermedia entre el usua
     
     
 class Banco(models.Model):#un cliente tiene una cuenta y una cuenta es de un solo cliente/usuario
-    usuario=models.OneToOneField(Usu,on_delete=models.CASCADE, related_name='usuario_banco')
-    usuarioP=models.OneToOneField(Usu_premium,on_delete=models.CASCADE, related_name='usuario_banco')
+    usuario=models.OneToOneField(Usuario,on_delete=models.CASCADE, related_name='usuario_banco')
     BANCO=[('C','Caixa'),('B','BBVA'),('U','Unicaja'),('I','ING')]
     banco=models.CharField(choices=BANCO,max_length=1)
     

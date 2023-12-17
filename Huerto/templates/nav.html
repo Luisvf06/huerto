@@ -1,60 +1,94 @@
 <header>
-    <div><a href="{% url 'plantahuerto' 6%}">planta en 1 huerto determinado</a> </div>
-    <div><a href="{% url 'cambiocontrasenha' 6%}">fecha ultima modificacion</a></div>
-    <div><a href="{% url 'gasto_huerto' 6 2023%}">gastado en un huerto para un año</a></div>
-    <div><a href="{% url 'usuariosparcelas' 'a'%}">usuarios que tienen parcela y su apellido empieza por A</a></div>
-    <div><a href="{% url 'plagaplanta' 'nombreplata'%}">devuelve las plagas de una planta en concreto</a></div>
-    <div><a href="{% url 'consejoplaga' %}">devuelve consejos para una plaga segun la planta</a></div>
-    <div><a href="{% url 'usuarionoticia' %}">Devuelve el usuario que ha escrito una noticia sin etiqueta</a></div>
-    <div><a href="{% url 'plantaphluz' 0 7000000 0%}">Plantas que crecene en el rango de ph y con al menos las horas de luz establecitas. Funciona pero el rango de seed es muy raro</a></div>
-    <div><a href="{% url 'incidenciareciente'%}">Incidencia más reciente</a></div>
-    <div><a href="{% url 'sinincidencia' %}">Huerto sin incidencias</a></div>
-    <div><a href="{% url 'ultimovotohuerto' 3%}">  Ejercicio 1    </a></div>
-    <div><a href="{% url 'votomastres' 3%}">   Ejercicio2   </a></div>
-    <div><a href="{% url 'novoto'%}">  Ejercicio3    </a></li>
-    <div><a href="{% url 'cuentausuario' 'heatlh'%}">  Ejercicio4    </a></div>
-    <div><a href="{% url 'mediadoscinco'%}">   Ejercicio5   </a></div>
-    <p>Crud 1</p>
-    <div><a href="{% url 'listahuertos'%}">Lista de Huertos</a></div>
-    <div><a href="{% url 'huerto_create'%}">Crear Huertos</a></div>
-    <div><a href="{% url 'huerto_buscar'%}">Buscar Huertos</a></div>
-    <div><a href="{% url 'huerto_buscar_avanzado'%}">Búsqueda avanzada</a></div>
-    <div><a href="{% url 'huerto_editar' 1%}">Editar</a></div>
-    <div><a href="{% url 'huerto_eliminar' 7%}">Eliminar</a></div>
-    <p></p>
-    <div><a href="{% url 'usuario_create' %}">Crear usuario</a></div>
-    <div><a href="{% url 'usuario_lista' %}">Lista de usuarios</a></div>
-    <div><a href="{% url 'usuario_editar' 66%}">Editar usuario</a></div>
-    <div><a href="{% url 'usuario_eliminar' 65%}">Eliminar</a></div>
-    <div><a href="{% url 'usuario_buscar'%}">Buscar usuario</a></div>
+
+    {% if request.user.is_authenticated and perms.Huerto.view_planta %}
+        <div><a href="{% url 'plantahuerto' 6%}">planta en 1 huerto determinado</a> </div>
+        <div><a href="{% url 'plantaphluz' 0 7000000 0%}">Plantas que crecene en el rango de ph y con al menos las horas de luz establecitas. Funciona pero el rango de seed es muy raro</a></div>
+    {% endif %}
+    {% if request.user.is_authenticated and perms.Huerto.view_usuario %}
+        <div><a href="{% url 'usuariosparcelas' 'a'%}">usuarios que tienen parcela y su apellido empieza por A</a></div>
+        <div><a href="{% url 'usuarionoticia' %}">Devuelve el usuario que ha escrito una noticia sin etiqueta</a></div>
+    {% endif %}
+    {% if request.user.is_authenticated and perms.Huerto.view_gastos %}
+        <div><a href="{% url 'gasto_huerto' 6 2023%}">gastado en un huerto para un año</a></div>
+    {% endif %}
+    {% if request.user.is_authenticated and perms.Huerto.view_plaga %}
+        <div><a href="{% url 'plagaplanta' 'nombreplata'%}">devuelve las plagas de una planta en concreto</a></div>
+    {% endif %}
+    {% if request.user.is_authenticated and perms.Huerto.view_tratamiento %}
+        <div><a href="{% url 'consejoplaga' %}">devuelve consejos para una plaga segun la planta</a></div>
+    {%endif %}
+    {%if request.user.is_authenticated and perms.Huerto.view_incidencia %}
+        <div><a href="{% url 'incidenciareciente'%}">Incidencia más reciente</a></div>
+        <div><a href="{% url 'sinincidencia' %}">Huerto sin incidencias</a></div>
+    {%endif%}
+    {%if request.user.is_authenticated and perms.Huerto.view_votacion%}
+        <div><a href="{% url 'ultimovotohuerto' 3%}">  Ejercicio 1    </a></div>
+        <div><a href="{% url 'votomastres' 3%}">   Ejercicio2   </a></div>
+        <div><a href="{% url 'novoto'%}">  Ejercicio3    </a></li>
+        <div><a href="{% url 'cuentausuario' 'heatlh'%}">  Ejercicio4    </a></div>
+        <div><a href="{% url 'mediadoscinco'%}">   Ejercicio5   </a></div>
+        {%endif%}
+
+
+        <p>Crud 1</p>
+        {%if request.user.is_authenticated and perms.Huerto.view_huerto%}
+        <div><a href="{% url 'huertos_lista'%}">Lista de Huertos</a></div>
+        <div><a href="{% url 'huerto_buscar'%}">Buscar Huertos</a></div>
+        <div><a href="{% url 'huerto_buscar_avanzado'%}">Búsqueda avanzada</a></div>
+        {%endif%}
+        {%if request.user.is_authenticated and perms.Huerto.add_huerto%}
+        <div><a href="{% url 'huerto_create'%}">Crear Huertos</a></div>
+        {%endif%}
+        <p></p>
+        
+        
         <p>Crud 2</p>
-    <div><a href="{% url 'gastos_create'%}">Crear gasto</a></div>
-    <div><a href="{% url 'gastos_lista'%}">Lista de gastos</a></div>
-    <div><a href="{% url 'gasto_buscar'%}">Buscar gasto</a></div>
-    <div><a href="{% url 'gastos_editar' 69%}">Editar gasto</a></div>
-    <div><a href="{% url 'gasto_eliminar' 68%}">Eliminar gasto</a></div>
-    <p>Crud 3</p>
-    <div><a href="{% url 'blog_crear'%}">Crear blog</a></div>
-    <div><a href="{% url 'blog_buscar'%}">Buscar blog</a></div>
-    <div><a href="{% url 'blog_lista'%}">Lista de blogs</a></div>
-    <div><a href="{% url 'blog_editar' 4%}">Editar</a></div>
-        <p>Crud 4</p>
-    <div><a href="{% url 'incidencia_create'%}">Crear incidencia</a></div>
-    <div><a href="{%url 'incidencia_lista'%}">Lista de incidencias</a></div>
-    <div><a href="{% url 'incidencia_buscar_avanzado'%}">Buscar incidencia</a></div>
-        <p>Crud 5</p>
-    <div><a href="{% url 'fruto_create'%}">Crear Fruto</a></div>
-    <div><a href="{% url 'fruto_lista'%}">Lista de frutos</a></div>
-    <div><a href="{% url 'fruto_buscar'%}">Buscar fruto</a></div>
-    <p>Crud 6</p>
-    <div><a href="{% url 'tratamiento_create'%}">Crear Tratamiento</a></div>
-    <div><a href="{% url 'tratamiento_lista'%}">Lista de tratamientos</a></div>
-    <div><a href="{% url 'tratamiento_buscar'%}">Buscar tratamiento</a></div>
-    <p></p>
-    {#examen 14 diciembre#}
-    <div><a href="{% url 'promocion_lista' %}">Lista promocion</a></div>
-    <div><a href="{% url 'promocion_buscar' %}">Buscar promocion</a></div>
-    <div><a href="{% url 'promocion_create' %}">Crear promocion</a></div>
-    <div><a href="{% url 'promocion_editar' 4%}">Editar promocion</a></div>
-    <div><a href="{% url 'promocion_eliminar' 5%}">Eliminar promocion</a></div>
+        {%if request.user.is_authenticated and perms.Huerto.add_gastos%}
+        <div><a href="{% url 'gastos_create'%}">Crear gasto</a></div>
+        {%endif%}
+        {%if request.user.is_authenticated and perms.Huerto.view_gastos%}
+        <div><a href="{% url 'gasto_lista'%}">Lista de gastos</a></div>
+        <div><a href="{% url 'gasto_buscar'%}">Buscar gasto</a></div>
+        {%endif%}
+        <p>Crud 3</p>
+        {%if request.user.is_authenticated and perms.Huerto.add_blog%}
+        <div><a href="{% url 'blog_crear'%}">Crear blog</a></div>
+        {%endif%}
+        {%if request.user.is_authenticated and perms.Huerto.view_blog%}
+        <div><a href="{% url 'blog_buscar'%}">Buscar blog</a></div>
+        <div><a href="{% url 'blog_lista'%}">Lista de blogs</a></div>
+        {%endif%}
+            <p>Crud 4</p>
+        {%if request.user.is_authenticated and perms.Huerto.add_incidencia%}
+        <div><a href="{% url 'incidencia_create'%}">Crear incidencia</a></div>
+        {%endif%}
+        {%if request.user.is_authenticated and perms.Huerto.view_incidencia%}
+        <div><a href="{%url 'incidencia_lista'%}">Lista de incidencias</a></div>
+        <div><a href="{% url 'incidencia_buscar_avanzado'%}">Buscar incidencia</a></div>
+        {%endif%}
+            <p>Crud 5</p>
+        {%if request.user.is_authenticated and perms.Huerto.add_fruto%}
+        <div><a href="{% url 'fruto_create'%}">Crear Fruto</a></div>
+        {%endif%}
+        {%if request.user.is_authenticated and perms.Huerto.view_fruto%}
+        <div><a href="{% url 'fruto_lista'%}">Lista de frutos</a></div>
+        <div><a href="{% url 'fruto_buscar'%}">Buscar fruto</a></div>
+        {%endif%}
+        <p>Crud 6</p>
+        {%if request.user.is_authenticated and perms.Huerto.add_tratamiento%}
+        <div><a href="{% url 'tratamiento_create'%}">Crear Tratamiento</a></div>
+        {%endif%}
+        {%if request.user.is_authenticated and perms.Huerto.view_tratamiento%}
+        <div><a href="{% url 'tratamiento_lista'%}">Lista de tratamientos</a></div>
+        <div><a href="{% url 'tratamiento_buscar'%}">Buscar tratamiento</a></div>
+        {%endif%}
+        <p></p>
+        {#examen 14 diciembre#}
+        <div><a href="{% url 'promocion_lista' %}">Lista promocion</a></div>
+        <div><a href="{% url 'promocion_buscar' %}">Buscar promocion</a></div>
+        <div><a href="{% url 'promocion_create' %}">Crear promocion</a></div>
+        <div><a href="{% url 'promocion_editar' 4%}">Editar promocion</a></div>
+        <div><a href="{% url 'promocion_eliminar' 5%}">Eliminar promocion</a></div>
+
+</header>
 

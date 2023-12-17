@@ -28,23 +28,26 @@ class HuertoModelForm(ModelForm):
 
     def clean(self):
         super().clean()         
-        ubicacion=self.cleaned_data.get('ubicacion').split(",")
+        ubicacion=self.cleaned_data.get('ubicacion')
         sitio=self.cleaned_data.get('sitio')
         sustrato=self.cleaned_data.get('sustrato')
         area=self.cleaned_data.get('area')
         acidez=self.cleaned_data.get('acidez')
         
         #validacion ubicacion
-        if not (-90 <= float(ubicacion[0]) <= 90):
-            self.add_error('ubicacion', 'La latitud debe estar entre -90 y 90')
-        if not (-180 <= float(ubicacion[1]) <= 180):
-            self.add_error('ubicacion', 'La longitud debe estar entre -180 y 180')
+        if ubicacion is not None:
+            ubicacion=ubicacion.split(",")
+            if not (-90 <= float(ubicacion[0]) <= 90):
+                self.add_error('ubicacion', 'La latitud debe estar entre -90 y 90')
+            if not (-180 <= float(ubicacion[1]) <= 180):
+                self.add_error('ubicacion', 'La longitud debe estar entre -180 y 180')
         
         #validacion sitio
-        if len(sitio)<1:
+        
+        if sitio is not None and len(sitio)<1:
             self.add_error('sitio','Elige una opción')
         #validacion sustrato
-        if len(sustrato)<1:
+        if sustrato is not None and len(sustrato)<1:
             self.add_error('sustrato','Elige una opción')
         #validacion area
         
@@ -85,23 +88,22 @@ class BusquedaAvanzadaHuerto(forms.Form):
 
     ubicacion = forms.CharField(label="Ubicación",required=False,  widget=forms.TextInput(attrs={'placeholder': 'Ingrese la ubicación'}))#de momento no consigo hacer funcionar los widgets que encuentro para plainlocationfield
 
-    usuario=forms.IntegerField(label="Usuario", required=False)#entiendo que en buscar sí se puede poner para consultar un usuario, no como en crear que no tenía sentido
 
     def clean(self):
         super().clean()
         sustrato=self.cleaned_data.get('sustrato')
         area_minima=self.cleaned_data.get('area_minima')
         area_maxima=self.cleaned_data.get('area_maxima')
-        usuario=self.cleaned_data.get('usuario')
+
 
         if ( len (sustrato)==0
             and area_minima==None
             and area_maxima==None
-            and usuario==None):
+            ):
             self.add_error('sustrato','Debe escoger al menos una opción')
             self.add_error('area_minima','Debe indicar al menos un valor')
             self.add_error('area_maxima','debe indicar al menos un valor')
-            self.add_error('usuario','debe indicar al menos un valor')
+
             #esto no tiene mucho sentido por el booleanfield, pero lo dejo para probar si funciona o no
         else:
 
@@ -176,6 +178,7 @@ class GastoModelForm(ModelForm):
         fields=['herramientas','facturas','imprevistos','Descripcion','fecha','usuario']
         labels= {'herramientas':('Herramientas'),'facturas':('Facturas'),'imprevistos':('Imprevistos'),'Descripcion':('Descripción'),'fecha':('Fecha del gasto'),'usuario':('usuario')}
         widgets={'fecha':forms.SelectDateWidget(),
+                    'usuario':forms.HiddenInput()
                 }
         localized_fields=["fecha"]
     
@@ -227,7 +230,10 @@ class BlogModelForm(ModelForm):
             "publicacion": ("Tipo de publicación"),'fecha':("Fecha de publicación"),'etiqueta':('Etiqueta'),'usuario':('usuario')
         }
         widgets = {
-            "fecha":forms.SelectDateWidget()
+            "fecha":forms.SelectDateWidget(),
+            "usuario":forms.HiddenInput(),
+            "etiqueta":forms.TextInput(attrs={'placeholder':'Etiqueta'}),
+            
         }
         localized_fields = ["fecha"]
     
@@ -250,8 +256,8 @@ class BlogModelForm(ModelForm):
         if not fechaHoy == fecha:
             self.add_error('fecha','La fecha de publicacion debe ser  igual a Hoy')
         
-        if not(re.match(r'^[A-Z]+$',etiqueta)):
-            self.add_error('etiqueta','El nombre solo puede tener caracteres alfabéticos y en mayúsculas')
+        if not(re.match(r'^[A-Z0-9]+$',etiqueta)):
+            self.add_error('etiqueta','El nombre solo puede tener caracteres en mayúsculas')
 
         if not(len(etiqueta)>=2):
             self.add_error('etiqueta','La etiqueda debe tener entre 2 y 15 caracteres')
@@ -520,14 +526,18 @@ class TratamientoModelForm(ModelForm):
     # Comprobamos que el campo descripción no tenga menos de 50 caracteres
         if descripcion is None or len(descripcion) < 50:
             self.add_error('descripcion', 'Al menos debes indicar 50 caracteres')
-
+        if descripcion is None or len(descripcion)>150:
+            self.add_error('descripcion','La lonngitud maxima es 150')
         # Comprobamos que el campo consejos no tenga menos de 10 caracteres
         if consejos is None or len(consejos) < 10:
             self.add_error('consejos', 'Al menos debes indicar 10 caracteres')
-
+        if consejos is None or len(consejos)>1000:
+            self.add_error('consejos','La lonngitud maxima es 150')
         # Comprobamos que el campo aplicacion no tenga menos de 15 caracteres
         if aplicacion is None or len(aplicacion) < 15:
             self.add_error('aplicacion', 'Al menos debes indicar 15 caracteres')
+        if aplicacion is None or len(aplicacion)>200:
+            self.add_error('aplicacion','La lonngitud maxima es 200')
 
 
         #Que al menos seleccione dos autores
@@ -539,7 +549,7 @@ class TratamientoModelForm(ModelForm):
 class BusquedaAvanzadaTratamientoForm(forms.Form):
     
     textoBusqueda = forms.CharField(required=False)
-    trata=forms.IntegerField(required=False)
+
     
     def clean(self):
 
@@ -548,25 +558,31 @@ class BusquedaAvanzadaTratamientoForm(forms.Form):
         
         #Obtenemos los campos 
         textoBusqueda = self.cleaned_data.get('textoBusqueda')
-        trata = self.cleaned_data.get('trata')
+
         
         #Controlamos los campos
         #Ningún campo es obligatorio, pero al menos debe introducir un valor en alguno para buscar
         if(textoBusqueda == "" 
-        and trata is None
+
         ):
             self.add_error('textoBusqueda','Debe introducir al menos un valor en un campo del formulario')
-            self.add_error('trata','Debe introducir al menos un valor en un campo del formulario')
+
         else:
             #Si introduce un texto al menos que tenga  5 caracteres o más
             if(textoBusqueda != "" and len(textoBusqueda) < 5):
                 self.add_error('textoBusqueda','Debe introducir al menos 3 caracteres')
-            if not isinstance(trata,int):
-                self.add_error('trata','El valor a introducir debe ser un número enteor')
             
         #Siempre devolvemos el conjunto de datos.
         return self.cleaned_data
-
+class RegistroForm(UserCreationForm):
+    roles =(
+            (Usuario.USU, 'usu'),
+            (Usuario.USU_PREMIUM,'usu_premium'),
+    )
+    rol = forms.ChoiceField(choices=roles)
+    class Meta:
+        model=Usuario
+        fields= ('username','email','password1','password2','rol')
 #examen 14 diciembre
 class PromocionModelForm(ModelForm):
     class Meta:
@@ -634,12 +650,3 @@ class BusquedaAvanzadaPromocion(forms.Form):
         
         return self.cleaned_data
     
-class RegistroForm(UserCreationForm):
-    roles =(
-            (Usuario.USU, 'usu'),
-            (Usuario.USU_PREMIUM,'usu_premium'),
-    )
-    rol = forms.ChoiceField(choices=roles)
-    class Meta:
-        model=Usuario
-        fields= ('username','email','password1','password2','rol')

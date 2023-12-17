@@ -1,29 +1,29 @@
-{%extends "principal.html"%}
-{% load bootstrap_icons %}
-        <div class="row btn-group">
-                <div class="mb-2">
-                <button type="button" 
-                        class="btn btn-outline-primary"> 
-                        <a href="{% url 'huerto_editar' libro.id %}" ><span>{% bs_icon 'pencil' %}</span></a>
-                </button>
-        </div>
-        <div class="mb-2">
-                <form action = "{% url 'huerto_eliminar' huerto.id %}" method = "post"> 
-                        {% csrf_token %}
-                        <button class="btn btn-danger" onclick="return eliminar();" type="submit">
-                        <span>{% bs_icon 'trash' %}</span>
-                        </button> 
-                </form>
-                </div>
-        </div>
-        {%block contenido%}
-                {%for huerto in huertos_mostrar%}
-                        {%include 'huerto/huerto2.html'%}
-                {%endfor%}
+{%extends 'principal.html'%}
 
-                {%for seguro in sinincidencia%}
-                        {% include 'huerto/huerto.html' %}
-                {%empty%}
-                        <h1>No hay huerto sin incidencias</h1>
-                {%endfor%}
-        {%endblock%}
+
+
+{% block contenido %}
+<h1 class="display-3">Lista de huertos</h1>
+
+{% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+{% endif %}
+
+{% block busqueda %}
+{% endblock %}
+
+<div class="row">
+        {% for huerto in huertos_mostrar %}
+        <div class="col-sm-4 mb-2">
+                {% include 'huerto/huerto3.html' %}
+        </div>
+        {% empty %}
+        <h1>No hay datos</h1>
+        {% endfor %}
+</div>
+{% endblock %}

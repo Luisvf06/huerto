@@ -20,6 +20,7 @@ def index(request):
     return render(request,'index.html')
 
 #devuelve las plantas que se encuentran en un huerto determinado
+@permission_required('Huerto.view_planta')
 def lista_planta_huerto(request,id_huerto):
     plantas=Planta.objects.select_related('huerto')
     plantas=plantas.filter(huerto=id_huerto)
@@ -32,49 +33,56 @@ def lista_planta_huerto(request,id_huerto):
     return render(request,'contrasenha/listacontra.html',{'modificaciones':contras})
 '''
 #devuelve el gasto que ha supuesto un determinado huerto en un año
+@permission_required('Huerto.view_gastos')
 def gasto_huerto(request,id_huerto,anho_gasto):
     gastos=Gastos.objects.select_related('usuario')
     gastos=gastos.filter(Q(usuario__usuario_huerto=id_huerto) & Q(fecha__year=anho_gasto))
     return render(request,'gastos/listagasto.html',{'gastos':gastos})
 
 #devuelve los usuarios que tengan un huerto de tipo parcela y cuyo apellido empiece por una letra concreto
+@permission_required('Huerto.view_usuario')
 def usuarios_parcelas(request,inicial):
     usuarios=Usuario.objects.prefetch_related(Prefetch('usuario_huerto'))
     usuarios=usuarios.filter(Q(usuario_huerto__sitio='P') & Q(apellidos__startswith=inicial))
     return render(request, 'usuario/listausuario.html',{'usuarios_parcelas':usuarios})
 
 #devuelve las plagas de una planta junto a su fecha y descripcion
+@permission_required('Huerto.view_plaga')
 def plaga_planta(request,plant):
     plagas=Plaga.objects.select_related('planta').prefetch_related(Prefetch('plaga_plant'))
     plagas=plagas.filter(planta__nombre_comun=plant)
     return render(request,'plaga/listaplaga.html',{'histo_plaga':plagas})
 
 #devuelve los consejos de tratamiento para cada planta cuando la infeccion es por hongo
-
+@permission_required('Huerto.view_tratamiento')
 def consejo_plaga(request):
     consejos=Tratamiento.objects.prefetch_related('plaga')
     consejos=consejos.filter(plaga__origen='F')
     return render(request,'tratamiento/listatratamiento.html',{'infeccionhongos':consejos})
 
 #devuelve la ciudad y los gastos de los usuarios que han estito noticias (N) en el blog y no han usado etiquetas
+@permission_required('Huerto.view_usuario')
 def usuario_noticia(request):
     usuarios=Usuario.objects.prefetch_related(Prefetch('usuario_gasto')).prefetch_related(Prefetch('usuario_blog'))
     usuarios=usuarios.filter(Q(usuario_blog__etiqueta=None)&Q(usuario_blog__publicacion='N'))
     return render(request,'usuario/listausuario.html',{'usuario_noticias':usuarios})
 
 #devuelve las plantas que crecen en ph entre 4 y 8 y necesitan mas de 6 horas de luz al dia
+@permission_required('Huerto.view_planta')
 def planta_phluz(request,mi,ma,lu):
     plantas=Planta.objects.prefetch_related('huerto')
     plantas=plantas.filter(Q(phmax__lte=ma)& Q(phmin__gte=mi) &Q(horas_luz__gt=lu))
     return render(request,'planta/listaplanta2.html',{'requisitos':plantas})
 
 #devuelve la indicencia mas reciente
+@permission_required('Huerto.view_incidencia')
 def incidencia_reciente(request):
     incidencias=Incidencia.objects.prefetch_related('huerto')
     incidencias=incidencias.order_by("fecha_incidencia")[:1].get()
     return render(request,'huerto/mostrar_incidencia.html',{'incidenciahuerto':incidencias})
 
 #devuelve los huertos que no han tenido incidencias
+@permission_required('Huerto.view_huerto')
 def sin_incidencia(request):
     huerto=Huerto.objects.prefetch_related(Prefetch('huerto_incidencia')).prefetch_related('usuario')
     huerto=huerto.filter(huerto_incidencia__huerto=None)
@@ -94,28 +102,33 @@ def mi_error_500(request,exception=None):
 
 #vistas del examen
 #Ejercicio 1
+@permission_required('Huerto.view_votacion')
 def ultimo_voto_huerto(request,id_huerto):
     voto=Votacion.objects.select_related('huerto','usuario')
     voto=voto.filter(huerto=id_huerto).order_by('fecha_voto')[:1].get
     return render(request,'votacion/votacion.html',{'voto':voto})
 #Ejercicio 2
+@permission_required('Huerto.view_votacion')
 def voto_mas_tres(request, id_usuario):
     votos=Votacion.objects.select_related('huerto','usuario')
     votos=votos.filter(Q(usuario=id_usuario) &Q(puntuacion__gte=3))
     return render(request,'votacion/ejercicio2.html',{'totalvotos':votos})
 #Ejercicio 3
+@permission_required('Huerto.view_votacion')
 def no_voto(request):
     usuarios=Usuario.objects.prefetch_related(Prefetch('usuario_voto'))
     usuarios=usuarios.filter(usuario_voto=None)
     return render (request, 'usuario/ejercicio3.html',{'sin_votos':usuarios})
 
 #Ejercicio 4
+@permission_required('Huerto.view_votacion')
 def cuenta_usuario(request,nombreu):
     cuentas=Banco.objects.select_related('usuario')
     cuentas=cuentas.filter(Q(usuario__nombre__contains=nombreu) | Q(banco='C')| Q(banco='U'))
     return render(request,'cuenta/listacuenta.html',{'cuentas_usu':cuentas})
 
 #Ejercicio 5
+@permission_required('Huerto.view_votacion')
 def media_doscinco(request):
     Huerto.objects.aggregate(Avg('huerto_voto',default=0))
     huertos=Huerto.objects.prefetch_related(Prefetch('huerto_voto'))
@@ -125,6 +138,7 @@ def media_doscinco(request):
     
 
 #Formularios
+@permission_required('Huerto.add_huerto')
 def huerto_create(request):
     datosFormulario= None
     if request.method =="POST":
@@ -138,16 +152,23 @@ def huerto_create(request):
             return redirect("listahuertos")
     return render(request, 'huerto/create.html',{"formulario":formulario})
 
-def crear_huerto_modelo(formulario):
-    huerto_creado=False
-    if formulario.is_valid():
-        try:
-            formulario.save()
-            huerto_creado=True
-        except Exception as error:
-            print(error)
-    return huerto_creado
+@permission_required('Huerto.add_huerto')
+def crear_huerto_modelo(request):
+    datosFormulario = None
+    if request.method == "POST":
+        datosFormulario = request.POST
+    formulario = HuertoModelForm(datosFormulario)
+    if (request.method == "POST"):
+        if formulario.is_valid():
+            try:
+                # Guarda el libro en la base de datos
+                formulario.save()
+                return redirect("huertos_lista")
+            except Exception as error:
+                print(error)
+    return render(request, 'huerto/create.html',{"formulario":formulario})  
 
+@permission_required('Huerto.view_huerto')
 def huertos_lista(request):
     huertos = Huerto.objects.prefetch_related("usuario")
     huertos = huertos.all()
@@ -166,7 +187,7 @@ def huerto_buscar(request):
         return redirect(request.META["HTTP_REFERER"])
     else:
         return redirect("index.html")
-    
+@permission_required('Huerto.view_huerto')
 def huerto_buscar_avanzado(request):
     if (len(request.GET)>0):
         formulario=BusquedaAvanzadaHuerto(request.GET)
@@ -176,11 +197,6 @@ def huerto_buscar_avanzado(request):
 
             area_maxima=formulario.cleaned_data.get("area_maxima")
             area_minima=formulario.cleaned_data.get("area_minima")
-            usuario_id = formulario.cleaned_data.get("usuario")
-            if usuario_id is not None:
-                formulario.fields['usuario'].initial = usuario_id
-            else:
-                formulario.fields['usuario'].initial = None
 
             #if(textoBusqueda!=""):
             #    QShuerto=QShuerto.filter(Q(ubicacion__startswith=texto) | Q(usuario__nombre_usuario__contains=texto))
@@ -203,7 +219,7 @@ def huerto_buscar_avanzado(request):
     else:
         formulario=BusquedaAvanzadaHuerto(None)
     return render(request,'huerto/busqueda_avanzada.html',{'formulario':formulario})
-
+@permission_required('Huerto.change_huerto')
 def huerto_editar(request,huerto_id):
     huerto= Huerto.objects.get(id=huerto_id)
     
@@ -218,11 +234,11 @@ def huerto_editar(request,huerto_id):
             formulario.save()
             try:
                 formulario.save()
-                return redirect('listahuertos')
+                return redirect('huertos_lista')
             except Exception as e:
                 pass
     return render(request,'huerto/actualizar.html',{'formulario':formulario,'huerto':huerto})
-
+@permission_required('Huerto.delete_huerto')
 def huerto_eliminar(request,huerto_id):
     huerto=Huerto.objects.get(id=huerto_id)
     try:
@@ -230,7 +246,7 @@ def huerto_eliminar(request,huerto_id):
         messages.success(request,"se ha eliminado el huerto"+huerto.id)
     except Exception as error:
         print(error)
-    return redirect('listahuertos')
+    return redirect('huertos_lista')
 
 '''
 def usuario_lista(request):
@@ -312,12 +328,15 @@ def usuario_buscar(request):
     else:
         formulario = BusquedaAvanzadaUsuario(None)
     return render(request,'usuario/busqueda.html',{"formulario":formulario})
+
+
 '''
+@permission_required('Huerto.view_gastos')
 def gasto_lista(request):
     gastos=Gastos.objects.select_related('usuario')
     gastos=gastos.all()
     return render(request,'gastos/gastolista.html',{'gastos':gastos})
-
+@permission_required('Huerto.add_gastos')
 def gastos_create_simple(request):
     datosFormulario = None
     if request.method=="POST":
@@ -328,12 +347,12 @@ def gastos_create_simple(request):
         if formulario.is_valid():
             try:
                 formulario.save()
-                return redirect("gastos_lista") #es la url de nav no el nombre de la view
+                return redirect("gasto_lista") 
             except Exception as error:
                 print(error)
 
     return render(request,'gastos/create.html',{'formulario':formulario})
-
+@permission_required('Huerto.view_gastos')
 def gasto_buscar(request):
     if(len(request.GET)>0):
         formulario= BusquedaAvanzadaGasto(request.GET)
@@ -356,7 +375,7 @@ def gasto_buscar(request):
     else:
         formulario = BusquedaAvanzadaGasto(None)
     return render(request,'gastos/busqueda.html',{"formulario":formulario})
-
+@permission_required('Huerto.change_gastos')
 def gastos_editar(request,id_gasto):
     gasto=Gastos.objects.get(id=id_gasto)
 
@@ -371,12 +390,11 @@ def gastos_editar(request,id_gasto):
         if formulario.is_valid():
             try:
                 formulario.save()
-                return redirect('gastos_lista')
+                return redirect('gasto_lista')
             except Exception as error:
                 print(error)
     return render(request, 'gastos/actualizar.html', {"formulario": formulario, "gasto": gasto})
-
-
+@permission_required('Huerto.delete_gastos')
 def gasto_eliminar(request,id_gasto):
     gasto= Gastos.objects.get(id=id_gasto)
     try:
@@ -384,14 +402,14 @@ def gasto_eliminar(request,id_gasto):
         messages.success(request,"se ha eliminado el gasto: "+gasto+' '+gasto.id)
     except Exception as error:
         print(error)
-    return redirect('gastos_lista')
+    return redirect('gasto_lista')
 
-
+@permission_required('Huerto.view_blog')
 def blog_lista(request):
     blogs=Blog.objects.select_related('usuario')
     blogs=blogs.all()
     return render(request,'blog/listablog.html',{'blogs':blogs})
-
+@permission_required('Huerto.add_blog')
 def blog_create_simple(request):
     datosFormulario = None
     if request.method=="POST":
@@ -407,7 +425,7 @@ def blog_create_simple(request):
                 print(error)
 
     return render(request,'blog/create.html',{'formulario':formulario})
-
+@permission_required('Huerto.view_blog')
 def blog_buscar(request):
 
     if(len(request.GET) > 0):
@@ -453,7 +471,7 @@ def blog_buscar(request):
     else:
         formulario = BusquedaAvanzadaBlogForm(None)
     return render(request, 'blog/busqueda_avanzada.html',{"formulario":formulario})
-
+@permission_required('Huerto.change_blog')
 def blog_editar(request,id_blog):
     blog=Blog.objects.get(id=id_blog)
 
@@ -473,7 +491,7 @@ def blog_editar(request,id_blog):
                 print(error)
     return render(request, 'blog/actualizar.html', {"formulario": formulario, "blog": blog})
 
-
+@permission_required('Huerto.delete_blog')
 def blog_eliminar(request,id_blog):
     blog= Blog.objects.get(id=id_blog)
     try:
@@ -483,15 +501,17 @@ def blog_eliminar(request,id_blog):
         print(error)
     return redirect('blog_lista')
 
-
+@permission_required('Huerto.view_incidencia')
 def incidencia_lista(request):
     incidencias=Incidencia.objects.select_related('huerto')
     incidencias=incidencias.all()
     return render(request,'incidencia/lista.html',{'incidencias_mostrar':incidencias})
+@permission_required('Huerto.view_incidencia')
 def incidencia_mostrar(request,id_incidencia):
     incidencia=Incidencia.objects.select_related('huerto')
     incidencia=incidencia.get(id=id_incidencia)
     return render(request,'incidencia/incidencia_mostrar.html',{'incidencia':incidencia})
+@permission_required('Huerto.add_incidencia')
 def incidencia_create_sencillo(request):
     datosFormulario = None
     if request.method == "POST":
@@ -508,7 +528,7 @@ def incidencia_create_sencillo(request):
                 print(error)
     
     return render(request, 'incidencia/create.html',{"formulario":formulario})
-
+@permission_required('Huerto.view_incidencia')
 def incidencia_buscar_avanzado(request):
     if(len(request.GET) > 0):
         formulario = BusquedaAvanzadaIncidenciaForm(request.GET)
@@ -541,13 +561,13 @@ def incidencia_buscar_avanzado(request):
             
             incidencias = QSinc.all()
     
-            return render(request, 'incidencia/lista_busqueda.html',
+            return render(request, 'incidencia/busqueda_avanzada.html',
                             {"incidencia_mostrar":incidencias,
                             "texto_busqueda":mensaje_busqueda})
     else:
         formulario = BusquedaAvanzadaIncidenciaForm(None)
     return render(request, 'incidencia/busqueda_avanzada.html',{"formulario":formulario})
-
+@permission_required('Huerto.change_incidencia')
 def incidencia_editar(request,incidencia_id):
     incidencia = Incidencia.objects.get(id=incidencia_id)
     datosFormulario = None
@@ -565,7 +585,7 @@ def incidencia_editar(request,incidencia_id):
                 print(error)
     return render(request, 'incidencia/actualizar.html',{"formulario":formulario,"incidencia":incidencia})
     
-
+@permission_required('Huerto.delete_incidencia')
 def incidencia_eliminar(request,incidencia_id):
     incidencia = Incidencia.objects.get(id=incidencia_id)
     try:
@@ -575,7 +595,7 @@ def incidencia_eliminar(request,incidencia_id):
         print(error)
     return redirect('incidencia_lista')
 
-
+@permission_required('Huerto.view_fruto')
 def fruto_lista(request):
     frutos=Fruto.objects.select_related('planta')
     frutos=frutos.all()
@@ -597,7 +617,7 @@ def fruto_create(request):
                 print(error)
     
     return render(request, 'fruto/create.html',{"formulario":formulario})
-
+@permission_required('Huerto.view_fruto')
 def fruto_buscar(request):
 
     if(len(request.GET) > 0):
@@ -629,7 +649,7 @@ def fruto_buscar(request):
     else:
         formulario = BusquedaAvanzadaFrutoForm(None)
     return render(request, 'fruto/busqueda_avanzada.html',{"formulario":formulario})
-
+@permission_required('Huerto.change_fruto')
 def fruto_editar(request,fruto_id):
     fruto = Fruto.objects.get(id=fruto_id)
     
@@ -654,7 +674,7 @@ def fruto_editar(request,fruto_id):
             print(formulario.errors)
     return render(request, 'fruto/actualizar.html',{"formulario":formulario,"fruto":fruto})
     
-
+@permission_required('Huerto.delete_fruto')
 def fruto_eliminar(request,fruto_id):
     fruto = Fruto.objects.get(id=fruto_id)
     try:
@@ -663,16 +683,17 @@ def fruto_eliminar(request,fruto_id):
     except Exception as error:
         print(error)
     return redirect('fruto_lista')
-
+@permission_required('Huerto.view_tratamiento')
 def tratamiento_lista(request):
     tratamientos=Tratamiento.objects.prefetch_related('plaga')
     tratamientos=tratamientos.all()
     return render(request,'tratamiento/lista.html',{'tratamiento_mostrar':tratamientos})
-
+@permission_required('Huerto.view_tratamiento')
 def tratamiento_mostrar(request,tratamiento_id):
     tratamientos = Tratamiento.objects.prefetch_related("plaga")
     tratamientos = tratamientos.get(id=tratamiento_id)
     return render(request, 'tratamiento/tratamiento_mostrar.html',{"tratamientos":tratamientos})
+@permission_required('Huerto.add_tratamiento')
 def tratamiento_create(request):
     datosFormulario = None
     if request.method == "POST":
@@ -689,7 +710,7 @@ def tratamiento_create(request):
                 print(error)
     
     return render(request, 'tratamiento/create.html', {"formulario": formulario})
-
+@permission_required('Huerto.view_tratamiento')
 def tratamiento_buscar(request):
 
     if(len(request.GET) > 0):
@@ -702,7 +723,7 @@ def tratamiento_buscar(request):
             
             #obtenemos los filtros
             textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
-            plant = formulario.cleaned_data.get('plant')            
+        
             #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
             if(textoBusqueda != ""):
                 QStrat = QStrat.filter(Q(descripcion__contains=textoBusqueda) | Q(consejos__contains=textoBusqueda)| Q(aplicacion__contains=textoBusqueda))
@@ -714,7 +735,7 @@ def tratamiento_buscar(request):
     else:
         formulario = BusquedaAvanzadaTratamientoForm(None)
     return render(request, 'tratamiento/busqueda_avanzada.html',{"formulario":formulario})
-
+@permission_required('Huerto.change_tratamiento')
 def tratamiento_actualizar(request,tratamiento_id):
     tratamiento = Tratamiento.objects.get(id=tratamiento_id)
     datosFormulario = None
@@ -730,7 +751,7 @@ def tratamiento_actualizar(request,tratamiento_id):
             except Exception as error:
                 print(error)
     return render(request, 'tratamiento/actualizar.html',{"formulario":formulario,"tratamiento":tratamiento})
-
+@permission_required('Huerto.delete_tratamiento')
 def tratamiento_eliminar(request,tratamiento_id):
     tratamiento = Tratamiento.objects.get(id=tratamiento_id)
     try:

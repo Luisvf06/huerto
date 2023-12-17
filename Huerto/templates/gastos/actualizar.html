@@ -5,7 +5,7 @@
     {% csrf_token %}
     <div class="mb-4">
         <label for ="{{formulario.herramientas.id_for_label}}"class="form-label">{{formulario.herramientas.label}}: </label>
-        <input name="{{formulario.herramientas.html_name}}"type="text" class="form-control {% if formulario.herramientas.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.herramientas.id_for_label}}"maxlength="{{formulario.herramientas.field.max_length}}"{% if formulario.herramientas.field.required %}
+        <input name="{{formulario.herramientas.html_name}}"type="number" class="form-control {% if formulario.herramientas.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.herramientas.id_for_label}}"maxlength="{{formulario.herramientas.field.max_length}}"{% if formulario.herramientas.field.required %}
             required
         {%endif%}
         value="{% spaceless %}
@@ -25,7 +25,7 @@
 
     <div class="mb-4">
         <label for ="{{formulario.facturas.id_for_label}}"class="form-label">{{formulario.facturas.label}}: </label>
-        <input name="{{formulario.facturas.html_name}}"type="text" class="form-control {% if formulario.facturas.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.facturas.id_for_label}}"maxlength="{{formulario.facturas.field.max_length}}"{% if formulario.facturas.field.required %}
+        <input name="{{formulario.facturas.html_name}}"type="number" class="form-control {% if formulario.facturas.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.facturas.id_for_label}}"maxlength="{{formulario.facturas.field.max_length}}"{% if formulario.facturas.field.required %}
             required
         {%endif%}
         value="{% spaceless %}
@@ -44,7 +44,7 @@
 
     <div class="mb-4">
         <label for ="{{formulario.imprevistos.id_for_label}}"class="form-label">{{formulario.imprevistos.label}}: </label>
-        <input name="{{formulario.imprevistos.html_name}}"type="text" class="form-control {% if formulario.imprevistos.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.imprevistos.id_for_label}}"maxlength="{{formulario.imprevistos.field.max_length}}"{% if formulario.imprevistos.field.required %}
+        <input name="{{formulario.imprevistos.html_name}}"type="number" class="form-control {% if formulario.imprevistos.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.imprevistos.id_for_label}}"maxlength="{{formulario.imprevistos.field.max_length}}"{% if formulario.imprevistos.field.required %}
             required
         {%endif%}
         value="{% spaceless %}
@@ -80,7 +80,7 @@
     </div>
     <div class="mb-4">
         <label for ="{{formulario.fecha.id_for_label}}"class="form-label">{{formulario.fecha.label}}: </label>
-        <input name="{{formulario.fecha.html_name}}"type="text" class="form-control {% if formulario.fecha.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.fecha.id_for_label}}"maxlength="{{formulario.fecha.field.max_length}}"{% if formulario.fecha.field.required %}
+        <input name="{{formulario.fecha.html_name}}"type="date" class="form-control {% if formulario.fecha.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.fecha.id_for_label}}"maxlength="{{formulario.fecha.field.max_length}}"{% if formulario.fecha.field.required %}
             required
         {%endif%}
         value="{% spaceless %}
@@ -98,7 +98,7 @@
     </div>
     <div class="mb-4">
         <label for ="{{formulario.usuario.id_for_label}}"class="form-label">{{formulario.usuario.label}}: </label>
-        <input name="{{formulario.usuario.html_name}}"type="text" class="form-control {% if formulario.usuario.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.usuario.id_for_label}}"maxlength="{{formulario.usuario.field.max_length}}"{% if formulario.usuario.field.required %}
+        <input name="{{formulario.usuario.html_name}}"type="number" class="form-control {% if formulario.usuario.errors %} is-invalid{%elif formulario.is_bound %}is-valid{%endif%}" id="{{formulario.usuario.id_for_label}}"maxlength="{{formulario.usuario.field.max_length}}"{% if formulario.usuario.field.required %}
             required
         {%endif%}
         value="{% spaceless %}

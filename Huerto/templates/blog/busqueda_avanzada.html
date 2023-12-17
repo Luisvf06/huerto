@@ -3,9 +3,8 @@
     <form action = "{% url 'blog_buscar' %}" method = "GET"> 
         
         {% csrf_token %}
-
         <div class="mb-4">
-            {% bootstrap_field formulario.tagg show_label=True %}
+            {% bootstrap_field formulario.etiqueta show_label=True %}
         </div>
         <div class="mb-4">
             {% bootstrap_field formulario.fecha_desde show_label=True %}
@@ -16,6 +15,7 @@
         <div class="mb-4">
             {% bootstrap_field formulario.publicacion show_label=True %}
         </div>
+
         {% buttons %}
             <button type="submit" class="btn btn-primary" >Enviar</button>
         {% endbuttons %}

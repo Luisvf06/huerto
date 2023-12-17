@@ -87,7 +87,7 @@
     <div class="mb-4">
         <label for="{{ formulario.area.id_for_label }}" class="form-label">{{ formulario.area.label }}: </label>
         <input  name="{{ formulario.area.html_name }}" 
-                type="text" 
+                type="number" 
                 class="form-control {% if formulario.area.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
                 id="{{ formulario.area.id_for_label }}"
                 maxlength="{{ formulario.area.field.max_length }}"
@@ -111,7 +111,7 @@
     <div class="mb-4">
         <label for="{{ formulario.acidez.id_for_label }}" class="form-label">{{ formulario.acidez.label }}: </label>
         <input  name="{{ formulario.acidez.html_name }}" 
-                type="text" 
+                type="number" 
                 class="form-control {% if formulario.acidez.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
                 id="{{ formulario.acidez.id_for_label }}"
                 maxlength="{{ formulario.acidez.field.max_length }}"

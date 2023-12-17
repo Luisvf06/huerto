@@ -1,0 +1,24 @@
+{% block cabecera_extra %}
+{% load static %}
+<script type="text/javascript" src="{% static 'javascript1.js' %}" ></script>
+{% endblock %}
+Huerto: {{huerto.id}}
+Área: {{huerto.area}}
+Sitio: {{huerto.sitio}}
+<br>
+<div class="mb-2">
+    <form action = "{% url 'huerto_eliminar' huerto.id %}" method = "post"> 
+            {% csrf_token %}
+            <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+            <span>Eliminar</span>
+            </button> 
+    </form>
+</div>
+<div>
+    <form action = "{% url 'huerto_editar' huerto.id %}" method = "post"> 
+        {% csrf_token %}
+        <button class="btn btn-danger"  type="submit">
+        <span>Editar</span>
+        </button> 
+    </form>
+</div>

@@ -3,8 +3,10 @@
     {%for blog in blogs %}
 
     {%include 'blog/blog.html'%}
+    
     {%empty%}
     <p>No hay datos</p>
 
     {%endfor%}
+    
 {%endblock%}
