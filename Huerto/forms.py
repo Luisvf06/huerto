@@ -4,6 +4,7 @@ from .models import *
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 from datetime import date 
 from datetime import datetime
+from django.contrib.auth.forms import UserCreationForm
 #from django.contrib.gis.forms import PointField
 import re
 #from leaflet.forms.widgets import LeafletWidget
@@ -84,7 +85,7 @@ class BusquedaAvanzadaHuerto(forms.Form):
 
     ubicacion = forms.CharField(label="Ubicación",required=False,  widget=forms.TextInput(attrs={'placeholder': 'Ingrese la ubicación'}))#de momento no consigo hacer funcionar los widgets que encuentro para plainlocationfield
 
-    usuario=forms.CharField(label="Usuario", required=False)#entiendo que en buscar sí se puede poner para consultar un usuario, no como en crear que no tenía sentido
+    usuario=forms.IntegerField(label="Usuario", required=False)#entiendo que en buscar sí se puede poner para consultar un usuario, no como en crear que no tenía sentido
 
     def clean(self):
         super().clean()
@@ -111,7 +112,7 @@ class BusquedaAvanzadaHuerto(forms.Form):
         return self.cleaned_data
 
 
-
+'''
 class UsuarioModelForm(ModelForm):
     class Meta:
         model = Usuario
@@ -168,7 +169,7 @@ class BusquedaAvanzadaUsuario(forms.Form):
             if(textoBusqueda=="" and str(usuariotelefono) is not None and (len(str(usuariotelefono))!=9)):
                 self.add_error('usuariotelefono','el telefono debe tener 9 dígitos')
         return self.cleaned_data
-
+'''
 class GastoModelForm(ModelForm):
     class Meta:
         model=Gastos
@@ -632,3 +633,13 @@ class BusquedaAvanzadaPromocion(forms.Form):
             self.add_error('fechaIn','la fecha de finalizacion no puede ser anterior a la de comienzo')
         
         return self.cleaned_data
+    
+class RegistroForm(UserCreationForm):
+    roles =(
+            (Usuario.USU, 'usu'),
+            (Usuario.USU_PREMIUM,'usu_premium'),
+    )
+    rol = forms.ChoiceField(choices=roles)
+    class Meta:
+        model=Usuario
+        fields= ('username','email','password1','password2','rol')

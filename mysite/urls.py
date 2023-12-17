@@ -28,5 +28,6 @@ handler500=handler="Huerto.views.mi_error_500"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Huerto.urls')),
+    path('accounts/',include('django.contrib.auth.urls'))
 
 ]

@@ -133,3 +133,7 @@ STATIC_ROOT = BASE_DIR / 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 Internal_IPS=["127.0.0.1"]
+
+AUTH_USER_MODEL='Huerto.Usuario'
+LOGIN_REDIRECT_URL= 'index'
+LOGOUT_REDIRECT_URL='index'

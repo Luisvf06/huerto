@@ -5,7 +5,6 @@ from .models import Blog
 from .models import Incidencia
 from .models import Planta
 from .models import Gastos
-from .models import Contrasenha
 from .models import Plaga
 from .models import Historial
 from .models import Tratamiento
@@ -26,7 +25,7 @@ admin.site.register(Blog)
 admin.site.register(Incidencia)
 admin.site.register(Planta)
 admin.site.register(Gastos)
-admin.site.register(Contrasenha)
+
 admin.site.register(Plaga)
 admin.site.register(Historial)
 admin.site.register(Tratamiento)

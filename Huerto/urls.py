@@ -85,6 +85,10 @@ urlpatterns =[
     path('tratamiento/buscar/',views.tratamiento_buscar,name='tratamiento_buscar'),
     path('tratamiento/editar/<int:tratamiento_id>',views.tratamiento_actualizar,name='tratamiento_actualizar'),
     path('tratamiento/eliminar/<int:tratamiento_id>',views.tratamiento_eliminar,name='tratamiento_eliminar'),
+
+
+    path('registrar',views.registrar_usuario,name='registrar_usuario'),
+    
     #examen 14 diciembre
     
     path('promocion/crear/',views.promocion_create,name='promocion_create'),

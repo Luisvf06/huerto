@@ -8,8 +8,15 @@ from django.db.models import Q, Prefetch, Avg
 from django.contrib import messages
 from .forms import *
 from django.forms import modelform_factory
+from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import Group
+
 # Create your views here.
 def index(request):
+    if (not "fecha_inicio" in request.session):
+        request.session["fecha_inicio"] =datetime.now().strftime('d/%m/%Y %H:%M')
     return render(request,'index.html')
 
 #devuelve las plantas que se encuentran en un huerto determinado
@@ -732,6 +739,30 @@ def tratamiento_eliminar(request,tratamiento_id):
     except Exception as error:
         print(error)
     return redirect('tratamiento_lista')
+
+def registrar_usuario(request):
+    if request.method == 'POST':
+        formulario = RegistroForm(request.POST)
+        if formulario.is_valid():
+            user = formulario.save()
+            rol = int(formulario.cleaned_data.get('rol'))
+            if(rol == Usuario.USU):
+                grupo = Group.objects.get(name='Usu') 
+                grupo.user_set.add(user)
+                usu = Usu.objects.create( usuario = user)
+                usu.save()
+            elif(rol == Usuario.USU_PREMIUM):
+                grupo = Group.objects.get(name='Usu_premium') 
+                grupo.user_set.add(user)
+                usu_premium = Usu_premium.objects.create(usuario = user)
+                usu_premium.save()
+            
+            login(request, user)
+            return redirect('index')
+    else:
+        formulario = RegistroForm()
+    return render(request, 'registration/signup.html', {'formulario': formulario})
+
 
 #Examen 14 diciembre
 
