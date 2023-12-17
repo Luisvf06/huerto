@@ -444,7 +444,7 @@ def blog_buscar(request):
             
         
             if(etiqueta != ""):
-                QSblog = QSblog.filter(etiqueta=etiqueta)
+                QSblog = QSblog.filter(etiqueta__contains=etiqueta)
                 mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+etiqueta+"\n"
             
             if(len(publicacion) > 0):
@@ -561,7 +561,7 @@ def incidencia_buscar_avanzado(request):
             
             incidencias = QSinc.all()
     
-            return render(request, 'incidencia/busqueda_avanzada.html',
+            return render(request, 'incidencia/lista_busqueda.html',
                             {"incidencia_mostrar":incidencias,
                             "texto_busqueda":mensaje_busqueda})
     else:
