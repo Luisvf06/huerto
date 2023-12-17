@@ -26,11 +26,11 @@ def lista_planta_huerto(request,id_huerto):
     return render(request,'planta/listaplanta.html',{'plantas_huerto':plantas})
 
 #devuelve la fecha de la ultima modificacion de la contraseña, de un usuario. La idea original era sacar sólo la última contraseña porque pensaba que el campo era fecha_modificacion y no ultima_... he intentado cambiarlo pero no he encontrado ningún field de tipo lista en la documentación, por eso añado id_usuario
-def ultima_modificacion(request,id_usuario):
+'''def ultima_modificacion(request,id_usuario):
     contras=Contrasenha.objects.select_related('usuario')
     contras=contras.filter(usuario=id_usuario)#.order_by('-ultima_modificacion')[:1].get()
     return render(request,'contrasenha/listacontra.html',{'modificaciones':contras})
-
+'''
 #devuelve el gasto que ha supuesto un determinado huerto en un año
 def gasto_huerto(request,id_huerto,anho_gasto):
     gastos=Gastos.objects.select_related('usuario')
@@ -232,7 +232,7 @@ def huerto_eliminar(request,huerto_id):
         print(error)
     return redirect('listahuertos')
 
-
+'''
 def usuario_lista(request):
     usuarios = Usuario.objects.prefetch_related(Prefetch('usuario_huerto'))
     usuarios = usuarios.all()
@@ -312,7 +312,7 @@ def usuario_buscar(request):
     else:
         formulario = BusquedaAvanzadaUsuario(None)
     return render(request,'usuario/busqueda.html',{"formulario":formulario})
-
+'''
 def gasto_lista(request):
     gastos=Gastos.objects.select_related('usuario')
     gastos=gastos.all()
