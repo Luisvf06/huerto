@@ -1,5 +1,6 @@
 Tarea 17 diciembre
 
+Parte 4
 6 crud: huerto, gasto, blog,  incidencia, fruto y tratamiento
 También hice un crud de usuario, pero como con la parte de login y permisios cambió, lo he dejaod comentado.
 
@@ -81,7 +82,7 @@ Tengo dos tipos de usuario el normal y el premium, la diferencia entre ambos son
 
 
 
-
+Parte del crud usuario que quité 
 '''
     path('usuario/create/',views.usuario_create,name='usuario_create'),
     path('usuario/usuarios/',views.usuario_lista,name='usuario_lista'),
@@ -92,6 +93,4 @@ Tengo dos tipos de usuario el normal y el premium, la diferencia entre ambos son
 
 <div><a href="{% url 'usuario_create' %}">Crear usuario</a></div>
     <div><a href="{% url 'usuario_lista' %}">Lista de usuarios</a></div>
-    <div><a href="{% url 'usuario_editar' 66%}">Editar usuario</a></div>
-    <div><a href="{% url 'usuario_eliminar' 65%}">Eliminar</a></div>
     <div><a href="{% url 'usuario_buscar'%}">Buscar usuario</a></div>

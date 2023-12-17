@@ -62,7 +62,7 @@ class HuertoModelForm(ModelForm):
             self.add_error('acidez', 'debe ser un número entre 0 y 14')
         elif not (0 < acidez < 14):
             self.add_error('acidez', 'debe ser un número entre 0 y 14')
-
+            #la regex busca uno o mas numeros seguido o no de un punto decimal y cero o mas digitos
             
         #validacion abonado
             #En mi formulario esto es un checkbox, por lo tanto las opciones son marcarlo o no y ambas son válidas, no se me ocurre validación alguna
@@ -257,7 +257,7 @@ class BlogModelForm(ModelForm):
         fechaHoy = date.today()
         if not fechaHoy == fecha:
             self.add_error('fecha','La fecha de publicacion debe ser  igual a Hoy')
-        
+        #comianza y acaba por mayuscula o numero
         if not(re.match(r'^[A-Z0-9]+$',etiqueta)):
             self.add_error('etiqueta','El nombre solo puede tener caracteres en mayúsculas')
 
@@ -389,9 +389,7 @@ class BusquedaAvanzadaIncidenciaForm(forms.Form):
         textoBusqueda = self.cleaned_data.get('textoBusqueda')
         fecha_desde = self.cleaned_data.get('fecha_desde')
         fecha_hasta = self.cleaned_data.get('fecha_hasta')
-        
-        #Controlamos los campos
-        #Ningún campo es obligatorio, pero al menos debe introducir un valor en alguno para buscar
+
         if(textoBusqueda == "" 
             and fecha_desde is None
             and fecha_hasta is None
@@ -404,7 +402,7 @@ class BusquedaAvanzadaIncidenciaForm(forms.Form):
             if(textoBusqueda != "" and len(textoBusqueda) < 10):
                 self.add_error('textoBusqueda','Debe introducir al menos 10 caracteres')
             
-            #La fecha hasta debe ser mayor o igual a fecha desde. Pero sólo se valida si han introducido ambas fechas
+            #La fecha limite debe ser posterior a la inicial si se busca por ambas
             if(not fecha_desde is None  and not fecha_hasta is None and fecha_hasta < fecha_desde):
                 self.add_error('fecha_desde','La fecha hasta no puede ser menor que la fecha desde')
                 self.add_error('fecha_hasta','La fecha hasta no puede ser menor que la fecha desde')
