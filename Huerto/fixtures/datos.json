@@ -26,6 +26,71 @@
     }
 },
 {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2023-12-17T16:14:54.001Z",
+        "user": 1,
+        "content_type": 7,
+        "object_id": "1",
+        "object_repr": "Planta object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2023-12-17T16:21:08.633Z",
+        "user": 1,
+        "content_type": 7,
+        "object_id": "2",
+        "object_repr": "Planta object (2)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+        "action_time": "2023-12-17T17:03:14.393Z",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "1",
+        "object_repr": "Plaga object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+        "action_time": "2023-12-17T17:09:13.447Z",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "1",
+        "object_repr": "Plaga object (1)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Origen\", \"Descripcion\", \"Planta\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+        "action_time": "2023-12-17T17:10:37.246Z",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "2",
+        "object_repr": "Plaga object (2)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -1185,10 +1250,10 @@
 },
 {
     "model": "sessions.session",
-    "pk": "6dbjhyhbkpulhqq3pr92dpmbjceksuzg",
+    "pk": "684iwgvvcorzjuyky3fkb3uk5unriov9",
     "fields": {
-        "session_data": "eyJmZWNoYV9pbmljaW8iOiJkLzEyLzIwMjMgMTQ6MDIifQ:1rEqmo:cgWKeWJvp6iuqIgHsafwnPdrxPKBLV-7RgASz79w1rQ",
-        "expire_date": "2023-12-31T13:02:26.528Z"
+        "session_data": ".eJxVjDkOwjAUBa-CXCPHe-yU9JzB-t8LNiBbylIh7k6Q0qR9M_M-JKdQwNdWQ-1kInHgYhBMyAtXExPkSjxsa_HbkmZf427w84YQXqn9QXxCe3QaelvnivSv0IMu9N5jet8O93RQYCl7rXnKOaOJo7agpUtSO3Qc0KqYGdOoskpmNNZBCKi15ZCZczZIkMyAJd8fi9dA5w:1rEqte:kUQzZRBArDlu7EfbVcFu_VnZvaQNs7hLW0ENkdwsjNc",
+        "expire_date": "2023-12-31T13:09:30.335Z"
     }
 },
 {
@@ -1196,7 +1261,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$600000$30SMPWonBA5TExTxsgTsXt$eBBg78ed5DvGAuCw+M2l595dZd1zOBS+aWc29h1lkJw=",
-        "last_login": "2023-12-17T12:58:21.358Z",
+        "last_login": "2023-12-17T13:09:30.331Z",
         "is_superuser": true,
         "username": "luis",
         "first_name": "",
@@ -1255,6 +1320,260 @@
     "pk": 1,
     "fields": {
         "usuario": 3
+    }
+},
+{
+    "model": "Huerto.gastos",
+    "pk": 3,
+    "fields": {
+        "herramientas": 1.0,
+        "facturas": 1.0,
+        "imprevistos": 1.0,
+        "Descripcion": "k",
+        "fecha": "2023-12-06",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.gastos",
+    "pk": 4,
+    "fields": {
+        "herramientas": 123.0,
+        "facturas": 45.0,
+        "imprevistos": 4.0,
+        "Descripcion": "Prueba de editar",
+        "fecha": "2023-12-12",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.gastos",
+    "pk": 5,
+    "fields": {
+        "herramientas": 100.0,
+        "facturas": 100.0,
+        "imprevistos": 100.0,
+        "Descripcion": "Prueba redireccion",
+        "fecha": "1999-12-12",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.gastos",
+    "pk": 6,
+    "fields": {
+        "herramientas": 123.0,
+        "facturas": 100.0,
+        "imprevistos": 45.0,
+        "Descripcion": "Prueba de redireccion2",
+        "fecha": "2023-12-12",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.gastos",
+    "pk": 7,
+    "fields": {
+        "herramientas": 9.0,
+        "facturas": 9.0,
+        "imprevistos": 9.0,
+        "Descripcion": "9",
+        "fecha": "2023-11-29",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.blog",
+    "pk": 4,
+    "fields": {
+        "publicacion": "T",
+        "fecha": "2023-12-17",
+        "etiqueta": "Holamundo",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.blog",
+    "pk": 5,
+    "fields": {
+        "publicacion": "N",
+        "fecha": "2023-12-17",
+        "etiqueta": "Holamundo",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.blog",
+    "pk": 6,
+    "fields": {
+        "publicacion": "E",
+        "fecha": "2023-12-17",
+        "etiqueta": "ADIOS12",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.blog",
+    "pk": 7,
+    "fields": {
+        "publicacion": "T",
+        "fecha": "2023-12-17",
+        "etiqueta": "ADIOS44",
+        "usuario": 1
+    }
+},
+{
+    "model": "Huerto.huerto",
+    "pk": 3,
+    "fields": {
+        "ubicacion": "44,55",
+        "sitio": "T",
+        "sustrato": "ARE",
+        "area": 2.0,
+        "acidez": 3.0,
+        "abonado": false,
+        "usuario": []
+    }
+},
+{
+    "model": "Huerto.huerto",
+    "pk": 5,
+    "fields": {
+        "ubicacion": "12,12",
+        "sitio": "J",
+        "sustrato": "LIM",
+        "area": 45.0,
+        "acidez": 3.0,
+        "abonado": false,
+        "usuario": []
+    }
+},
+{
+    "model": "Huerto.incidencia",
+    "pk": 2,
+    "fields": {
+        "descripcion": "Prueba de incidencia 3",
+        "fecha_incidencia": "2023-01-01",
+        "huerto": 3
+    }
+},
+{
+    "model": "Huerto.incidencia",
+    "pk": 3,
+    "fields": {
+        "descripcion": "hola mundo que tal",
+        "fecha_incidencia": "2023-12-17",
+        "huerto": 3
+    }
+},
+{
+    "model": "Huerto.incidencia",
+    "pk": 4,
+    "fields": {
+        "descripcion": "PRUEBA 4 EDITADA",
+        "fecha_incidencia": "2023-01-01",
+        "huerto": 3
+    }
+},
+{
+    "model": "Huerto.planta",
+    "pk": 1,
+    "fields": {
+        "tipo": "AL",
+        "ciclo": "A",
+        "nombre_comun": "Naranjo",
+        "nombre_cientifico": "Naranjus naranjus",
+        "phmax": 13.0,
+        "phmin": 1.0,
+        "epoca_siembra": "2023-12-17",
+        "tiempo_trasplante": 4,
+        "temp_max": 12,
+        "temp_min": 1,
+        "horas_luz": 5,
+        "demanda_hidrica": 5.0,
+        "huerto": 3
+    }
+},
+{
+    "model": "Huerto.planta",
+    "pk": 2,
+    "fields": {
+        "tipo": "AL",
+        "ciclo": "B",
+        "nombre_comun": "Arbol de pomelo",
+        "nombre_cientifico": "Pomelus pomeliensis",
+        "phmax": 2.0,
+        "phmin": 1.0,
+        "epoca_siembra": "2023-12-17",
+        "tiempo_trasplante": 2,
+        "temp_max": 8,
+        "temp_min": 2,
+        "horas_luz": 5,
+        "demanda_hidrica": 4.0,
+        "huerto": 3
+    }
+},
+{
+    "model": "Huerto.fruto",
+    "pk": 1,
+    "fields": {
+        "nombre": "Naranja",
+        "tipo": "Citrico",
+        "planta": 1
+    }
+},
+{
+    "model": "Huerto.plaga",
+    "pk": 1,
+    "fields": {
+        "origen": "A",
+        "descripcion": "Plaga de prueba para poder hacer un ejemplo de tratamiento esta es la segunda",
+        "planta": 2
+    }
+},
+{
+    "model": "Huerto.plaga",
+    "pk": 2,
+    "fields": {
+        "origen": "P",
+        "descripcion": "Segunda plaga para la prueba de tratamiento",
+        "planta": 2
+    }
+},
+{
+    "model": "Huerto.tratamiento",
+    "pk": 2,
+    "fields": {
+        "descripcion": "Consejo para la recuperacoin de la planta que sufre una infeccion de x tipoas dasdaskdalsdjalksjdlkasjdalkfdjaslkfjasljljjkjlkjlj",
+        "consejos": "Consejo para la recuperacoin de la planta que sufre una infeccion de x tipo",
+        "aplicacion": "Dos veces a la semana",
+        "plaga": [
+            2
+        ]
+    }
+},
+{
+    "model": "Huerto.tratamiento",
+    "pk": 3,
+    "fields": {
+        "descripcion": "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno está",
+        "consejos": "amor y paciencia",
+        "aplicacion": "una vez al dia por la mañana",
+        "plaga": [
+            2
+        ]
+    }
+},
+{
+    "model": "Huerto.tratamiento",
+    "pk": 4,
+    "fields": {
+        "descripcion": "rem Ipsum como su texto por defecto, y al hacer una búsqueda de \"Lorem Ipsum\" va a dar por resultad",
+        "consejos": "unto de usar Lorem Ipsum es que tiene una distribución más o menos normal de las letras, al contrario de usar textos como por ejemplo \"Contenido aquí, contenido aquí\". Estos textos hacen parecerlo un español que se puede leer. Muchos paquetes de autoedición y editores de páginas web usan el Lorem Ipsum como su texto por defecto, y al hacer una búsqueda de \"Lorem Ipsum\" va a dar por resultad",
+        "aplicacion": "que se puede leer. Muchos paquetes de autoedición y editores de páginas web usan el Lorem Ipsum como su texto por defecto, y al hacer una búsqueda de \"Lorem Ipsum\" va a dar por resultad",
+        "plaga": [
+            2
+        ]
     }
 }
 ]

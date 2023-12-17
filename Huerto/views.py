@@ -420,7 +420,7 @@ def blog_create_simple(request):
         if formulario.is_valid():
             try:
                 formulario.save()
-                return redirect("blog_lista") #es la url de nav no el nombre de la view
+                return redirect("blog_lista") 
             except Exception as error:
                 print(error)
 
@@ -436,13 +436,13 @@ def blog_buscar(request):
             
             QSblog = Blog.objects.select_related("usuario")
             
-            #obtenemos los filtros
+            
             etiqueta = formulario.cleaned_data.get('etiqueta')
             publicacion = formulario.cleaned_data.get('publicacion')
             fecha_desde = formulario.cleaned_data.get('fecha_desde')
             fecha_hasta = formulario.cleaned_data.get('fecha_hasta')
             
-            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
+        
             if(etiqueta != ""):
                 QSblog = QSblog.filter(etiqueta=etiqueta)
                 mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+etiqueta+"\n"
@@ -521,7 +521,7 @@ def incidencia_create_sencillo(request):
     if (request.method == "POST"):
         if formulario.is_valid():
             try:
-                # Guarda el libro en la base de datos
+                
                 formulario.save()
                 return redirect("incidencia_lista")
             except Exception as error:
@@ -538,12 +538,12 @@ def incidencia_buscar_avanzado(request):
             
             QSinc = Incidencia.objects.select_related("huerto")
             
-            #obtenemos los filtros
+    
             textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
             fechaDesde = formulario.cleaned_data.get('fecha_desde')
             fechaHasta = formulario.cleaned_data.get('fecha_hasta')
             
-            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
+            
             if(textoBusqueda != ""):
                 QSinc = QSinc.filter(descripcion__contains=textoBusqueda)
                 mensaje_busqueda +=" Contenido que contengan la palabra "+textoBusqueda+"\n"
@@ -610,7 +610,7 @@ def fruto_create(request):
     if (request.method == "POST"):
         if formulario.is_valid():
             try:
-                # Guarda el libro en la base de datos
+                
                 formulario.save()
                 return redirect("fruto_lista")
             except Exception as error:
@@ -628,11 +628,9 @@ def fruto_buscar(request):
             
             QSfruto = Fruto.objects.select_related("fruto")
             
-            #obtenemos los filtros
             textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
             plant = formulario.cleaned_data.get('plant')
             
-            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
             if(textoBusqueda != ""):
                 QSfruto = QSfruto.filter(Q(nombre__contains=textoBusqueda) | Q(tipo=textoBusqueda))
                 mensaje_busqueda +=" Nombre o tipo que contengan la palabra "+textoBusqueda+"\n"
@@ -721,10 +719,7 @@ def tratamiento_buscar(request):
             
             QStrat = Tratamiento.objects.prefetch_related("plaga")
             
-            #obtenemos los filtros
             textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
-        
-            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
             if(textoBusqueda != ""):
                 QStrat = QStrat.filter(Q(descripcion__contains=textoBusqueda) | Q(consejos__contains=textoBusqueda)| Q(aplicacion__contains=textoBusqueda))
                 mensaje_busqueda +=" Consejo, forma de aplicación o descripción que contengan la palabra "+textoBusqueda+"\n"

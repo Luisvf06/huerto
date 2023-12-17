@@ -1,7 +1,9 @@
 Tarea 17 diciembre
 
 6 crud: huerto, gasto, blog,  incidencia, fruto y tratamiento
+También hice un crud de usuario, pero como con la parte de login y permisios cambió, lo he dejaod comentado.
 
+Los CRUD empiezan en la linea 141 de views.py
 Huerto:
     Crear: funciona
         Validacion: 
@@ -56,6 +58,9 @@ Tratamiento
     Busqueda Avanzada funciona
         Widget
 
+
+PARTE 5 SESIONES Y AUTENTICACIÓN
+Tengo dos tipos de usuario el normal y el premium, la diferencia entre ambos son los permisos que tienen asignados. El normal tiene permiso para ver todo y añadir un par de elementos y el premium tiene permiso de vista, añadir y cambiar
 
 
 

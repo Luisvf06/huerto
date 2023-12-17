@@ -9,14 +9,17 @@
 
         {% block cabecera_extra%}
             {% load static %}
+            <link rel="stylesheet" href="css/estilo.css">
             <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
         <script src="{% static 'javascript/javascript1.js'%}"></script>
+        
             {% load bootstrap5 %}
             {% bootstrap_css %}
             {%bootstrap_javascript%}
             {%load bootstrap_icons%}
                 <script type="text/javascript" src="{% static 'javascript/javascript1.js'%}"></script>
         {% endblock%}
+        
     </head>
     <body>
         {%include "huerto/buscar.html"%}
@@ -47,7 +50,7 @@
 
 
     </div>
-
+    
         {%include "nav.html"%}
         {%block cabecera%}
             <p>Esto es el bloco de la cabecera</P>

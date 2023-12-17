@@ -1,5 +1,5 @@
 <header>
-
+    {% comment %}
     {% if request.user.is_authenticated and perms.Huerto.view_planta %}
         <div><a href="{% url 'plantahuerto' 6%}">planta en 1 huerto determinado</a> </div>
         <div><a href="{% url 'plantaphluz' 0 7000000 0%}">Plantas que crecene en el rango de ph y con al menos las horas de luz establecitas. Funciona pero el rango de seed es muy raro</a></div>
@@ -28,7 +28,7 @@
         <div><a href="{% url 'cuentausuario' 'heatlh'%}">  Ejercicio4    </a></div>
         <div><a href="{% url 'mediadoscinco'%}">   Ejercicio5   </a></div>
         {%endif%}
-
+        {%endcomment%}
 
         <p>Crud 1</p>
         {%if request.user.is_authenticated and perms.Huerto.view_huerto%}
