@@ -23,6 +23,7 @@ class HuertoModelForm(ModelForm):
             "area":("En metros cuadrados"),
         }
         widgets={
+            "abonado":forms.CheckboxInput()
         }
         localized_fields=[]
 
@@ -230,10 +231,11 @@ class BlogModelForm(ModelForm):
             "publicacion": ("Tipo de publicación"),'fecha':("Fecha de publicación"),'etiqueta':('Etiqueta'),'usuario':('usuario')
         }
         widgets = {
-            "fecha":forms.SelectDateWidget(),
+            "fecha":forms.DateInput(),
             "usuario":forms.HiddenInput(),
             "etiqueta":forms.TextInput(attrs={'placeholder':'Etiqueta'}),
-            
+            'publicacion': forms.Select(choices=Blog.PUBLICACION),
+
         }
         localized_fields = ["fecha"]
     
@@ -336,6 +338,8 @@ class IncidenciaModelForm(ModelForm):
         }
         widgets = {
             "fecha_incidencia":forms.SelectDateWidget(),
+            "descripcion":forms.Textarea
+
         }
         localized_fields = ["fecha_incidencia"]
 

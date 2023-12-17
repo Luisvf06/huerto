@@ -15,6 +15,7 @@ Huerto:
     Borrar: funciona
     Busqueda avanzada: no funciona
         Widget: checkboxselectmultiple()
+            CheckboxInput()
 
 Gastos
         Crear: funciona
@@ -31,7 +32,11 @@ Blog
     Editar: no funciona
     Borrar: funciona
     Busqueda avanzada: funciona
-        Widget: forms.CheckboxSelectMultiple(),forms.TextInput(attrs={'placeholder':'Etiqueta'})
+        Widget: forms.CheckboxSelectMultiple(),
+        forms.TextInput(attrs={'placeholder':'Etiqueta'})
+        forms.DateInput()
+        forms.Textarea
+
 
 Incidencia
     Crear funciona
