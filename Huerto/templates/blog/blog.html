@@ -13,7 +13,7 @@ Usuario: {{blog.usuario.username}}<br>
         </form>
     </div>
     <div>
-        <form action = "{% url 'blog_editar' blog.id %}" method = "post"> 
+        <form action = "{% url 'blog_editar' blog.id %}" method = "get"> 
             {% csrf_token %}
             <button class="btn btn-danger"  type="submit">
             <span>Editar</span>

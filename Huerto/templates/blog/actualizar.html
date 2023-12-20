@@ -17,7 +17,7 @@
                 value="{% spaceless %}
                     {% if formulario.is_bound%}
                             {{ formulario.etiqueta.value }}
-                    {% elif libro %}
+                    {% elif blog %}
                             {{ formulario.etiqueta.value }}
                         {% endif %} 
                         {% endspaceless %}"
@@ -35,22 +35,7 @@
     </div>
 
     <div class="mb-4">
-        <label for="{{ formulario.usuario.id_for_label }}" class="form-label">{{ formulario.usuario.label }}: </label>
-        <textarea name="{{ formulario.usuario.html_name }}" 
-                    class="form-control {% if formulario.usuario.errors %} is-invalid{% elif usuario.is_bound %} is-valid{% endif %}" 
-                    id="{{ formulario.usuario.id_for_label }}"
-                    >{% spaceless %}
-                        {% if formulario.is_bound%}
-                            {{ formulario.usuario.value }}
-                        {% elif usuario %}
-                            {{ formulario.usuario.value }}
-                        {% endif %} 
-                        {% endspaceless %}</textarea>
-        <div class="invalid-feedback">
-            {% for error in formulario.usuario.errors %} 
-                {{ error }}
-            {% endfor %}
-        </div>
+        <input type="hidden" value="{{ formulario.usuario.value }}" name="{{ formulario.usuario.html_name }}"  />
     </div>
 
     {% bootstrap_field formulario.fecha show_label=True %}

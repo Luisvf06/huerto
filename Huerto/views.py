@@ -189,6 +189,7 @@ def huerto_buscar(request):
         return redirect("index.html")
 @permission_required('Huerto.view_huerto')
 def huerto_buscar_avanzado(request):
+    
     if (len(request.GET)>0):
         formulario=BusquedaAvanzadaHuerto(request.GET)
         if formulario.is_valid():
@@ -218,7 +219,9 @@ def huerto_buscar_avanzado(request):
                                                                 "texto_busqueda":mensaje_busqueda})
     else:
         formulario=BusquedaAvanzadaHuerto(None)
+    
     return render(request,'huerto/busqueda_avanzada.html',{'formulario':formulario})
+
 @permission_required('Huerto.change_huerto')
 def huerto_editar(request,huerto_id):
     huerto= Huerto.objects.get(id=huerto_id)
@@ -415,7 +418,7 @@ def blog_create_simple(request):
     if request.method=="POST":
         datosFormulario = request.POST
     
-    formulario = BlogModelForm(datosFormulario)
+    formulario = BlogModelForm(datosFormulario,initial={"usuario":request.user.Usuario})
     if (request.method == "POST"):
         if formulario.is_valid():
             try:
@@ -472,6 +475,8 @@ def blog_buscar(request):
         formulario = BusquedaAvanzadaBlogForm(None)
     return render(request, 'blog/busqueda_avanzada.html',{"formulario":formulario})
 @permission_required('Huerto.change_blog')
+
+
 def blog_editar(request,id_blog):
     blog=Blog.objects.get(id=id_blog)
 
@@ -480,7 +485,7 @@ def blog_editar(request,id_blog):
     if request.method =="POST":
         datosFormulario = request.POST
     
-    formulario = GastoModelForm(datosFormulario,instance=blog)
+    formulario = BlogModelForm(datosFormulario,instance=blog)
 
     if (request.method =="POST"):
         if formulario.is_valid():
@@ -490,6 +495,9 @@ def blog_editar(request,id_blog):
             except Exception as error:
                 print(error)
     return render(request, 'blog/actualizar.html', {"formulario": formulario, "blog": blog})
+
+
+
 
 @permission_required('Huerto.delete_blog')
 def blog_eliminar(request,id_blog):

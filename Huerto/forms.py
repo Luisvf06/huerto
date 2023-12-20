@@ -231,7 +231,7 @@ class BlogModelForm(ModelForm):
             "publicacion": ("Tipo de publicación"),'fecha':("Fecha de publicación"),'etiqueta':('Etiqueta'),'usuario':('usuario')
         }
         widgets = {
-            "fecha":forms.DateInput(),
+            "fecha":forms.SelectDateWidget(),
             "usuario":forms.HiddenInput(),
             "etiqueta":forms.TextInput(attrs={'placeholder':'Etiqueta'}),
             'publicacion': forms.Select(choices=Blog.PUBLICACION),
@@ -249,8 +249,8 @@ class BlogModelForm(ModelForm):
         publicacion = self.cleaned_data.get('publicacion')
         fecha = self.cleaned_data.get('fecha')
         etiqueta = self.cleaned_data.get('etiqueta')
-        usuario = self.cleaned_data.get('usuario')      
-        if len(publicacion) < 1:
+        
+        if publicacion is not None and len(publicacion) < 1:
             self.add_error('publicacion','Debes indicar el tipo de publicación')
         
         #Comprobamos que la fecha de publicación sea mayor que hoy
