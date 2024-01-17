@@ -19,6 +19,10 @@ def index(request):
         request.session["fecha_inicio"] =datetime.now().strftime('d/%m/%Y %H:%M')
     return render(request,'index.html')
 
+def huertos_lista(request):
+    huertos=Huerto.objects.prefetch_related(Prefetch('huerto_incidencia')).prefetch_related('usuario')
+    return render(request,'huerto/listahuerto.html',{'huertos_lista',huertos})
+
 #devuelve las plantas que se encuentran en un huerto determinado
 @permission_required('Huerto.view_planta')
 def lista_planta_huerto(request,id_huerto):

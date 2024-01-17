@@ -7,5 +7,5 @@ from .forms import *
 @api_view(['GET'])
 def huerto_list(request):
     huertos=Huerto.objects.all()
-    serializer = HuertoSerializer(huertos,many=True)
+    serializer = HuertoSerializerMejorado(huertos,many=True)
     return Response(serializer.data)
