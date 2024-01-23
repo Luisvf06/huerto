@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'location_field',
     'bootstrap5',
     'django_bootstrap_icons',
-    'rest_framework'
+    'rest_framework',
+    'oauth2_provider',
     #'django.contrib.gis'extension para trabajar con datos espaciales en postgre, no la instalo de momento ya no estoy con esa BD
     
 ]
@@ -138,3 +139,17 @@ Internal_IPS=["127.0.0.1"]
 AUTH_USER_MODEL='Huerto.Usuario'
 LOGIN_REDIRECT_URL= 'index'
 LOGOUT_REDIRECT_URL='index'
+
+OAUTH2_PROVIDER = {
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Acceso a los grupos'}
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
