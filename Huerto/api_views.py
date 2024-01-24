@@ -14,11 +14,12 @@ def huerto_list(request):
 
 @api_view(['GET'])
 def huerto_buscar(request):
-    if(request.user.has_perm("huerto.view_huerto")):
+    if(request.user.has_perm("Huerto.view_huerto")):
         formulario=BusquedaHuerto(request.query_params)
         if(formulario.is_valid()):
             texto=formulario.data.get('textoBusqueda')
             huertos = Huerto.objects.prefetch_related("usuario")
+            print(huertos)
             huertos = huertos.filter(sitio__startswith=texto).all()
             serializer=HuertoSerializerMejorado(huertos,many=True)
             return Response(serializer.data)

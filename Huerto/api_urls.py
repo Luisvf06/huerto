@@ -4,5 +4,4 @@ urlpatterns = [
     path('huertos',huerto_list),
     path('huerto_busqueda_simple',huerto_buscar),
     
-    
 ]
