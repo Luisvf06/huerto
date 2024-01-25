@@ -14,7 +14,7 @@ def huerto_list(request):
 
 @api_view(['GET'])
 def huerto_buscar(request):
-    if(request.user.has_perm("Huerto.view_huerto")):
+    #if(request.user.has_perm("Huerto.view_huerto")):
         formulario=BusquedaHuerto(request.query_params)
         if(formulario.is_valid()):
             texto=formulario.data.get('textoBusqueda')
@@ -25,5 +25,40 @@ def huerto_buscar(request):
             return Response(serializer.data)
         else:
             return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
+    #else:
+    #    return Response({"Sin permisos"},status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def huerto_buscar_avanzado(request):
+    
+    if (len(request.query_params)>0):
+        formulario=BusquedaAvanzadaHuerto(request.GET)
+        if formulario.is_valid():
+            mensaje_busqueda="Se ha buscado por:\n"
+            QShuerto=Huerto.objects.prefetch_related("usuario")
+
+            area_maxima=formulario.cleaned_data.get("area_maxima")
+            area_minima=formulario.cleaned_data.get("area_minima")
+
+            #if(textoBusqueda!=""):
+            #    QShuerto=QShuerto.filter(Q(ubicacion__startswith=texto) | Q(usuario__nombre_usuario__contains=texto))
+            #    mensaje_busqueda+="contenido de la localizacion o nombre de usuario"
+            #if not sitio is None:
+            #    mensaje_busqueda+='Sitio: '+sitio
+            #if not sustrato is None:
+            #    mensaje_busqueda+='Sustrato: '+sustrato
+            if not area_minima is None:
+                mensaje_busqueda += "El área mínima será igual o mayor  a"+ str(area_minima)+"\n"
+                QShuerto=QShuerto.filter(area__gte=float(area_minima))
+            if not area_maxima is None:
+                mensaje_busqueda +="El área máxima será igual o menor a "+ str(area_maxima)+"\n"
+                QShuerto=QShuerto.filter(area__lte=float(area_maxima))
+            
+            huertos=QShuerto.all()
+            serializer=HuertoSerializerMejorado(huertos,many=True)
+            return Response(serializer.data)
+        else:
+            return Response(formulario.errors,status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response({"Sin permisos"},status=status.HTTP_400_BAD_REQUEST)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+            
