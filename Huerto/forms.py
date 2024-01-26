@@ -95,9 +95,11 @@ class BusquedaAvanzadaHuerto(forms.Form):
         sustrato=self.cleaned_data.get('sustrato')
         area_minima=self.cleaned_data.get('area_minima')
         area_maxima=self.cleaned_data.get('area_maxima')
+        sitio=self.cleaned_data.get('sitio')
 
 
         if ( len (sustrato)==0
+            and len(sitio)==0
             and area_minima==None
             and area_maxima==None
             ):
