@@ -5,13 +5,21 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from .forms import *
 from django.db.models import Q,Prefetch
+# views.py
+
+
 
 @api_view(['GET'])
 def huerto_list(request):
     huertos=Huerto.objects.all()
-    serializer = HuertoSerializerMejorado(huertos,many=True)
+    serializer = HuertoSerializer(huertos,many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def huerto_lista_mejorada(request):
+    huertos=Huerto.objects.all()
+    serializer = HuertoSerializerMejorado(huertos,many=True)
+    return Response(serializer.data)
 @api_view(['GET'])
 def huerto_buscar(request):
     #if(request.user.has_perm("Huerto.view_huerto")):

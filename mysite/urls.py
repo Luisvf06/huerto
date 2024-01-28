@@ -21,6 +21,11 @@ from django.conf.urls import handler400
 from django.conf.urls import handler403
 from django.conf.urls import handler404
 from django.conf.urls import handler500
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from rest_framework_simplejwt.views import TokenVerifyView
 handler400=handler="Huerto.views.mi_error_400"
 handlar403=handler="Huerto.views.mi_error_403"
 handler404 = handler="Huerto.views.mi_error_404"#esto en la diapositiva aparece como handler404="app.views.view"
@@ -30,5 +35,8 @@ urlpatterns = [
     path('',include('Huerto.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
     path('api/v1/',include('Huerto.api_urls')),#en api se puede poner lo que queramos pero v1 es importante 
-    path('oauth2/',include('oauth2_provider.urls',namespace='oauth2_provider'))
+    path('oauth2/',include('oauth2_provider.urls',namespace='oauth2_provider')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]

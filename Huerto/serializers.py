@@ -1,12 +1,12 @@
 from .models import *
 from rest_framework import serializers
-'''
+
 class HuertoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Huerto
         fields= '__all__'
-'''        
+    
 
         
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -20,5 +20,5 @@ class HuertoSerializerMejorado(serializers.ModelSerializer):
     usuario=UsuarioSerializer(read_only=True, many=True)
     
     class Meta:
+        fields =  ('id','ubicacion','sitio','sustrato','area','acidez','abonado','usuario')
         model = Huerto
-        fields =  ('ubicacion','sitio','sustrato','area','acidez','abonado','usuario')

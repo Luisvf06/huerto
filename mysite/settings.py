@@ -11,9 +11,25 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+import environ
+
+env = environ.Env()
+import os
+env=environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR,'.env'))
+SECRET_KEY=env("SECRET_KEY")
+# Lee las variables de entorno desde el archivo .env
+environ.Env.read_env()
+
+# Define las claves para cada tipo de usuario
+CLAVE_USU = env('CLAVE_USU', default='')
+CLAVE_USU_PREMIUM = env('CLAVE_USU_PREMIUM', default='')
+CLAVE_ADMINISTRADOR = env('CLAVE_ADMINISTRADOR', default='')
+
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -141,15 +157,30 @@ LOGIN_REDIRECT_URL= 'index'
 LOGOUT_REDIRECT_URL='index'
 
 OAUTH2_PROVIDER = {
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Acceso a los grupos'},'ACCESS_TOKENS_EXPIRE_SECONDS':360000000000}
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Acceso a los grupos'},'ACCESS_TOKENS_EXPIRE_SECONDS':3600000000}
 
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        #'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 
     'DEFAULT_PERMISSION_CLASSES': (
-        #'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',
     ),
+}
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
+    'ROTATE_REFRESH_TOKENS': False,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }

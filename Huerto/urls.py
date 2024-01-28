@@ -1,6 +1,6 @@
 from django.urls import path 
 from .import views
-
+from .views import TokenObtainView
 urlpatterns =[
     path('',views.index,name='index'),
     
@@ -90,6 +90,10 @@ urlpatterns =[
     path('promocion/editar/<int:id_promocion>',views.promocion_editar,name='promocion_editar'),
     path('promocion/buscar/',views.promocion_buscar,name='promocion_buscar'),
     path('promocion/eliminar/<int:id_promocion>',views.promocion_eliminar,name='promocion_eliminar'),
-    path('promocion/promocion',views.promocion_lista,name='promocion_lista')
+    path('promocion/promocion',views.promocion_lista,name='promocion_lista'),
+
+
+
+    path('obtain-token/', TokenObtainView.as_view(), name='token-obtain'),
     
 ]

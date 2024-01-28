@@ -879,3 +879,37 @@ def promocion_lista(request):
     promocion=Promocion.objects.select_related('usuario')
     promocion=promocion.all()
     return render(request,'promocion/promocionlista.html',{'promocion':promocion})
+
+
+
+
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+class TokenObtainView(APIView):
+    def post(self, request, *args, **kwargs):
+        # Obtén el nombre de usuario y la contraseña de la solicitud POST
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        # Realiza la autenticación del usuario (puedes personalizar esto según tus necesidades)
+        user = User.objects.filter(username=username).first()
+
+        if user and user.check_password(password):
+            # Si la autenticación es exitosa, crea un token de acceso y actualización
+            refresh = RefreshToken.for_user(user)
+
+            # Accede al token de acceso y al token de actualización
+            access_token = str(refresh.access_token)
+            refresh_token = str(refresh)
+
+            # Devuelve los tokens en la respuesta
+            return Response({
+                'access_token': access_token,
+                'refresh_token': refresh_token,
+            }, status=status.HTTP_200_OK)
+        else:
+            # Si la autenticación falla, devuelve un error
+            return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
