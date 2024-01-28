@@ -20,7 +20,7 @@ env = environ.Env()
 import os
 env=environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR,'.env'))
-SECRET_KEY=env("SECRET_KEY")
+
 # Lee las variables de entorno desde el archivo .env
 environ.Env.read_env()
 
