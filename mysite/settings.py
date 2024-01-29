@@ -157,7 +157,7 @@ LOGIN_REDIRECT_URL= 'index'
 LOGOUT_REDIRECT_URL='index'
 
 OAUTH2_PROVIDER = {
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Acceso a los grupos'},'ACCESS_TOKENS_EXPIRE_SECONDS':3600000000}
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Acceso a los grupos'},'ACCESS_TOKENS_EXPIRE_SECONDS':360000}
 
 
 REST_FRAMEWORK = {

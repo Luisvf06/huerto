@@ -5,7 +5,7 @@ django-location-field~=2.7.2
 django-debug-toolbar~=4.2.0
 django-environ
 #si uso este no uso el decouple
-#python-decouple==3.5
+python-decouple==3.5
 djangorestframework
 djangorestframework-simplejwt
 django-bootstrap-v5~=1.0.11 

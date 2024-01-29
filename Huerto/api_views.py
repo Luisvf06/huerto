@@ -20,6 +20,19 @@ def huerto_lista_mejorada(request):
     huertos=Huerto.objects.all()
     serializer = HuertoSerializerMejorado(huertos,many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def gasto_list(request):
+    gastos=Gastos.objects.select_related('usuario').all()
+    serializer=GastosSerializerMejorado(gastos,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def blog_list(request):
+    blogs=Blog.objects.select_related('usuario').all()
+    serializer=BlogSerializerMejorado(blogs,many=True)
+    return Response(serializer.data)
+
 @api_view(['GET'])
 def huerto_buscar(request):
     #if(request.user.has_perm("Huerto.view_huerto")):
