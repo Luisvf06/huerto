@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from .forms import *
 from django.db.models import Q,Prefetch
+from requests.exceptions import HTTPError
 # views.py
 
 
@@ -95,3 +96,7 @@ def usuario_list(request):
     usuarios=Usuario.objects.all()
     serializer=UsuarioSerializer(usuarios,many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def huerto_crear(request):
+    pass
