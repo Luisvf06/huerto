@@ -82,4 +82,16 @@ def huerto_buscar_avanzado(request):
             return Response(formulario.errors,status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
-            
+
+@api_view(['GET'])
+def huerto_obtener(request,huerto_id):
+    huerto=Huerto.objects.prefetch_related('usuario')
+    huerto=huerto.get(id=huerto_id)
+    serializer=HuertoSerializerMejorado(huerto)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def usuario_list(request):
+    usuarios=Usuario.objects.all()
+    serializer=UsuarioSerializer(usuarios,many=True)
+    return Response(serializer.data)

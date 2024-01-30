@@ -9,5 +9,7 @@ urlpatterns = [
     path('huerto_busqueda_avanzada',huerto_buscar_avanzado),
     path('gastos',gasto_list),
     path('blogs',blog_list),
-    
+    path('huerto/<int_huerto_id>',huerto_obtener),
+    path('usuario',usuario_list),
+    path('huetos/crear',huerto_crear)
 ]
