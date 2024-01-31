@@ -47,3 +47,13 @@ class BlogSerializerMejorado(serializers.ModelSerializer):
                 'etiqueta',
                 'usuario')
         model=Gastos
+        
+
+class HuertoSerializerCreate(serializers.ModelSerializer):
+    class Meta:
+        model =Huerto
+        fields = ['ubicacion','sitio','sustrato','area','acidez','abobado']
+        
+    def validate_ubicacion(self,ubicacion):
+        huerto_Ubicacion=Huerto.objects.filter(ubicacion[0]==ubicacion[0]and ubicacion[1]==ubicacion[1]).first()
+        

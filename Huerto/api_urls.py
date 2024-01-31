@@ -11,5 +11,5 @@ urlpatterns = [
     path('blogs',blog_list),
     path('huerto/<int_huerto_id>',huerto_obtener),
     path('usuario',usuario_list),
-    path('huetos/crear',huerto_crear)
+    path('huertos/crear',huerto_crear)
 ]
