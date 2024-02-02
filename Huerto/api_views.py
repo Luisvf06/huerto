@@ -56,7 +56,6 @@ def huerto_buscar_avanzado(request):
     if (len(request.query_params)>0):
         formulario=BusquedaAvanzadaHuerto(request.GET)
         if formulario.is_valid():
-            mensaje_busqueda="Se ha buscado por:\n"
             QShuerto=Huerto.objects.prefetch_related("usuario")
 
             area_maxima=formulario.cleaned_data.get("area_maxima")
@@ -70,10 +69,8 @@ def huerto_buscar_avanzado(request):
             #if not sustrato is None:
             #    mensaje_busqueda+='Sustrato: '+sustrato
             if not area_minima is None:
-                mensaje_busqueda += "El área mínima será igual o mayor  a"+ str(area_minima)+"\n"
                 QShuerto=QShuerto.filter(area__gte=float(area_minima))
             if not area_maxima is None:
-                mensaje_busqueda +="El área máxima será igual o menor a "+ str(area_maxima)+"\n"
                 QShuerto=QShuerto.filter(area__lte=float(area_maxima))
             
             huertos=QShuerto.all()
@@ -83,6 +80,14 @@ def huerto_buscar_avanzado(request):
             return Response(formulario.errors,status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def gastos_buscar_avanzado(request):
+    if (len(request.query_params)>0):
+        formulario=BusquedaAvanzadaGasto(request.GET)
+        if formulario.is_valid():
+            QSGasto=Gastos.objects.select_related('usuario')
+            facturas=formulario.cleaned_data.get("facturas")
 
 @api_view(['GET'])
 def huerto_obtener(request,huerto_id):
