@@ -124,7 +124,7 @@ def blog_buscar_avanzado(request):
 
             #Comprobamos fechas
             if(not fecha_desde is None):
-                QSblog = QSblog.filter(fecha__gte=fecha_desde)
+                QSBlog = QSBlog.filter(fecha__gte=fecha_desde)
 
             if(not fecha_hasta is None):
                 QSBlog = QSBlog.filter(fecha__lte=fecha_hasta)
