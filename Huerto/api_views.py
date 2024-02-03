@@ -28,6 +28,8 @@ def gasto_list(request):
     serializer=GastosSerializerMejorado(gastos,many=True)
     return Response(serializer.data)
 
+
+
 @api_view(['GET'])
 def blog_list(request):
     blogs=Blog.objects.select_related('usuario').all()
@@ -83,11 +85,57 @@ def huerto_buscar_avanzado(request):
 
 @api_view(['GET'])
 def gastos_buscar_avanzado(request):
-    if (len(request.query_params)>0):
-        formulario=BusquedaAvanzadaGasto(request.GET)
+    if(len(request.GET)>0):
+        formulario= BusquedaAvanzadaGasto(request.GET)
         if formulario.is_valid():
-            QSGasto=Gastos.objects.select_related('usuario')
-            facturas=formulario.cleaned_data.get("facturas")
+            QSgastos=Gastos.objects.select_related('usuario')
+            gasto_busqueda=formulario.cleaned_data.get('gasto_busqueda')
+            texto_busqueda=formulario.cleaned_data.get('texto_busqueda')
+            if not gasto_busqueda is None:
+                QSgastos = QSgastos.filter(Q(herramientas=gasto_busqueda) | Q(facturas=gasto_busqueda) | Q(imprevistos=gasto_busqueda))
+            if texto_busqueda != "":
+                QSgastos = QSgastos.filter(Descripcion__contains=texto_busqueda)
+            gastos=QSgastos.all()
+            serializer=GastosSerializerMejorado(gastos,many=True)
+            return Response(serializer.data)
+        else:
+            return Response (formulario.errors,status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def blog_buscar_avanzado(request):
+    if(len(request.GET)>0):
+        formulario= BusquedaAvanzadaBlogForm(request.GET)
+        if formulario.is_valid():
+            QSBlog=Blog.objects.select_related('usuario')
+            etiqueta=formulario.cleaned_data.get('etiqueta')
+            publicacion = formulario.cleaned_data.get('publicacion')
+            fecha_desde = formulario.cleaned_data.get('fecha_desde')
+            fecha_hasta = formulario.cleaned_data.get('fecha_hasta')
+            if(etiqueta != ""):
+                QSBlog = QSBlog.filter(etiqueta__contains=etiqueta)
+                
+            if(len(publicacion) > 0):
+                filtroOR = Q(publicacion=publicacion[0])
+                for publi in publicacion[1:]:
+                    filtroOR |= Q(publi=publi)
+                QSBlog =  QSBlog.filter(filtroOR)
+
+            #Comprobamos fechas
+            if(not fecha_desde is None):
+                QSblog = QSblog.filter(fecha__gte=fecha_desde)
+
+            if(not fecha_hasta is None):
+                QSBlog = QSBlog.filter(fecha__lte=fecha_hasta)
+            
+            blogs = QSBlog.all()
+            serializer=BlogSerializerMejorado(blogs,many=True)
+            return Response(serializer.data)
+        else:
+            return Response (formulario.errors,status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def huerto_obtener(request,huerto_id):

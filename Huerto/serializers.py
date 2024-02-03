@@ -46,7 +46,7 @@ class BlogSerializerMejorado(serializers.ModelSerializer):
                 'fecha',
                 'etiqueta',
                 'usuario')
-        model=Gastos
+        model=Blog
         
 
 class HuertoSerializerCreate(serializers.ModelSerializer):
