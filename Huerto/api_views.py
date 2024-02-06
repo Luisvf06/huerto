@@ -152,4 +152,17 @@ def usuario_list(request):
 
 @api_view(['POST'])
 def huerto_crear(request):
+    serializers= HuertoSerializerCreate(data=request.data)
+    if serializers.is_valid():
+        try:
+            
+            serializers.save()
+            return Response("Huerto creado")
+        except Exception as error:
+            return Response(error,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def gasto_crear(request):
     pass
