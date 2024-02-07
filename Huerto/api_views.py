@@ -165,4 +165,16 @@ def huerto_crear(request):
 
 @api_view(['POST'])
 def gasto_crear(request):
-    pass
+    print(request.data)
+    gastosSerializer=GastoSerializerCreate(data=request.data)
+    if gastosSerializer.is_valid():
+        try:
+            gastosSerializer.save()
+            return Response("Gasto creado")
+        
+        except serializers.ValidationError as error:
+            return Response(error.detail,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(gastosSerializer.errors,status=status.HTTP_400_BAD_REQUEST)

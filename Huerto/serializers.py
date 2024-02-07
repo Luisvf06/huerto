@@ -1,4 +1,5 @@
 from .models import *
+from .forms import *
 from rest_framework import serializers
 import re
 class HuertoSerializer(serializers.ModelSerializer):
@@ -98,19 +99,25 @@ class GastoSerializerCreate(serializers.ModelSerializer):
     def validate_herramientas(self,herramientas):
         if herramientas is None:
             self.add_error('herramientas', 'Este campo no puede estar en blanco')
-
+        return herramientas
     def validate_herramientas(self,facturas):
         if facturas is None:
             self.add_error('facturas', 'Este campo no puede estar en blanco')
+        return facturas
     
     def validate_herramientas(self,imprevistos):
         if imprevistos is None:
             self.add_error('imprevistos', 'Este campo no puede estar en blanco')
-        
+        return imprevistos
+    
     def validate_herramientas(self,Descripcion):
         if Descripcion =="":
             self.add_error('Descripcion', 'Este campo no puede estar en blanco')
+        return Descripcion
     
     def validate_fecha(self,fecha):
-        pass
+        hoy=date.today()
+        if fecha and hoy<fecha:
+            self.add_error('fecha','la fecha del gasto no puede ser posterior al día de hoy')
+        return fecha
     
