@@ -19,4 +19,5 @@ urlpatterns = [
     path('huertos/crear',huerto_crear),
     
     path('gastos/crear',gasto_crear),
+    path('blog/crear',blog_crear),
 ]

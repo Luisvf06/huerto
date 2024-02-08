@@ -178,3 +178,18 @@ def gasto_crear(request):
             return Response(error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(gastosSerializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+def blog_crear(request):
+    print(request.data)
+    blogSerializer=BlogSerializerCreate(data=request.data)
+    if blogSerializer.is_valid():
+        try:
+            blogSerializer.save()
+            return Response("Blog creado")
+        except serializers.ValidationError as error:
+            return Response(error.detail,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(repr(error),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(blogSerializer.errors,status=status.HTTP_400_BAD_REQUEST)

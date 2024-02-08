@@ -89,35 +89,50 @@ class HuertoSerializerCreate(serializers.ModelSerializer):
 
 class GastoSerializerCreate(serializers.ModelSerializer):
     class Meta:
-        model=Gastos
-        fields =('herramientas',
-                'facturas',
-                'imprevistos',
-                'Descripcion',
-                'fecha',
-                'usuario')
-    def validate_herramientas(self,herramientas):
+        model = Gastos
+        fields = ('herramientas', 'facturas', 'imprevistos', 'Descripcion', 'fecha', 'usuario')
+
+    def validate_herramientas(self, herramientas):
         if herramientas is None:
             self.add_error('herramientas', 'Este campo no puede estar en blanco')
         return herramientas
-    def validate_herramientas(self,facturas):
+
+    def validate_facturas(self, facturas):
         if facturas is None:
             self.add_error('facturas', 'Este campo no puede estar en blanco')
         return facturas
-    
-    def validate_herramientas(self,imprevistos):
+
+    def validate_imprevistos(self, imprevistos):
         if imprevistos is None:
             self.add_error('imprevistos', 'Este campo no puede estar en blanco')
         return imprevistos
-    
-    def validate_herramientas(self,Descripcion):
-        if Descripcion =="":
-            self.add_error('Descripcion', 'Este campo no puede estar en blanco')
+
+    def validate_Descripcion(self, Descripcion):
+        if len(Descripcion) < 5:
+            self.add_error('Descripcion', 'Mínimo 5 caracteres')
         return Descripcion
+
+    def validate_fecha(self, fecha):
+        hoy = date.today()
+        if fecha and hoy < fecha:
+            self.add_error('fecha', 'La fecha del gasto no puede ser posterior al día de hoy')
+        return fecha
+
+class BlogSerializerCreate(serializers.ModelSerializer):
+    class Meta:
+        model=Blog
+        fields=['publicacion','etiqueta','fecha','usuario']
+    def validate_publicacion(self,publicacion):
+        if publicacion is not None and len(publicacion)<1:
+            self.add_error('publicacion','Debes elegir una categoría')
+        return publicacion
     
+    def validate_etiqueta(self,etiqueta):
+        if len(etiqueta)<3:
+            self.add_error('etiqueta','La etiqueta debe tener al menos 3 caracteres')
+        return etiqueta
     def validate_fecha(self,fecha):
         hoy=date.today()
         if fecha and hoy<fecha:
-            self.add_error('fecha','la fecha del gasto no puede ser posterior al día de hoy')
+            self.add_error('fecha','La fecha de la publicación no puede ser una fecha futura')
         return fecha
-    
