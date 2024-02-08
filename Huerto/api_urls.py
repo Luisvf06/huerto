@@ -16,5 +16,7 @@ urlpatterns = [
     path('blog_busqueda_avanzada',blog_buscar_avanzado),
 
     path('usuario',usuario_list),
-    path('huertos/crear',huerto_crear)
+    path('huertos/crear',huerto_crear),
+    
+    path('gastos/crear',gasto_crear),
 ]
