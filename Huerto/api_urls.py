@@ -21,4 +21,5 @@ urlpatterns = [
     path('huertos/crear',huerto_crear),
     path('huertos/eliminar/<int:huerto_id>',huerto_eliminar),
     path('gastos/crear',gasto_crear),
+    path('blog/crear',blog_crear),
 ]
