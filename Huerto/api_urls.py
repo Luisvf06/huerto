@@ -13,10 +13,12 @@ urlpatterns = [
     
     path('blogs',blog_list),
     path('huerto/<int_huerto_id>',huerto_obtener),
+    path('gasto/<int_gasto_id>',gasto_obtener),
+    path('blog/<int_blog_id>',blog_obtener),
     path('blog_busqueda_avanzada',blog_buscar_avanzado),
 
     path('usuario',usuario_list),
     path('huertos/crear',huerto_crear),
-    
+    path('huertos/eliminar/<int:huerto_id>',huerto_eliminar),
     path('gastos/crear',gasto_crear),
 ]

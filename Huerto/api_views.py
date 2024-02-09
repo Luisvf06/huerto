@@ -145,6 +145,20 @@ def huerto_obtener(request,huerto_id):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def gasto_obtener(request,gasto_id):
+    gasto=Gastos.objects.select_related('usuario')
+    gasto=gasto.get(id=gasto_id)
+    serializer=GastosSerializerMejorado(gasto)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def blog_obtener(request,blog_id):
+    blog=Blog.objects.select_related('usuario')
+    blog=blog.get(id=blog_id)
+    serializer=GastosSerializerMejorado(blog)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def usuario_list(request):
     usuarios=Usuario.objects.all()
     serializer=UsuarioSerializer(usuarios,many=True)
@@ -178,3 +192,14 @@ def gasto_crear(request):
             return Response(error, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(gastosSerializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['DELETE'])
+def huerto_eliminar(request,huerto_id):
+    huerto=Huerto.objects.get(id=huerto_id)
+    try:
+        huerto.delete()
+        return Response("Huerto eliminado")
+    except Exception as error:
+        return Response (error,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
