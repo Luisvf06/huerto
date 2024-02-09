@@ -29,7 +29,8 @@ class GastosSerializerMejorado(serializers.ModelSerializer):
     usuario=UsuarioSerializer()
 
     class Meta:
-        fields =('herramientas',
+        fields =('id',
+                'herramientas',
                 'facturas',
                 'imprevistos',
                 'Descripcion',
@@ -43,7 +44,8 @@ class BlogSerializerMejorado(serializers.ModelSerializer):
     usuario=UsuarioSerializer()
 
     class Meta:
-        fields=('publicacion',
+        fields=('id',
+                'publicacion',
                 'fecha',
                 'etiqueta',
                 'usuario')

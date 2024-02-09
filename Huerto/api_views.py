@@ -203,7 +203,26 @@ def huerto_eliminar(request,huerto_id):
         return Response("Huerto eliminado")
     except Exception as error:
         return Response (error,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+@api_view(['DELETE'])
+def gastos_eliminar(request,gastos_id):
+    gastos=Gastos.objects.get(id=gastos_id)
+    try:
+        gastos.delete()
+        return Response("Gastos eliminado")
+    except Exception as error:
+        return Response (error,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+def blog_eliminar(request,blog_id):
+    blog=Blog.objects.get(id=blog_id)
+    try:
+        blog.delete()
+        return Response("Blog eliminado")
+    except Exception as error:
+        return Response (error,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @api_view(['POST'])
 def blog_crear(request):
     print(request.data)

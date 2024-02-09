@@ -20,6 +20,8 @@ urlpatterns = [
     path('usuario',usuario_list),
     path('huertos/crear',huerto_crear),
     path('huertos/eliminar/<int:huerto_id>',huerto_eliminar),
+    path('gastos/eliminar/<int:gastos_id>',gastos_eliminar),
+    path('blog/eliminar/<int:blog_id>',blog_eliminar),
     path('gastos/crear',gasto_crear),
     path('blog/crear',blog_crear),
 ]
