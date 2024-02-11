@@ -237,3 +237,136 @@ def blog_crear(request):
             return Response(repr(error),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(blogSerializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+def huerto_editar(request,huerto_id):
+    huerto=Huerto.objects.get(id=huerto_id)
+    huertoserializer=HuertoSerializerCreate(data=request.data,instance=huerto)
+    if huertoserializer.is_valid():
+        try:
+            huertoserializer.save()
+            return Response("Huerto editado")
+        except serializers.ValidationError as error:
+            return Response(error.detail,satus=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(repr(error),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(huertoserializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['PUT'])
+def gasto_editar(request,gasto_id):
+    gasto=Gastos.objects.get(id=gasto_id)
+    gastoserializer=GastoSerializerCreate(data=request.data,instance=gasto)
+    if gastoserializer.is_valid():
+        try:
+            gastoserializer.save()
+            return Response("Gasto editado")
+        except serializers.ValidationError as error:
+            return Response(error.detail,satus=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(repr(error),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(gastoserializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    
+
+@api_view(['PUT'])
+def blog_editar(request,blog_id):
+    blog=Blog.objects.get(id=blog_id)
+    blogserializer=BlogSerializerCreate(data=request.data,instance=blog)
+    if blogserializer.is_valid():
+        try:
+            blogserializer.save()
+            return Response("Blog editado")
+        except serializers.ValidationError as error:
+            return Response(error.detail,satus=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(repr(error),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(blogserializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PATCH'])
+def huerto_editar_ubicacion(request,huerto_id):
+    serializers = HuertoSerializerCreate(data=request.data)
+    huerto = huerto.objects.get(id=huerto_id)
+    serializers = HuertoSerializerActualizarUbicacion(data=request.data,instance=huerto)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("Campo EDITADO")
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PATCH'])
+def huerto_editar_sitio(request,huerto_id):
+    serializers = HuertoSerializerCreate(data=request.data)
+    huerto = huerto.objects.get(id=huerto_id)
+    serializers = HuertoSerializerActualizarSitio(data=request.data,instance=huerto)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("Campo EDITADO")
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PATCH'])
+def huerto_editar_sustrato(request,huerto_id):
+    serializers = HuertoSerializerCreate(data=request.data)
+    huerto = huerto.objects.get(id=huerto_id)
+    serializers = HuertoSerializerActualizarSustrato(data=request.data,instance=huerto)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("Campo EDITADO")
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PATCH'])
+def huerto_editar_abonado(request,huerto_id):
+    serializers = HuertoSerializerCreate(data=request.data)
+    huerto = huerto.objects.get(id=huerto_id)
+    serializers = HuertoSerializerActualizarAbonado(data=request.data,instance=huerto)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("Campo EDITADO")
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def huerto_editar_area(request,huerto_id):
+    serializers = HuertoSerializerCreate(data=request.data)
+    huerto = huerto.objects.get(id=huerto_id)
+    serializers = HuertoSerializerActualizarArea(data=request.data,instance=huerto)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("Campo EDITADO")
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def huerto_editar_acidez(request,huerto_id):
+    serializers = HuertoSerializerCreate(data=request.data)
+    huerto = huerto.objects.get(id=huerto_id)
+    serializers = HuertoSerializerActualizarAcidez(data=request.data,instance=huerto)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("Campo EDITADO")
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)

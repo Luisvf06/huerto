@@ -138,3 +138,65 @@ class BlogSerializerCreate(serializers.ModelSerializer):
         if fecha and hoy<fecha:
             self.add_error('fecha','La fecha de la publicación no puede ser una fecha futura')
         return fecha
+
+class HuertoSerializerActualizarUbicacion(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['ubicacion']
+
+    def validate_ubicacion(self,ubicacion):
+        huertoubi=Huerto.objects.filter(ubicacion=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una ubicacion con esas coordenadas')
+        return ubicacion
+    
+
+class HuertoSerializerActualizarAbonado(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['abonado']
+
+    def validate_ubicacion(self,abonado):
+        huertoubi=Huerto.objects.filter(abonado=abonado).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('el campo ya teiene ese valor')
+        return abonado
+    
+class HuertoSerializerActualizarSitio(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['ubicacion']
+
+    def validate_sitio(self,ubicacion):
+        huertoubi=Huerto.objects.filter(sitio=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya esta escogido ese campo')
+        return ubicacion
+
+class HuertoSerializerActualizarSustrato(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['sustrato']
+
+    def validate_ubicacion(self,ubicacion):
+        huertoubi=Huerto.objects.filter(sustrato=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay un sustato con ese valor')
+        return ubicacion
+
+class HuertoSerializerActualizarArea(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['area']
+
+    def validate_ubicacion(self,ubicacion):
+        huertoubi=Huerto.objects.filter(area=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay un area asi')
+        return ubicacion
+
+class HuertoSerializerActualizarAcidez(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['ubicacion']
+
+    def validate_ubicacion(self,ubicacion):
+        huertoubi=Huerto.objects.filter(acidez=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una ubicacion con esas coordenadas')
+        return ubicacion
+    
