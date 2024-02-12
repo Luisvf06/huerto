@@ -37,4 +37,15 @@ urlpatterns = [
     path('huerto/actualizar/area/<int:huerto_id>',huerto_editar_area),
     path('huerto/actualizar/acidez/<int:huerto_id>',huerto_editar_acidez),
 
+    path('Gasto/actualizar/factura/<int:gasto_id>',gasto_editar_factura),
+    path('Gasto/actualizar/descripcion/<int:gasto_id>',gasto_editar_descripcion),
+    path('Gasto/actualizar/herramientas/<int:gasto_id>',gasto_editar_herramientas),
+    path('Gasto/actualizar/imprevistos/<int:gasto_id>',gasto_editar_imprevistos),
+    path('Gasto/actualizar/fecha/<int:gasto_id>',gasto_editar_fecha),
+
+    path('Blog/actualizar/Fecha/<int:blog_id>',blog_editar_fecha),
+    path('Blog/actualizar/etiqueta/<int:blog_id>',blog_editar_etiqueta),
+    path('Blog/actualizar/publicacion/<int:blog_id>',blog_editar_publicacion),
+
+
 ]
