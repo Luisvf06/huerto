@@ -29,7 +29,8 @@ class GastosSerializerMejorado(serializers.ModelSerializer):
     usuario=UsuarioSerializer()
 
     class Meta:
-        fields =('herramientas',
+        fields =('id',
+                'herramientas',
                 'facturas',
                 'imprevistos',
                 'Descripcion',
@@ -43,7 +44,8 @@ class BlogSerializerMejorado(serializers.ModelSerializer):
     usuario=UsuarioSerializer()
 
     class Meta:
-        fields=('publicacion',
+        fields=('id',
+                'publicacion',
                 'fecha',
                 'etiqueta',
                 'usuario')
@@ -149,3 +151,144 @@ class UsuarioSerializerRegistro(serializers.Serializer):
         if(not usuario is None):
             raise serializers.ValidationError("Ya existe un usuario con ese nombre")
         return username
+class HuertoSerializerActualizarUbicacion(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['ubicacion']
+
+    def validate_ubicacion(self,ubicacion):
+        huertoubi=Huerto.objects.filter(ubicacion=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una ubicacion con esas coordenadas')
+        return ubicacion
+    
+
+class HuertoSerializerActualizarAbonado(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['abonado']
+
+    def validate_ubicacion(self,abonado):
+        huertoubi=Huerto.objects.filter(abonado=abonado).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('el campo ya teiene ese valor')
+        return abonado
+    
+class HuertoSerializerActualizarSitio(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['ubicacion']
+
+    def validate_sitio(self,ubicacion):
+        huertoubi=Huerto.objects.filter(sitio=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya esta escogido ese campo')
+        return ubicacion
+
+class HuertoSerializerActualizarSustrato(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['sustrato']
+
+    def validate_ubicacion(self,ubicacion):
+        huertoubi=Huerto.objects.filter(sustrato=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay un sustato con ese valor')
+        return ubicacion
+
+class HuertoSerializerActualizarArea(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['area']
+
+    def validate_ubicacion(self,ubicacion):
+        huertoubi=Huerto.objects.filter(area=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay un area asi')
+        return ubicacion
+
+class HuertoSerializerActualizarAcidez(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['ubicacion']
+
+    def validate_ubicacion(self,ubicacion):
+        huertoubi=Huerto.objects.filter(acidez=ubicacion).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una ubicacion con esas coordenadas')
+        return ubicacion
+    
+class GastoSerializerActualizarFactura(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['factura']
+
+    def validate_ubicacion(self,factura):
+        huertoubi=Gastos.objects.filter(factura=factura).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una factura asi')
+        return factura
+
+class GastoSerializerActualizarDescripcion(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['Descripcion']
+
+    def validate_ubicacion(self,factura):
+        huertoubi=Gastos.objects.filter(Descripcion=factura).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una Descrp asi')
+        return factura
+
+
+class GastoSerializerActualizarHerramientas(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['herramientas']
+
+    def validate_ubicacion(self,herramientas):
+        huertoubi=Gastos.objects.filter(herramientas=herramientas).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una herramienta asi')
+        return herramientas
+
+class GastoSerializerActualizarImprevistos(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['Descripcion']
+
+    def validate_ubicacion(self,factura):
+        huertoubi=Gastos.objects.filter(Descripcion=factura).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una Descrp asi')
+        return factura
+    
+class GastoSerializerActualizarFecha(serializers.ModelSerializer):
+    class Meta:
+        model=Huertofields=['fecha']
+
+    def validate_ubicacion(self,factura):
+        huertoubi=Gastos.objects.filter(Descripcion=factura).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una Descrp asi')
+        return factura
+    
+class BlogSerializerActualizarFecha(serializers.ModelSerializer):
+    class Meta:
+        model=Blogfields=['fecha']
+
+    def validate_ubicacion(self,factura):
+        huertoubi=Gastos.objects.filter(fecha=factura).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una fecha asi')
+        return factura
+    
+class BlogSerializerActualizarEtiqueta(serializers.ModelSerializer):
+    class Meta:
+        model=Blogfields=['etiqueta']
+
+    def validate_ubicacion(self,factura):
+        huertoubi=Blog.objects.filter(etiqueta=factura).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una etiqueta asi')
+        return factura
+    
+class BlogSerializerActualizarPublicacion(serializers.ModelSerializer):
+    class Meta:
+        model=Blogfields=['publicacion']
+
+    def validate_ubicacion(self,factura):
+        huertoubi=Blog.objects.filter(publicacion=factura).first()
+        if(not huertoubi is None and huertoubi.id !=self.instance.id):
+            raise serializers.ValidationError('ya hay una publicacion asi')
+        return factura
