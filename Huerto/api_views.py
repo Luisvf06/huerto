@@ -6,6 +6,7 @@ from rest_framework import status
 from .forms import *
 from django.db.models import Q,Prefetch
 from requests.exceptions import HTTPError
+from django.contrib.auth.models import Group
 # views.py
 
 
@@ -218,3 +219,46 @@ def blog_crear(request):
             return Response(repr(error),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(blogSerializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
+
+class registrar(generics.CreateAPIView):
+    serializer_class=UsuarioSerializer
+    permission_classes=[AllowAny]
+    
+    def create(self,request,*args,**kwargs):
+        serializers=UsuarioSerializerRegistro(data=request.data)
+        if serializers.is_valid():
+            try:
+                rol=request.data.get('rol')
+                user=Usuario.objects.create_user(
+                    username=serializers.data.get('username'),
+                    email=serializers.data.get('email'),
+                    password=serializers.data.get('password'),
+                    rol=rol
+                )
+                if(rol==Usuario.USU):
+                    grupo=Group.objects.get(name='Usuarios')
+                    grupo.user_set.add(user)
+                    usu=Usu.objects.create(usuario=user)
+                    usu.save()
+                elif(rol==Usuario.USU_PREMIUM):
+                    grupo=Group.objects.get(name="Usuarios premium")
+                    grupo.user_set.add(user)
+                    usu_prem=Usu_premium.objects.create(usuario=user)
+                    usu_prem.save()
+                usuarioSerilizado=UsuarioSerializer(user)
+                return Response(usuarioSerilizado.data)
+            except Exception as error:
+                return Response(error,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(serializers.errors,sttus=status.HTTP_400_BAD_REQUEST)
+
+from oauth2_provider.models import AccessToken
+@api_view(['GET'])
+def obtener_usuario_token(request,token):
+    ModeloToken=AccessToken.objects.get(token=token)
+    usuario=Usuario.objects.get(id=ModeloToken.id)
+    serializer=UsuarioSerializer(usuario)
+    return Response(serializer.data)

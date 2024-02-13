@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'django_bootstrap_icons',
     'rest_framework',
     'oauth2_provider',
+    'corsheaders'
     #'django.contrib.gis'extension para trabajar con datos espaciales en postgre, no la instalo de momento ya no estoy con esa BD
     
 ]
@@ -72,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -186,3 +188,5 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
+
+CORS_ALLOWED_ORIGINS=["http://127.0.0.1:8000"]
