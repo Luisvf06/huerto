@@ -144,14 +144,26 @@ class UsuarioSerializerRegistro(serializers.Serializer):
     password1=serializers.CharField()
     password2=serializers.CharField()
     email=serializers.EmailField()
-    rol=serializers.ImageField()
+    rol=serializers.IntegerField()
     
-    def validate(self, username):
+    def validate_nombre(self, username):
         usuario=Usuario.objects.filter(username=username).first()
         if(not usuario is None):
             raise serializers.ValidationError("Ya existe un usuario con ese nombre")
         return username
-class HuertoSerializerActualizarUbicacion(serializers.ModelSerializer):
+    
+    def validate_contra(self,password1,password2):
+        if password1!=password2:
+            raise serializers.ValidationError("Las contraseñas no coinciden")
+        return password1
+    def validate_email(self,email):
+        usuario=Usuario.objects.filter(email=email).first()
+        if(not usuario is None):
+            raise serializers.ValidationError("Ese correo electrónico ya está registrado")
+        return email
+    def validate_rol(self,rol,username):
+        rol not in [1,2]
+        return rol
     class Meta:
         model=Huertofields=['ubicacion']
 
