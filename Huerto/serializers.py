@@ -161,7 +161,7 @@ class UsuarioSerializerRegistro(serializers.Serializer):
         if(not usuario is None):
             raise serializers.ValidationError("Ese correo electrónico ya está registrado")
         return email
-    def validate_rol(self,rol,username):
+    def validate_rol(self,rol):
         rol not in [1,2]
         return rol
     class Meta:
