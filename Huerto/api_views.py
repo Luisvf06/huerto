@@ -6,6 +6,7 @@ from rest_framework import status
 from .forms import *
 from django.db.models import Q,Prefetch
 from requests.exceptions import HTTPError
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import Group
 # views.py
 

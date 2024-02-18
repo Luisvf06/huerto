@@ -71,6 +71,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -190,3 +191,11 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS=["http://127.0.0.1:8000"]
+
+VIEWSET_METHOD_REGISTRY=(
+    "get_queryset",
+    "get_serializer_class",
+    "perform_create",
+    "perform_update",
+    "perform_destroy",
+)
