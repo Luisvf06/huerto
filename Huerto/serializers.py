@@ -50,7 +50,6 @@ class BlogSerializerMejorado(serializers.ModelSerializer):
                 'etiqueta',
                 'usuario')
         model=Blog
-        
 
 class HuertoSerializerCreate(serializers.ModelSerializer):
     class Meta:
@@ -172,7 +171,7 @@ class UsuarioSerializerRegistro(serializers.Serializer):
         if(not huertoubi is None and huertoubi.id !=self.instance.id):
             raise serializers.ValidationError('ya hay una ubicacion con esas coordenadas')
         return ubicacion
-    
+
 
 class HuertoSerializerActualizarAbonado(serializers.ModelSerializer):
     class Meta:
@@ -304,3 +303,28 @@ class BlogSerializerActualizarPublicacion(serializers.ModelSerializer):
         if(not huertoubi is None and huertoubi.id !=self.instance.id):
             raise serializers.ValidationError('ya hay una publicacion asi')
         return factura
+
+#tarea final
+#Gabriela 
+class PlantaSerializerMejorado(serializers.ModelSerializer):
+    tipo=serializers.CharField(source='get_tipo_display')
+    epoca_siembra=serializers.DateField(format=('%d-%m-%Y'))
+    ciclo=serializers.CharField(source='get_ciclo_display')
+    huerto=HuertoSerializer(read_only=True, many=True)
+
+    class Meta:
+        fields=('id',
+                'tipo',
+                'ciclo',
+                'nombre_comun',
+                'nombre_cientifico',
+                'phmax',
+                'phmin',
+                'epoca_siembra',
+                'tiempo_trasplante',
+                'temp_max',
+                'temp_min',
+                'horas_luz',
+                'demanda_hidrica',
+                'huerto')
+        model=Planta

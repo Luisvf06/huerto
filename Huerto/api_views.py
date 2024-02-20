@@ -8,6 +8,8 @@ from django.db.models import Q,Prefetch
 from requests.exceptions import HTTPError
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import Group
+from django.db.models import Q
+from datetime import datetime
 # views.py
 
 
@@ -528,3 +530,23 @@ def blog_editar_etiqueta(request,huerto_id):
             return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def plantas_estacion(request,estacion):
+    if estacion=='primavera':
+        plantas=Planta.objects.prefetch_related('huerto')
+        plantas=plantas.filter(Q(epoca_siembra__month__gte=3) &Q(epoca_siembra__month__lt=6))
+        serializer = PlantaSerializerMejorado(plantas,many=True)
+    elif estacion=='verano':
+        plantas=Planta.objects.prefetch_related('huerto')
+        plantas=plantas.filter(Q(epoca_siembra__month__gte=6) &Q(epoca_siembra__month__lt=9))
+        serializer = PlantaSerializerMejorado(plantas,many=True)
+    elif estacion=='otoño':
+        plantas=Planta.objects.prefetch_related('huerto')
+        plantas=plantas.filter(Q(epoca_siembra__month__gte=9) &Q(epoca_siembra__month__lt=12))
+        serializer = PlantaSerializerMejorado(plantas,many=True)
+    elif estacion=='invierno':
+        plantas=Planta.objects.prefetch_related('huerto')
+        plantas=plantas.filter(Q(Q(epoca_siembra__month__gte=1) &Q(epoca_siembra__month__lt=3)) | Q(epoca_siembra__month__gte=12))
+        serializer = PlantaSerializerMejorado(plantas,many=True)
+    return Response(serializer.data)

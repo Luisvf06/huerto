@@ -58,6 +58,7 @@ class Incidencia(models.Model):
     fecha_incidencia=models.DateField(default=timezone.now,db_column='fecha')
     huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE,related_name='huerto_incidencia')#entiendo que es 1-n porque aunque una incidencia puede ocurrir varias veces, como por ejemplo una inundacion, cada una es un hecho individual de cada huerto
 
+
 class Planta(models.Model):
     TIPO=[('HE','herbacea'),('AL','árbol'),('AO','arbusto')]
     tipo=models.CharField(max_length=2,choices=TIPO)
@@ -75,6 +76,7 @@ class Planta(models.Model):
     horas_luz=models.IntegerField()
     demanda_hidrica=models.FloatField(blank=True,null=True)
     huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE)
+
 
 class Riego(models.Model):#esta clase la planteé en un principio para que se relacionase de forma n-m con planta, pero decidí cambiar la relacion a 1-n añadiendo una tabla intermedia
     PRODUCTO=[('A','agua'),('F','fertilizante'),('L','lluvia'),('P','plaguicida')]
