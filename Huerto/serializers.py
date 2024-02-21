@@ -21,7 +21,7 @@ class HuertoSerializerMejorado(serializers.ModelSerializer):
     usuario=UsuarioSerializer(read_only=True, many=True)
     
     class Meta:
-        fields =  ('id','ubicacion','sitio','sustrato','area','acidez','abonado','usuario')
+        fields =  ('id','ubicacion','sitio','sustrato','area','acidez','abonado','disponible','usuario')
         model = Huerto
 
 class GastosSerializerMejorado(serializers.ModelSerializer):
@@ -307,24 +307,27 @@ class BlogSerializerActualizarPublicacion(serializers.ModelSerializer):
 #tarea final
 #Gabriela 
 class PlantaSerializerMejorado(serializers.ModelSerializer):
-    tipo=serializers.CharField(source='get_tipo_display')
-    epoca_siembra=serializers.DateField(format=('%d-%m-%Y'))
-    ciclo=serializers.CharField(source='get_ciclo_display')
-    huerto=HuertoSerializer(read_only=True, many=True)
+    tipo = serializers.CharField(source='get_tipo_display')
+    epoca_siembra = serializers.DateField(format=('%d-%m-%Y'))
+    ciclo = serializers.CharField(source='get_ciclo_display')
+    huerto = HuertoSerializer(read_only=True)  # Sin many=True si es una relación de uno a uno
 
     class Meta:
-        fields=('id',
-                'tipo',
-                'ciclo',
-                'nombre_comun',
-                'nombre_cientifico',
-                'phmax',
-                'phmin',
-                'epoca_siembra',
-                'tiempo_trasplante',
-                'temp_max',
-                'temp_min',
-                'horas_luz',
-                'demanda_hidrica',
-                'huerto')
-        model=Planta
+        fields = (
+            'id',
+            'tipo',
+            'ciclo',
+            'nombre_comun',
+            'nombre_cientifico',
+            'phmax',
+            'phmin',
+            'epoca_siembra',
+            'tiempo_trasplante',
+            'temp_max',
+            'temp_min',
+            'horas_luz',
+            'demanda_hidrica',
+            'huerto'
+        )
+        model = Planta
+

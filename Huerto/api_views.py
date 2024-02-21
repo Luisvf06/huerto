@@ -531,22 +531,32 @@ def blog_editar_etiqueta(request,huerto_id):
     else:
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#Tarea Final
+
+#Gabriela
 @api_view(['GET'])
 def plantas_estacion(request,estacion):
     if estacion=='primavera':
-        plantas=Planta.objects.prefetch_related('huerto')
+        plantas=Planta.objects.select_related('huerto')
         plantas=plantas.filter(Q(epoca_siembra__month__gte=3) &Q(epoca_siembra__month__lt=6))
         serializer = PlantaSerializerMejorado(plantas,many=True)
     elif estacion=='verano':
-        plantas=Planta.objects.prefetch_related('huerto')
+        plantas=Planta.objects.select_related('huerto')
         plantas=plantas.filter(Q(epoca_siembra__month__gte=6) &Q(epoca_siembra__month__lt=9))
         serializer = PlantaSerializerMejorado(plantas,many=True)
     elif estacion=='otoño':
-        plantas=Planta.objects.prefetch_related('huerto')
+        plantas=Planta.objects.select_related('huerto')
         plantas=plantas.filter(Q(epoca_siembra__month__gte=9) &Q(epoca_siembra__month__lt=12))
         serializer = PlantaSerializerMejorado(plantas,many=True)
     elif estacion=='invierno':
-        plantas=Planta.objects.prefetch_related('huerto')
+        plantas=Planta.objects.select_related('huerto')
         plantas=plantas.filter(Q(Q(epoca_siembra__month__gte=1) &Q(epoca_siembra__month__lt=3)) | Q(epoca_siembra__month__gte=12))
-        serializer = PlantaSerializerMejorado(plantas,many=True)
+    serializer = PlantaSerializerMejorado(plantas,many=True)
+    return Response(serializer.data)
+
+#Manuel
+def huerto_disponible(request):
+    huertos=Huerto.objects.prefetch_related('usuario')
+    huertos=huertos.filter(disponible=True)
+    serializer=HuertoSerializerMejorado(huertos,many=True)
     return Response(serializer.data)

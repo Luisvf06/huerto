@@ -50,7 +50,8 @@ class Huerto(models.Model):
     sustrato=models.CharField(max_length=3,choices=SUSTRATO)
     area=models.FloatField(blank=True,null=True)
     acidez=models.FloatField(blank=True,null=True)
-    abonado=models.BooleanField()#esto no sé si incluirlo aqui o no ya que es algo que se hace cada X tiempo, por lo que en ciertas ocasiones puede ser True y en otras False
+    abonado=models.BooleanField()
+    disponible=models.BooleanField()
     usuario=models.ManyToManyField(Usuario,related_name="usuario_huerto")
 
 class Incidencia(models.Model):
@@ -69,7 +70,9 @@ class Planta(models.Model):
     nombre_cientifico=models.CharField(max_length=30)
     phmax=models.FloatField()
     phmin=models.FloatField()
-    epoca_siembra=models.DateField(default=timezone.now,db_column='siembra')
+    epoca_siembra=models.DateField(default=timezone.now,db_column='siembra_recomendada')
+    fecha_siembra=models.DateField(default=timezone.now,db_column='siembra_real')#este campo y el siguiente los creo para la tarea de irene
+    recoleccion=models.DateField(default=timezone.now,db_column='fecha_recoleccion')
     tiempo_trasplante=models.IntegerField()
     temp_max=models.IntegerField()
     temp_min=models.IntegerField()
