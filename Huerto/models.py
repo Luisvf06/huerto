@@ -78,7 +78,7 @@ class Planta(models.Model):
     temp_min=models.IntegerField()
     horas_luz=models.IntegerField()
     demanda_hidrica=models.FloatField(blank=True,null=True)
-    huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE)
+    huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE,related_name="plantas_huerto")
 
 
 class Riego(models.Model):#esta clase la planteé en un principio para que se relacionase de forma n-m con planta, pero decidí cambiar la relacion a 1-n añadiendo una tabla intermedia

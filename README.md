@@ -8,7 +8,7 @@ Manuel: diferenciar  huertos disponibles y no y poner una lista con los huertos 
 
 
 Irene: en un huerto que aparezca cuando recolectar cada planta
-
+    en el modelo planta tengo el campo recoleccion como datefield. Accedo a las plantas de un huerto en concreto y comparo las fechas
 
 Alvaro:Imagenes de las plantas 
 

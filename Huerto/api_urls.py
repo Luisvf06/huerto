@@ -53,5 +53,7 @@ urlpatterns = [
     #Gabriela
     path('plantas_estacion/<str:estacion>/',plantas_estacion),
     #Manuel
-    path('huerto_disponible',huerto_disponible)
+    path('huerto_disponible',huerto_disponible),
+    #Irene
+    path('recolectable/<int:id_huerto>',huerto_recolectable),
 ]

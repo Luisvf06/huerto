@@ -15,14 +15,23 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = '__all__'
 
+from rest_framework import serializers
+
 class HuertoSerializerMejorado(serializers.ModelSerializer):
-    sitio=serializers.CharField(source='get_sitio_display')
-    sustrato=serializers.CharField(source='get_sustrato_display')
-    usuario=UsuarioSerializer(read_only=True, many=True)
-    
+    sitio = serializers.CharField(source='get_sitio_display')
+    sustrato = serializers.CharField(source='get_sustrato_display')
+    usuario = UsuarioSerializer(read_only=True, many=True)
+    plantas_huerto = serializers.SerializerMethodField()
+
     class Meta:
-        fields =  ('id','ubicacion','sitio','sustrato','area','acidez','abonado','disponible','usuario')
+        fields = ('id', 'ubicacion', 'sitio', 'sustrato', 'area', 'acidez', 'abonado', 'disponible', 'usuario', 'plantas_huerto')
         model = Huerto
+
+    def get_plantas_huerto(self, obj):
+        # Aquí necesitas asegurarte de que PlantaSerializerMejorado esté definido
+        plantas = obj.plantas_huerto.all()
+        return PlantaSerializerMejorado(plantas, many=True, context=self.context).data
+
 
 class GastosSerializerMejorado(serializers.ModelSerializer):
     fecha = serializers.DateField(format=('%d-%m-%Y'))
@@ -54,7 +63,7 @@ class BlogSerializerMejorado(serializers.ModelSerializer):
 class HuertoSerializerCreate(serializers.ModelSerializer):
     class Meta:
         model =Huerto
-        fields = ['ubicacion','sitio','sustrato','area','acidez','abonado']
+        fields = ['ubicacion','sitio','sustrato','area','acidez','abonado','disponible']
         
     def validate_ubicacion(self,ubicacion): #entiendo que la validacion es la misma que en la de los formularios normales, pero no estoy seguro
         if ubicacion is not None:
@@ -310,9 +319,11 @@ class PlantaSerializerMejorado(serializers.ModelSerializer):
     tipo = serializers.CharField(source='get_tipo_display')
     epoca_siembra = serializers.DateField(format=('%d-%m-%Y'))
     ciclo = serializers.CharField(source='get_ciclo_display')
-    huerto = HuertoSerializer(read_only=True)  # Sin many=True si es una relación de uno a uno
+    huerto = HuertoSerializer(read_only=True)
+    recoleccion=serializers.DateField(format=('%d-%m-%Y'))
 
     class Meta:
+        
         fields = (
             'id',
             'tipo',
@@ -327,7 +338,7 @@ class PlantaSerializerMejorado(serializers.ModelSerializer):
             'temp_min',
             'horas_luz',
             'demanda_hidrica',
-            'huerto'
+            'huerto',
+            'recoleccion'  
         )
         model = Planta
-

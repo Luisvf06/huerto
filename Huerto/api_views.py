@@ -9,7 +9,7 @@ from requests.exceptions import HTTPError
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import Group
 from django.db.models import Q
-from datetime import datetime
+from datetime import datetime, timedelta
 # views.py
 
 
@@ -555,8 +555,28 @@ def plantas_estacion(request,estacion):
     return Response(serializer.data)
 
 #Manuel
+@api_view(['GET'])
 def huerto_disponible(request):
     huertos=Huerto.objects.prefetch_related('usuario')
     huertos=huertos.filter(disponible=True)
     serializer=HuertoSerializerMejorado(huertos,many=True)
     return Response(serializer.data)
+
+#Irene
+@api_view(['GET'])
+def huerto_recolectable(request, id_huerto):
+    # Obtén el huerto especificado
+    huerto = Huerto.objects.prefetch_related("plantas_huerto").get(id=id_huerto)
+    # Serializa el huerto
+    serializer = HuertoSerializerMejorado(huerto, many=False)
+    huerto_data = serializer.data
+
+    hoy = datetime.now().date()
+    dia_inicio = hoy - timedelta(days=5)
+    dia_fin = hoy + timedelta(days=5)
+
+    for planta in huerto_data['plantas_huerto']:
+        fecha_recoleccion = datetime.strptime(planta['recoleccion'], '%d-%m-%Y').date()
+        planta['es_recolectable'] = dia_inicio <= fecha_recoleccion <= dia_fin
+
+    return Response(huerto_data)
