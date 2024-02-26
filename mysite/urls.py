@@ -26,10 +26,18 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework_simplejwt.views import TokenVerifyView
+from Huerto import urls as huerto_urls
 handler400=handler="Huerto.views.mi_error_400"
 handlar403=handler="Huerto.views.mi_error_403"
 handler404 = handler="Huerto.views.mi_error_404"#esto en la diapositiva aparece como handler404="app.views.view"
 handler500=handler="Huerto.views.mi_error_500"
+
+
+from django.conf import settings
+from django.conf.urls.static import static
+from Huerto import urls as huerto_urls
+
+app_name='Huerto'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Huerto.urls')),
@@ -39,4 +47,8 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-]
+    path('Huerto/', include(('Huerto.urls', 'Huerto'), namespace='Huerto')),
+    # O, usando la variable importada:
+    path('Huerto/', include((huerto_urls, 'Huerto'), namespace='Huerto')),
+] 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

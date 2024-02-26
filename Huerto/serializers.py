@@ -342,3 +342,11 @@ class PlantaSerializerMejorado(serializers.ModelSerializer):
             'recoleccion'  
         )
         model = Planta
+
+
+from rest_framework import serializers
+
+class FileUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UploadedFile
+        fields = ('file', 'uploaded_on',)

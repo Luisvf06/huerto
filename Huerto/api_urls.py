@@ -1,6 +1,9 @@
 from django.urls import path
 from .api_views import *
 
+from .api_views import FileUploadAPIView
+
+app_name = 'Huerto'
 urlpatterns = [
     
     path('huertos',huerto_list),
@@ -56,4 +59,6 @@ urlpatterns = [
     path('huerto_disponible',huerto_disponible),
     #Irene
     path('recolectable/<int:id_huerto>',huerto_recolectable),
+    #Álvaro
+
 ]

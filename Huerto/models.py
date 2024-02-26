@@ -139,7 +139,13 @@ class Banco(models.Model):#un cliente tiene una cuenta y una cuenta es de un sol
     BANCO=[('C','Caixa'),('B','BBVA'),('U','Unicaja'),('I','ING')]
     banco=models.CharField(choices=BANCO,max_length=1)
     
+#Alvaro
+class UploadedFile(models.Model):
+    file = models.FileField()
+    uploaded_on = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return self.uploaded_on.date()
     
 #Examen 14 diciembre
 
