@@ -587,8 +587,6 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import FileUploadSerializer
-
 class FileUploadAPIView(APIView):
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = FileUploadSerializer
@@ -596,8 +594,9 @@ class FileUploadAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
+            
             # you can access the file like this from serializer
-            # uploaded_file = serializer.validated_data["file"]
+            uploaded_file = serializer.validated_data["file"]
             serializer.save()
             return Response(
                 serializer.data,
@@ -608,3 +607,52 @@ class FileUploadAPIView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+#Alberto
+
+@api_view(['GET'])
+def planta_regable(request, id_usuario):
+    planta_riego = Planta_regada.objects.select_related('planta').filter(planta__huerto__usuario__id=id_usuario)
+    serializer = PlantaRegadaSerializerMejorado(planta_riego, many=True)
+    riego_data = serializer.data
+    
+    for planta in riego_data:
+        # Aquí asumimos que 'fecha' ya es la fecha del último riego de cada planta
+        ultimo_riego = datetime.strptime(planta['fecha'], '%d-%m-%Y').date()
+        dia_recomendado = ultimo_riego + timedelta(days=3)
+        
+        # Ahora comparamos con la fecha actual para determinar si la planta necesita riego
+        necesita_riego_hoy = datetime.now().date() >= dia_recomendado
+        planta['regar'] = necesita_riego_hoy
+
+    return Response(riego_data)
+
+
+@api_view(['POST'])
+def planta_regar(request):
+    riegoCreateSerializer=RiegoPlantaSerializar(date=request.data)
+    if riegoCreateSerializer.is_valid():
+        try:
+            riegoCreateSerializer.save()
+            return Response("riego apuntado")
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            print(repr(error))
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(riegoCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def planta_obtener(request,planta_id):
+    planta=Planta.objects.select_related('Huerto')
+    planta=planta.get(id=planta_id)
+    serializer=PlantaSerializerMejorado(planta)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def riego_obtener(request,riego_id):
+    riego=Planta.objects.select_related('Planta_riego')
+    riego=Riego.get(id=riego_id)
+    serializer=RiegoSerializerMejorado(riego)
+    return Response(serializer.data)

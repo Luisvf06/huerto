@@ -1,9 +1,6 @@
 from django.urls import path 
 from .import views
 from .views import TokenObtainView
-from django.urls import path
-from .views import FileUploadAPIView
-app_name='Huerto'
 urlpatterns =[
     path('',views.index,name='index'),
     
@@ -98,5 +95,5 @@ urlpatterns =[
 
 
     path('obtain-token/', TokenObtainView.as_view(), name='token-obtain'),
-    path('upload-file/', FileUploadAPIView.as_view(), name='upload-file'),
+    
 ]

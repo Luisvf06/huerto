@@ -344,9 +344,34 @@ class PlantaSerializerMejorado(serializers.ModelSerializer):
         model = Planta
 
 
-from rest_framework import serializers
+from .models import UploadedFile
 
 class FileUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedFile
         fields = ('file', 'uploaded_on',)
+
+
+#Alberto 
+class PlantaRegadaSerializerMejorado(serializers.ModelSerializer):
+    nombre_comun = serializers.CharField(source='planta.nombre_comun')
+    fecha = serializers.DateField(format=('%d-%m-%Y'))
+
+    class Meta:
+        fields = ('id','nombre_comun', 'fecha')
+        model = Planta_regada
+class RiegoSerializerMejorado(serializers.ModelSerializer):
+    class Meta:
+        model=Riego
+        producto = serializers.CharField(source='get_producto_display')
+        fields=['id','producto']
+    
+class RiegoPlantaSerializar(serializers.ModelSerializer):
+    class Meta:
+        model=Planta_regada
+        fields=['fecha','id','riego','planta']
+        def validate_fecha(self,fecha):
+            fechaHoy = date.today()
+            if fechaHoy <= fecha:
+                raise serializers.ValidationError('La fecha de riego debe ser menos o igual a Hoy')
+            return fecha

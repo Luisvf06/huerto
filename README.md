@@ -11,9 +11,9 @@ Irene: en un huerto que aparezca cuando recolectar cada planta
     en el modelo planta tengo el campo recoleccion como datefield. Accedo a las plantas de un huerto en concreto y comparo las fechas
 
 Alvaro:Imagenes de las plantas 
+    No funciona
 
-
-Alberto: Aviso de cuando regar con alert al hacer login
+Alberto: Aviso de cuando regar con alert
     acceder a la tabla intermedia de planta_regada, ver la fecha de riego, ver la fecha actual, si pasa de X tiempo, que salte el alert o lo que sea
 
 Ivan: plagas posibles de un huerto en funcion de sus plantas

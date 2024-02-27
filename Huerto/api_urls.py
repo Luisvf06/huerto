@@ -1,7 +1,6 @@
 from django.urls import path
 from .api_views import *
 
-from .api_views import FileUploadAPIView
 
 app_name = 'Huerto'
 urlpatterns = [
@@ -60,5 +59,10 @@ urlpatterns = [
     #Irene
     path('recolectable/<int:id_huerto>',huerto_recolectable),
     #Álvaro
-
+    path('upload-file/', FileUploadAPIView.as_view(), name='upload-file'),
+    #Alberto
+    path('regable/<int:id_usuario>',planta_regable),
+    path('Planta/regar',planta_regar),
+    path('planta/<int_planta_id>',planta_obtener),
+    path('riego/<int_riego_id>',riego_obtener),
 ]
