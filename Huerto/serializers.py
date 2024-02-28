@@ -375,3 +375,19 @@ class RiegoPlantaSerializar(serializers.ModelSerializer):
             if fechaHoy <= fecha:
                 raise serializers.ValidationError('La fecha de riego debe ser menos o igual a Hoy')
             return fecha
+        
+#Ivan
+class PlagaSerializerMejorado(serializers.ModelSerializer):
+    origen=serializers.CharField(source='get_origen_display')
+    planta=PlantaSerializerMejorado
+    class Meta:
+        
+        fields=('origen','descripcion','planta')
+        model=Plaga
+
+class PlagaplantaSerializerMejorado(serializers.ModelSerializer):
+    planta=PlantaSerializerMejorado(read_only=True,many=True)
+    plaga=PlagaSerializerMejorado(read_only=True,many=True)
+    class Meta:
+        fields=('planta','plaga','numeroPlagas')
+        model=PlagaPlanta

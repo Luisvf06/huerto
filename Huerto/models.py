@@ -112,7 +112,12 @@ class Plaga(models.Model):
     ORIGEN=[('V','virico'),('B','bacteriano'),('F','fungico'),('A','animal'),('P','vegetal')]
     origen=models.CharField(choices=ORIGEN,max_length=1)
     descripcion=models.TextField(max_length=2000)
+    planta=models.ManyToManyField(Planta,through='PlagaPlanta')
+
+class PlagaPlanta(models.Model):
+    numeroPlagas=models.IntegerField()
     planta=models.ForeignKey(Planta,on_delete=models.CASCADE)
+    plaga=models.ForeignKey(Plaga,on_delete=models.CASCADE)
 
 class Historial(models.Model):
     fecha=models.DateField(default=timezone.now)

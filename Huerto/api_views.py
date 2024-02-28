@@ -566,7 +566,7 @@ def huerto_disponible(request):
 @api_view(['GET'])
 def huerto_recolectable(request, id_huerto):
     # Obtén el huerto especificado
-    huerto = Huerto.objects.prefetch_related("plantas_huerto").get(id=id_huerto)
+    huerto = Huerto.objects.prefetch_related(Prefetch("plantas_huerto")).get(id=id_huerto)
     # Serializa el huerto
     serializer = HuertoSerializerMejorado(huerto, many=False)
     huerto_data = serializer.data
@@ -656,3 +656,9 @@ def riego_obtener(request,riego_id):
     riego=Riego.get(id=riego_id)
     serializer=RiegoSerializerMejorado(riego)
     return Response(serializer.data)
+
+
+#Iván
+@api_view(['GET'])
+def huerto_plagas(request,huerto_id):
+    huerto=Huerto.objects.prefetch_related(Prefetch('planta_huerto')).get(id=huerto_id)
