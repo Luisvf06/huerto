@@ -28,7 +28,6 @@ class HuertoSerializerMejorado(serializers.ModelSerializer):
         model = Huerto
 
     def get_plantas_huerto(self, obj):
-        # Aquí necesitas asegurarte de que PlantaSerializerMejorado esté definido
         plantas = obj.plantas_huerto.all()
         return PlantaSerializerMejorado(plantas, many=True, context=self.context).data
 
@@ -316,14 +315,10 @@ class BlogSerializerActualizarPublicacion(serializers.ModelSerializer):
 #tarea final
 #Gabriela 
 class PlantaSerializerMejorado(serializers.ModelSerializer):
-    tipo = serializers.CharField(source='get_tipo_display')
-    epoca_siembra = serializers.DateField(format=('%d-%m-%Y'))
-    ciclo = serializers.CharField(source='get_ciclo_display')
-    huerto = HuertoSerializer(read_only=True)
-    recoleccion=serializers.DateField(format=('%d-%m-%Y'))
+    cantidad_tipos_plagas = serializers.SerializerMethodField()
 
     class Meta:
-        
+        model = Planta
         fields = (
             'id',
             'tipo',
@@ -339,10 +334,19 @@ class PlantaSerializerMejorado(serializers.ModelSerializer):
             'horas_luz',
             'demanda_hidrica',
             'huerto',
-            'recoleccion'  
+            'recoleccion',
+            'cantidad_tipos_plagas',  # Asegúrate de incluir el nuevo campo aquí
         )
-        model = Planta
 
+    def get_cantidad_tipos_plagas(self, obj):
+        # Este método debe contar los tipos distintos de plagas para la planta
+        # y retornar ese conteo.
+        cantidad = PlagaPlanta.objects.filter(planta=obj).values('plaga').distinct().count()
+        return cantidad
+    def get_plagas(self, obj):
+        # Obtiene la cantidad de tipos de plagas distintas para esta planta
+        cantidad_plagas = PlagaPlanta.objects.filter(planta=obj).values('plaga').distinct().count()
+        return cantidad_plagas
 
 from .models import UploadedFile
 
@@ -385,9 +389,9 @@ class PlagaSerializerMejorado(serializers.ModelSerializer):
         fields=('origen','descripcion','planta')
         model=Plaga
 
-class PlagaplantaSerializerMejorado(serializers.ModelSerializer):
-    planta=PlantaSerializerMejorado(read_only=True,many=True)
-    plaga=PlagaSerializerMejorado(read_only=True,many=True)
+class PlagaPlantaSerializerMejorado(serializers.ModelSerializer):
+    plaga = PlagaSerializerMejorado(read_only=True)
+
     class Meta:
-        fields=('planta','plaga','numeroPlagas')
-        model=PlagaPlanta
+        model = PlagaPlanta
+        fields = ('plaga',)

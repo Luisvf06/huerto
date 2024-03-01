@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from datetime import datetime, timedelta
+from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 # views.py
 
 
@@ -660,5 +662,19 @@ def riego_obtener(request,riego_id):
 
 #Iván
 @api_view(['GET'])
-def huerto_plagas(request,huerto_id):
-    huerto=Huerto.objects.prefetch_related(Prefetch('planta_huerto')).get(id=huerto_id)
+def huerto_plagas(request, huerto_id):
+    try:
+        # Usamos prefetch_related para optimizar la carga de plantas y sus relaciones con plagas
+        huerto = Huerto.objects.prefetch_related(
+            Prefetch('plantas_huerto', queryset=Planta.objects.prefetch_related(
+                Prefetch('plagaplanta_set', queryset=PlagaPlanta.objects.select_related('plaga'))
+            ))
+        ).get(id=huerto_id)
+        
+        # Serializamos el huerto, incluyendo las plantas y sus plagas
+        serializer = HuertoSerializerMejorado(huerto)
+        # Devolvemos los datos serializados
+        return Response(serializer.data)
+    except Huerto.DoesNotExist:
+        # Si el huerto no se encuentra, devolvemos un error 404
+        return Response({'error': 'Huerto no encontrado'}, status=status.HTTP_404_NOT_FOUND)

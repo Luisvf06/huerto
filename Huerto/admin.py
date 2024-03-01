@@ -16,6 +16,7 @@ from .models import Calendario
 from .models import Banco
 from .models import Votacion
 from .models import Promocion
+from .models import *
 # Register your models here.
 admin.site.register(Banco)
 admin.site.register(Votacion)
@@ -25,8 +26,8 @@ admin.site.register(Blog)
 admin.site.register(Incidencia)
 admin.site.register(Planta)
 admin.site.register(Gastos)
-
 admin.site.register(Plaga)
+admin.site.register(PlagaPlanta)
 admin.site.register(Historial)
 admin.site.register(Tratamiento)
 admin.site.register(Evento)

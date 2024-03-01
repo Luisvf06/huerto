@@ -79,7 +79,8 @@ class Planta(models.Model):
     horas_luz=models.IntegerField()
     demanda_hidrica=models.FloatField(blank=True,null=True)
     huerto=models.ForeignKey(Huerto,on_delete=models.CASCADE,related_name="plantas_huerto")
-
+    def cantidad_tipos_plagas(self):
+        return self.plagaplanta_set.values('plaga').distinct().count()
 
 class Riego(models.Model):#esta clase la planteé en un principio para que se relacionase de forma n-m con planta, pero decidí cambiar la relacion a 1-n añadiendo una tabla intermedia
     PRODUCTO=[('A','agua'),('F','fertilizante'),('L','lluvia'),('P','plaguicida')]
@@ -115,7 +116,6 @@ class Plaga(models.Model):
     planta=models.ManyToManyField(Planta,through='PlagaPlanta')
 
 class PlagaPlanta(models.Model):
-    numeroPlagas=models.IntegerField()
     planta=models.ForeignKey(Planta,on_delete=models.CASCADE)
     plaga=models.ForeignKey(Plaga,on_delete=models.CASCADE)
 
