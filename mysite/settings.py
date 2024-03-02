@@ -76,9 +76,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'mysite.urls'
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",  # Añade aquí el dominio de tu cliente Angular
+    
+]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

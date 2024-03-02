@@ -48,7 +48,7 @@ urlpatterns = [
     path('Blog/actualizar/Fecha/<int:blog_id>',blog_editar_fecha),
     path('Blog/actualizar/etiqueta/<int:blog_id>',blog_editar_etiqueta),
     path('Blog/actualizar/publicacion/<int:blog_id>',blog_editar_publicacion),
-    path('registrar/usuario',registrar.as_view()),
+    path('registrar/usuario',registrar.as_view(),name='registrar_usuario'),
     path('usuario/token/<str:token>',obtener_usuario_token),
 
 #tarea final
