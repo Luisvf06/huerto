@@ -567,9 +567,8 @@ def huerto_disponible(request):
 #Irene
 @api_view(['GET'])
 def huerto_recolectable(request, id_huerto):
-    # Obtén el huerto especificado
+
     huerto = Huerto.objects.prefetch_related(Prefetch("plantas_huerto")).get(id=id_huerto)
-    # Serializa el huerto
     serializer = HuertoSerializerMejorado(huerto, many=False)
     huerto_data = serializer.data
 
@@ -578,7 +577,7 @@ def huerto_recolectable(request, id_huerto):
     dia_fin = hoy + timedelta(days=5)
 
     for planta in huerto_data['plantas_huerto']:
-        fecha_recoleccion = datetime.strptime(planta['recoleccion'], '%d-%m-%Y').date()
+        fecha_recoleccion = datetime.strptime(planta['recoleccion'], '%Y-%m-%d').date()
         planta['es_recolectable'] = dia_inicio <= fecha_recoleccion <= dia_fin
 
     return Response(huerto_data)
@@ -597,7 +596,6 @@ class FileUploadAPIView(APIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             
-            # you can access the file like this from serializer
             uploaded_file = serializer.validated_data["file"]
             serializer.save()
             return Response(
@@ -619,11 +617,10 @@ def planta_regable(request, id_usuario):
     riego_data = serializer.data
     
     for planta in riego_data:
-        # Aquí asumimos que 'fecha' ya es la fecha del último riego de cada planta
+        #accede al ultimo riego de la planta, lo formatea y da un margen de 3 días
         ultimo_riego = datetime.strptime(planta['fecha'], '%d-%m-%Y').date()
         dia_recomendado = ultimo_riego + timedelta(days=3)
-        
-        # Ahora comparamos con la fecha actual para determinar si la planta necesita riego
+        #si la fecha actual es mayor que el plazo se recomienda el riego
         necesita_riego_hoy = datetime.now().date() >= dia_recomendado
         planta['regar'] = necesita_riego_hoy
 
@@ -664,17 +661,20 @@ def riego_obtener(request,riego_id):
 @api_view(['GET'])
 def huerto_plagas(request, huerto_id):
     try:
-        # Usamos prefetch_related para optimizar la carga de plantas y sus relaciones con plagas
         huerto = Huerto.objects.prefetch_related(
             Prefetch('plantas_huerto', queryset=Planta.objects.prefetch_related(
                 Prefetch('plagaplanta_set', queryset=PlagaPlanta.objects.select_related('plaga'))
             ))
         ).get(id=huerto_id)
         
-        # Serializamos el huerto, incluyendo las plantas y sus plagas
+        total_plagas = PlagaPlanta.objects.filter(planta__huerto=huerto).count()
+
         serializer = HuertoSerializerMejorado(huerto)
-        # Devolvemos los datos serializados
-        return Response(serializer.data)
+        serialized_data = serializer.data
+        serialized_data['total_plagas'] = total_plagas
+        return Response(serialized_data)
     except Huerto.DoesNotExist:
-        # Si el huerto no se encuentra, devolvemos un error 404
         return Response({'error': 'Huerto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+def registro_google(request):
+    pass

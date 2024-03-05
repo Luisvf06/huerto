@@ -60,7 +60,12 @@ INSTALLED_APPS = [
     'django_bootstrap_icons',
     'rest_framework',
     'oauth2_provider',
-    'corsheaders'
+    'corsheaders',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google'
     #'django.contrib.gis'extension para trabajar con datos espaciales en postgre, no la instalo de momento ya no estoy con esa BD
     
 ]
@@ -75,6 +80,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'mysite.urls'
@@ -208,3 +214,20 @@ VIEWSET_METHOD_REGISTRY=(
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+SITE_ID=1
+SOCIALACCOUNT_PROVIDERS={
+    'google':{
+        'SCOPE':['profile','email'
+                ],
+        'AUTH_PARAMS':{
+            'access_type':'online',
+        },
+        'OAUTH_PKCE_ENABLED':True,
+    }
+}
+# settings.py
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Este es el backend de autenticación por defecto de Django
+    'allauth.account.auth_backends.AuthenticationBackend',  # Backend de autenticación de django-allauth
+]

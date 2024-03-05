@@ -67,4 +67,5 @@ urlpatterns = [
     path('riego/<int:riego_id>',riego_obtener),
     #Iván
     path('huerto_plaga/<int:huerto_id>',huerto_plagas),
+    path('provider_login_url/<str:google>',registro_google )
 ]
