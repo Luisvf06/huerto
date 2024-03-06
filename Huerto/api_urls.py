@@ -63,6 +63,8 @@ urlpatterns = [
     #Alberto
     path('regable/<int:id_usuario>',planta_regable),
     path('Planta/regar',planta_regar),
+    path('plantas',planta_list),
+    path('riegos',riego_list),
     path('planta/<int:planta_id>',planta_obtener),
     path('riego/<int:riego_id>',riego_obtener),
     #Iván

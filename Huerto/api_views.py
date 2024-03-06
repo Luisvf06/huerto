@@ -626,6 +626,17 @@ def planta_regable(request, id_usuario):
 
     return Response(riego_data)
 
+@api_view(['GET'])
+def planta_list(request):
+    plantas=Planta.objects.all()
+    serializer=PlantaSerializerMejorado(plantas,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def riego_list(request):
+    riegos=Riego.objects.all()
+    serializer=RiegoSerializerMejorado(riegos,many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def planta_regar(request):
@@ -651,7 +662,7 @@ def planta_obtener(request,planta_id):
 
 @api_view(['GET'])
 def riego_obtener(request,riego_id):
-    riego=Planta.objects.select_related('Planta_riego')
+    riego=Riego.objects.select_related('Planta_riego')
     riego=Riego.get(id=riego_id)
     serializer=RiegoSerializerMejorado(riego)
     return Response(serializer.data)
