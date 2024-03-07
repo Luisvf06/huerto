@@ -374,11 +374,11 @@ class RiegoPlantaSerializar(serializers.ModelSerializer):
     class Meta:
         model=Planta_regada
         fields=['fecha','id','riego','planta']
-        def validate_fecha(self,fecha):
-            fechaHoy = date.today()
-            if fechaHoy <= fecha:
-                raise serializers.ValidationError('La fecha de riego debe ser menos o igual a Hoy')
-            return fecha
+    def validate_fecha(self,fecha):
+        fechaHoy = date.today()
+        if fechaHoy <= fecha:
+            raise serializers.ValidationError('La fecha de riego debe ser menos o igual a Hoy')
+        return fecha
         
 #Ivan
 class PlagaSerializerMejorado(serializers.ModelSerializer):
