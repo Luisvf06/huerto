@@ -171,8 +171,8 @@ class UsuarioSerializerRegistro(serializers.Serializer):
     def validate_rol(self,rol):
         rol not in [1,2]
         return rol
-    class Meta:
-        model=Huertofields=['ubicacion']
+class Meta:
+    model=Huertofields=['ubicacion']
 
     def validate_ubicacion(self,ubicacion):
         huertoubi=Huerto.objects.filter(ubicacion=ubicacion).first()
