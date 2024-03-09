@@ -369,14 +369,14 @@ class RiegoSerializerMejorado(serializers.ModelSerializer):
         model=Riego
         producto = serializers.CharField(source='get_producto_display')
         fields=['id','producto']
-    
-class RiegoPlantaSerializar(serializers.ModelSerializer):
+
+class RiegoPlantaSerializar(serializers.ModelSerializer):#clase para crear registros de la clase intermedia entre plata y riego
     class Meta:
         model=Planta_regada
         fields=['fecha','id','riego','planta']
     def validate_fecha(self,fecha):
         fechaHoy = date.today()
-        if fechaHoy <= fecha:
+        if (not  fecha<=fechaHoy) :
             raise serializers.ValidationError('La fecha de riego debe ser menos o igual a Hoy')
         return fecha
         

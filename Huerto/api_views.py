@@ -625,7 +625,7 @@ def planta_regable(request, id_usuario):
         planta['regar'] = necesita_riego_hoy
 
     return Response(riego_data)
-
+#esta y la siguiente son las vistas para obtener las pk y datos de los modelos riego y planta y pasarselo al modelo intermeidio
 @api_view(['GET'])
 def planta_list(request):
     plantas=Planta.objects.all()
@@ -640,7 +640,7 @@ def riego_list(request):
 
 @api_view(['POST'])
 def planta_regar(request):
-    riegoCreateSerializer=RiegoPlantaSerializar(date=request.data)
+    riegoCreateSerializer=RiegoPlantaSerializar(data=request.data)
     if riegoCreateSerializer.is_valid():
         try:
             riegoCreateSerializer.save()
