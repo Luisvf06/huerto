@@ -335,16 +335,13 @@ class PlantaSerializerMejorado(serializers.ModelSerializer):
             'demanda_hidrica',
             'huerto',
             'recoleccion',
-            'cantidad_tipos_plagas',  # Asegúrate de incluir el nuevo campo aquí
+            'cantidad_tipos_plagas',  
         )
 
     def get_cantidad_tipos_plagas(self, obj):
-        # Este método debe contar los tipos distintos de plagas para la planta
-        # y retornar ese conteo.
         cantidad = PlagaPlanta.objects.filter(planta=obj).values('plaga').distinct().count()
         return cantidad
     def get_plagas(self, obj):
-        # Obtiene la cantidad de tipos de plagas distintas para esta planta
         cantidad_plagas = PlagaPlanta.objects.filter(planta=obj).values('plaga').distinct().count()
         return cantidad_plagas
 
@@ -379,6 +376,15 @@ class RiegoPlantaSerializar(serializers.ModelSerializer):#clase para crear regis
         if (not  fecha<=fechaHoy) :
             raise serializers.ValidationError('La fecha de riego debe ser menos o igual a Hoy')
         return fecha
+class PlantaRiegoSerializerActualizarFecha(serializers.ModelSerializer):
+    class Meta:
+        model=Planta_regada
+        fields=['fecha']
+    def validate_fecha(self,fecha):
+        riegoFecha=Planta_regada.objects.filter(fecha=fecha).first()
+        if (not riegoFecha is None and riegoFecha.fecha != self.instance.fecha):
+            raise serializers.ValidationError('La fecha debe ser difernte de la actual')
+        return riegoFecha
         
 #Ivan
 class PlagaSerializerMejorado(serializers.ModelSerializer):

@@ -67,6 +67,7 @@ urlpatterns = [
     path('riegos',riego_list),
     path('planta/<int:planta_id>',planta_obtener),
     path('riego/<int:riego_id>',riego_obtener),
+    path('actualizar/fecha/<int:id_plantariego',actualizar_fecha_riego),
     #Iván
     path('huerto_plaga/<int:huerto_id>',huerto_plagas),
     path('provider_login_url/<str:google>',registro_google )

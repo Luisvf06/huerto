@@ -667,6 +667,19 @@ def riego_obtener(request,riego_id):
     serializer=RiegoSerializerMejorado(riego)
     return Response(serializer.data)
 
+@api_view(['PATCH'])
+def actualizar_fecha_riego(request,id_plantariego):
+    riegoFecha=Planta_regada.objects.get(id=id_plantariego)
+    serializers=PlantaRiegoSerializerActualizarFecha(data=request.data,instance=riegoFecha)
+    if (serializers.is_valid()):
+        try:
+            serializers.save()
+            return Response("Fecha del último riego modificada")
+        except Exception as error:
+            print(repr(error))
+            return Response(repr(error),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
 
 #Iván
 @api_view(['GET'])
